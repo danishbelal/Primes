@@ -1,32 +1,27 @@
 package project;
 
-import project.model.Prime;
-import project.view.GUI;
-
+// import project.model.Prime;
+import project.model.SieveOfErathosthenes;
 
 /**
  * @author Danish Belal
- * This Class is Testing the functionality of other Classes (,yet)
  */
 
 public class Main
 {
 
-    static Prime x=new Prime();
+    static SieveOfErathosthenes x=new SieveOfErathosthenes();
 
     public static void main(String[] args)
     {
+        int maxP=10000000;
+        System.out.println("Starte Berechnung...");
+        System.out.println();
+        SieveOfErathosthenes.eratosthenes(maxP < Integer.MAX_VALUE ? maxP : 100);
+        // boolean[] xx=x.calcPrimes(maxP);
+        System.out.println("Fertig ! ");
+        System.out.println();
 
-        int[] pr=x.calcPrimes(10);
-        for (int i=0; i<pr.length; i++)
-        {
-            if (pr[i]!=0)
-                System.out.println(pr[i]);
-        }
-
-        GUI gui = new GUI();
-        gui.initGUI();
-        
-        
     }
+
 }

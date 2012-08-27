@@ -8,24 +8,21 @@ public class SieveOfErathosthenes
         boolean primes[]=new boolean[maxPrime+1];
         for (int i=2; i<primes.length; i++)
             primes[i]=true;
-        // 214748364
-        // 2147479015
-        // 214748364
 
-        for (int i=2; i<=maxPrime; i++)
+        for (int i=2; i<=Math.sqrt(maxPrime); i++)
         {
-            for (int j=i*i; j<=maxPrime; j+=i)
+            for (int j=i; j<=maxPrime; j++)
             {
-                if(j>9000000)
-                    primes[Math.abs(j)]=false;
-                primes[Math.abs(j)]=false;
+
+                if(j*i < primes.length) // not optimized (, yet) !
+                    primes[j*i]=false;
 
             }
         }
 
-        for (int i=0; i<=maxPrime; i++)
+        for (int i=0; i<=maxPrime; i++) // OUTPUT
         {
-            
+
             if (primes[i])
                 System.out.print(" "+i+" ");
 
@@ -35,7 +32,4 @@ public class SieveOfErathosthenes
 
     }
 
-    
-
-    
 }

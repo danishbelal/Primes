@@ -14,13 +14,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        int maxP=10000000;
-        System.out.println("Starte Berechnung...");
-        System.out.println();
-        SieveOfErathosthenes.eratosthenes(maxP < Integer.MAX_VALUE ? maxP : 100);
-        // boolean[] xx=x.calcPrimes(maxP);
-        System.out.println("Fertig ! ");
-        System.out.println();
+        
 
     }
 

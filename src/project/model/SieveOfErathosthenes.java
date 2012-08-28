@@ -9,13 +9,18 @@ public class SieveOfErathosthenes
         for (int i=2; i<primes.length; i++)
             primes[i]=true;
 
-        for (int i=2; i<=Math.sqrt(maxPrime); i++)
+        for (int i=2; i< maxPrime; i++)
         {
-            for (int j=i; j<=maxPrime; j++)
+            for (int j=i; j< maxPrime; j++)
             {
 
                 if(j*i < primes.length) // not optimized (, yet) !
-                    primes[j*i]=false;
+                    primes[Math.abs(j*i)]=false;  // Math.abs() because of NegativeArraySizeException !
+                else
+                {
+                    if(j*i < primes.length) 
+                        System.out.println("\t j * i "+j*i); /* DEBUG Code -->  I´ll remove it when the func is working */
+                }
 
             }
         }
@@ -23,7 +28,7 @@ public class SieveOfErathosthenes
         for (int i=0; i<=maxPrime; i++) // OUTPUT
         {
 
-            if (primes[i])
+            if (primes[Math.abs(i)])
                 System.out.print(" "+i+" ");
 
         }

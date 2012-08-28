@@ -14,7 +14,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        boolean [] xxx = x.calcPrimes(100);
+        boolean [] xxx = x.calcPrimes((int) 1e9);
 
     }
 

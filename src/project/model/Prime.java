@@ -17,9 +17,16 @@ public class Prime implements Model
         thirdPrime = false;
     }
 
+    /**
+     * This func is calculating all Primes between start and maxPrime
+     * @throws IllegalArgumentException if start > maxPrime
+     * @return An int Array containing all Primes between start and maxPrime
+     * */
     public int[] calcPrimes(int start, int maxPrime)
     {
 
+        if(start > maxPrime)
+            throw new IllegalArgumentException("start is greater than maxPrime");
         int[] primes = new int[maxPrime];
         
         for (currentNumber = start; currentNumber <= maxPrime; currentNumber++)
@@ -41,7 +48,11 @@ public class Prime implements Model
         return primes;
 
     }
-
+    /**
+     * 
+     * This func is calling calcPrimes(2, maxPrime) !
+     * @see calcPrimes(int start, int maxPrime)
+     * */
     public int[] calcPrimes(int maxPrime)
     {
         return calcPrimes(2, maxPrime);

@@ -7,22 +7,25 @@ public class Prime implements Model
 {
     int lastPrime, currentNumber, maxPrime, divisor;
     boolean isPrime;
+    boolean thirdPrime;
 
     public Prime()
     {
         lastPrime=2;
         currentNumber=lastPrime;
         isPrime=true;
+        thirdPrime = false;
     }
 
     public int[] calcPrimes(int start, int maxPrime)
     {
 
-        int[] primes=new int[maxPrime];
-        for (currentNumber=start; currentNumber<=maxPrime; currentNumber++)
+        int[] primes = new int[maxPrime];
+        
+        for (currentNumber = start; currentNumber <= maxPrime; currentNumber++)
         {
             isPrime=true;
-            for (divisor=2; isPrime&&(divisor<currentNumber); divisor++)
+            for (divisor=2; isPrime &&  (divisor < currentNumber); divisor++)
             {
                 if (currentNumber%divisor==0)
                 {
@@ -47,12 +50,21 @@ public class Prime implements Model
     public int getNextPrime()
     {
 
+        
         if (lastPrime==2)
         {
             lastPrime=3;
+            thirdPrime = true;
+            
             return 2;
         }
-        for (currentNumber=2;; currentNumber++)
+        else if(thirdPrime )
+        {
+            thirdPrime = false;
+            return 3;
+        }
+        
+        for (currentNumber=lastPrime;; currentNumber++)
         {
             isPrime=true;
             for (divisor=2; isPrime&(divisor<currentNumber); divisor++)

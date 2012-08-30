@@ -1,6 +1,6 @@
 package project;
 
-// import project.model.Prime;
+//import project.model.Prime;
 import project.model.SieveOfErathosthenes;
 
 /**
@@ -14,8 +14,11 @@ public class Main
 
     public static void main(String[] args)
     {
-        boolean [] xxx = x.calcPrimes((int) 1e9);
+        int maxPrime= 2000;
+        //Prime test=new Prime();
 
+        boolean[] xxx=x.calcPrimes(maxPrime);
+        
     }
 
 }

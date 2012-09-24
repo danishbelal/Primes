@@ -1,29 +1,30 @@
 package project;
 
-//import project.model.Prime;
+// import project.model.Prime;
 import project.model.Prime;
 
-public class Main {
+public class Main
+{
 
+    public static void main(String [] args) //throws InterruptedException // Hä ?
+    {
 
-	public static void main(String[] args) throws InterruptedException {
+        // GUI ui = new GUI();
+        // ui.initGUI();
 
-//		GUI ui = new GUI();
-//		ui.initGUI();
-		
-//		while (true) {
-			long before = System.currentTimeMillis();
-			int maxPrime = (int) Math.sqrt(Integer.MAX_VALUE) - 1;
-			// Prime test=new Prime();
+        long before = System.currentTimeMillis();
+        int maxPrime = (int) Math.sqrt( Integer.MAX_VALUE ) - 1;
+        // Prime test=new Prime();
 
-			Prim0 p = new Prime();
-			p.calcPrimes(maxPrime);
+        Prime p = new Prime();
+        p.calcPrimes( maxPrime );
 
-			
-			System.out.println("Took " + (System.currentTimeMillis() - before) +  "ms");
-			System.out.println("Used Memory: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024) + " MB");
+        System.out.println( "Took " + ( System.currentTimeMillis() - before )
+                + "ms" );
+        System.out.println( "Used Memory: "
+                + ( ( Runtime.getRuntime().totalMemory() - Runtime.getRuntime()
+                        .freeMemory() ) / 1024 / 1024 ) + " MB" );
 
-//		}
-	}
+    }
 
 }

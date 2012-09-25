@@ -10,9 +10,9 @@ public class Prime_Math // TODO : Rename
     {
         switch (method)
         {
-        case EUKLID:
-
-            break;
+//        case EUKLID:
+//
+//            break;
 
         case PRIME_ZERLEGUNG:
 

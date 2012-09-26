@@ -1,6 +1,6 @@
 package project.model;
 
-public class Prime_Math // TODO : Rename
+public class PrimeMath
 {
 
     public final static int EUKLID = 0x1;

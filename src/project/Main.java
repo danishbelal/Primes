@@ -2,7 +2,7 @@ package project;
 
 // import project.model.Prime;
 import project.model.Prime;
-import project.model.Prime_Math;
+import project.model.PrimeMath;
 
 public class Main
 {
@@ -20,7 +20,7 @@ public class Main
 //        Prime p = new Prime();
 //        p.calcPrimes( maxPrime );
 
-        System.out.println(Prime_Math.ggT( Prime_Math.EUKLID, 17, 34 ));
+        System.out.println(PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ));
         
         
         System.out.println( "Took " + ( System.currentTimeMillis() - before )

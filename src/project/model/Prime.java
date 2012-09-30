@@ -29,7 +29,7 @@ public class Prime implements Model
             throw new IllegalArgumentException("start is greater than maxPrime");
         int[] primes = new int[maxPrime];
         
-        for (currentNumber = start; currentNumber <= maxPrime; getNextPrime())
+        for (currentNumber = start; currentNumber <= maxPrime; currentNumber++)
         {
             isPrime=true;
             for (divisor=2; isPrime &&  (divisor < currentNumber); divisor++)

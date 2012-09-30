@@ -3,26 +3,22 @@ package project;
 // import project.model.Prime;
 import project.model.Prime;
 import project.model.PrimeMath;
+import project.view.GUI;
 
 public class Main
 {
 
-    public static void main(String [] args) //throws InterruptedException // Hä ?
+    public static void main(String [] args) // throws InterruptedException // Hä
+                                            // ?
     {
 
-        // GUI ui = new GUI();
-        // ui.initGUI();
-
         long before = System.currentTimeMillis();
-//        int maxPrime = (int) Math.sqrt( Integer.MAX_VALUE ) - 1;
-        
 
-//        Prime p = new Prime();
-//        p.calcPrimes( maxPrime );
+        GUI ui = new GUI();
+        ui.initGUI();
+        
+        System.out.println( PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ) );
 
-        System.out.println(PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ));
-        
-        
         System.out.println( "Took " + ( System.currentTimeMillis() - before )
                 + "ms" );
         System.out.println( "Used Memory: "

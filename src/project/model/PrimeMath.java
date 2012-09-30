@@ -10,10 +10,7 @@ public class PrimeMath
     {
         switch (method)
         {
-//        case EUKLID:
-//
-//            break;
-
+       
         case PRIME_ZERLEGUNG:
 
             break;

@@ -4,14 +4,14 @@ public class PrimeMath
 {
 
     public final static int EUKLID = 0x1;
-    public final static int PRIME_ZERLEGUNG = 0x2; // TODO : Rename !
+    public final static int PRIME_FACTORIZATION = 0x2;
 
     public static long kgV(int method, long first, long second)
     {
         switch (method)
         {
        
-        case PRIME_ZERLEGUNG:
+        case PRIME_FACTORIZATION:
 
             break;
 

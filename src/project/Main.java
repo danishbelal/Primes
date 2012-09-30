@@ -1,8 +1,7 @@
 package project;
 
 // import project.model.Prime;
-import project.model.Prime;
-import project.model.PrimeMath;
+
 import project.view.GUI;
 
 public class Main
@@ -16,8 +15,8 @@ public class Main
 
         GUI ui = new GUI();
         ui.initGUI();
-        
-        System.out.println( PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ) );
+
+        // System.out.println( PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ) );
 
         System.out.println( "Took " + ( System.currentTimeMillis() - before )
                 + "ms" );

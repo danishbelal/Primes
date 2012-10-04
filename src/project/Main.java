@@ -3,6 +3,7 @@ package project;
 // import project.model.Prime;
 
 import project.view.GUI;
+import project.view.GUIEXPERIMENTAL;
 
 public class Main
 {
@@ -13,8 +14,13 @@ public class Main
 
         long before = System.currentTimeMillis();
 
-        GUI ui = new GUI();
-        ui.initGUI();
+        GUIEXPERIMENTAL ui = new GUIEXPERIMENTAL();
+        ui.setVisible(true);
+        
+        GUI ui2 = new GUI();
+        ui2.setVisible( true );
+        
+//        YES currenttly there will appear 2 GUIs : Which is better?
 
         // System.out.println( PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ) );
 

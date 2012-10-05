@@ -1,9 +1,11 @@
 package project;
 
+
 // import project.model.Prime;
 
+import project.model.SieveOfErathosthenes;
 import project.view.GUI;
-import project.view.GUIEXPERIMENTAL;
+
 
 public class Main
 {
@@ -12,17 +14,13 @@ public class Main
                                             // ?
     {
 
+        int maxPrime = 10; // (int) ( Math.sqrt( Integer.MAX_VALUE ) - 1 );
         long before = System.currentTimeMillis();
 
-        GUIEXPERIMENTAL ui = new GUIEXPERIMENTAL();
-        ui.setVisible(true);
-        
         GUI ui2 = new GUI();
         ui2.setVisible( true );
-        
-//        YES currenttly there will appear 2 GUIs : Which is better?
 
-        // System.out.println( PrimeMath.ggT( PrimeMath.EUKLID, 17, 34 ) );
+        
 
         System.out.println( "Took " + ( System.currentTimeMillis() - before )
                 + "ms" );

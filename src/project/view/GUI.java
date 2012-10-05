@@ -1,162 +1,127 @@
 package project.view;
 
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
-import project.model.SieveOfErathosthenes;
-import static project.model.SieveOfErathosthenes.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+public class GUI extends JFrame {
+    private static final long serialVersionUID = 1L;
 
-public class GUI extends JFrame
-{
+	private JPanel contentPane;
 
-    private JPanel contentPane;
-    private JTextField inputText;
+	public final JTextPane textPane;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String [] args)
-    {
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) throws Error {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			error(e);
+		}
 
-        EventQueue.invokeLater( new Runnable()
-        {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI frame = new GUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					error(e);
+				}
+			}
+		});
+	}
 
-            public void run()
-            {
+	/**
+	 * Create the frame.
+	 */
+	public GUI() {
+		setResizable(false);
+		setTitle("Primzahlen-Berechnung");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 462, 376);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 
-                try
-                {
-                    GUI frame = new GUI();
-                    frame.setVisible( true );
-                }
-                catch ( Exception e )
-                {
-                    e.printStackTrace();
-                }
-            }
-        } );
-    }
+		JPanel usePrimesPanel = new JPanel();
+		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		usePrimesPanel.setBounds(10, 181, 207, 159);
+		contentPane.add(usePrimesPanel);
+		usePrimesPanel.setLayout(null);
 
-    /**
-     * Create the frame.
-     */
-    public GUI() {
-        setTitle(project.utils.Constants.WINDOW_TITLE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 600);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(new BorderLayout(0, 0));
+		JPanel calcPrimesPanel = new JPanel();
+		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		calcPrimesPanel.setBounds(10, 11, 207, 159);
+		contentPane.add(calcPrimesPanel);
+		calcPrimesPanel.setLayout(null);
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        contentPane.add(tabbedPane);
+		JLabel lblMethode = new JLabel("Methode:");
+		lblMethode.setBounds(10, 22, 46, 14);
+		calcPrimesPanel.add(lblMethode);
+		
+		JComboBox cbxMethode = new JComboBox();
+		cbxMethode.addItem("Sieb des Erastosthenes");
+		cbxMethode.addItem("Einfaches Durchtesten");
+		cbxMethode.setBounds(66, 19, 131, 20);
+		calcPrimesPanel.add(cbxMethode);
 
-        JPanel primeTab = new JPanel();
-        tabbedPane.addTab("Primzahlen", null, primeTab, "Primzahlen und alles was dazu geh\u00F6rt ...");
-        primeTab.setLayout(new BorderLayout(0, 0));
+		JButton btnTest = new JButton("Test");
+		btnTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				appendConsoleText("Test: " + Math.random());
+			}
+		});
+		btnTest.setBounds(311, 317, 80, 23);
+		contentPane.add(btnTest);
 
-        JProgressBar progressBar = new JProgressBar();
-        progressBar.setToolTipText("es tut sich was !");
-        progressBar.setValue(50);
-        primeTab.add(progressBar, BorderLayout.SOUTH);
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textPane.setText("");
+			}
+		});
+		btnClear.setBounds(227, 317, 80, 23);
+		contentPane.add(btnClear);
 
-        JPanel primeCalc = new JPanel();
-        primeTab.add(primeCalc, BorderLayout.CENTER);
-        primeCalc.setLayout(new BorderLayout(0, 0));
+		textPane = new JTextPane();
+		textPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textPane.setEditable(false);
 
-        JPanel primeCalcTitle = new JPanel();
-        primeCalc.add(primeCalcTitle, BorderLayout.NORTH);
-        primeCalcTitle.setLayout(new GridLayout(1, 0, 0, 0));
+		JScrollPane scrollPane = new JScrollPane(textPane);
+		scrollPane.setBounds(227, 12, 217, 294);
+		contentPane.add(scrollPane);
+	}
 
-        JLabel verfahrenLabel = new JLabel("Verfahren");
-        primeCalcTitle.add(verfahrenLabel);
-        
-        @SuppressWarnings({ "unchecked" , "rawtypes"})
-        JComboBox comboBox = new JComboBox (new String[] { "Sieb des Eratosthenes" , "Brute-Force" });
-        primeCalcTitle.add(comboBox);
-        
-        final JTextPane outputTxt = new JTextPane(); // Eclipse wanted this to be final ???
-        outputTxt.setText("Ausgabe ");
-        primeCalc.add(outputTxt, BorderLayout.CENTER);
-        
-        JPanel primeInput = new JPanel();
-        primeCalc.add(primeInput, BorderLayout.WEST);
-        GridBagLayout gbl_primeInput = new GridBagLayout();
-        gbl_primeInput.columnWidths = new int[]{86, 26, 0, 0};
-        gbl_primeInput.rowHeights = new int[]{269, 0, 0};
-        gbl_primeInput.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_primeInput.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-        primeInput.setLayout(gbl_primeInput);
-        
-        inputText = new JTextField();
-        GridBagConstraints gbc_inputText = new GridBagConstraints();
-        gbc_inputText.insets = new Insets(0, 0, 5, 0);
-        gbc_inputText.gridwidth = 2;
-        gbc_inputText.anchor = GridBagConstraints.NORTH;
-        gbc_inputText.fill = GridBagConstraints.HORIZONTAL;
-        gbc_inputText.gridx = 1;
-        gbc_inputText.gridy = 0;
-        primeInput.add(inputText, gbc_inputText);
-        inputText.setColumns(10);
-        
-        JLabel inputLabel = new JLabel("max");
-        inputLabel.setToolTipText("Primzahlen berechnen bis ... ");
-        GridBagConstraints gbc_inputLabel = new GridBagConstraints();
-        gbc_inputLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_inputLabel.anchor = GridBagConstraints.NORTHWEST;
-        gbc_inputLabel.fill = GridBagConstraints.HORIZONTAL;
-        gbc_inputLabel.gridx = 0;
-        gbc_inputLabel.gridy = 0;
-        primeInput.add(inputLabel, gbc_inputLabel);
-        
-        JButton btnNewButton = new JButton("Start !");
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) 
-            {
-                boolean[] primes  = null;
-                try 
-                {
-                   
-                    primes= calcPrimes(Integer.parseInt( inputText.getText() ));
-                }
-                catch (NumberFormatException e)
-                {
-                    StringBuilder buf = new StringBuilder();
-                    for(StackTraceElement elem : e.getStackTrace())
-                        buf.append( elem.toString() + "\n" );
-                    outputTxt.setText( buf.toString() );
-                        
-                }
-                
-                outputTxt.setText( Bool2Int( primes )); 
-            }
-        });
-        btnNewButton.setToolTipText("Startet den Vorgang !");
-        GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        gbc_btnNewButton.insets = new Insets(10, 10, 10, 10);
-        gbc_btnNewButton.gridx = 1;
-        gbc_btnNewButton.gridy = 1;
-        primeInput.add(btnNewButton, gbc_btnNewButton);
-    }
+	public void appendConsoleText(String text) {
+		textPane.setText(textPane.getText() + text + '\n');
+	}
+
+	public static void error(Throwable t) {
+		t.printStackTrace();
+		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
+		t.printStackTrace(new PrintStream(byos));
+		JOptionPane.showMessageDialog(null, "Fehler des Typs " + t.getClass().getCanonicalName() + ":\n> " + t.getLocalizedMessage() + "\n\n" + byos.toString(), "Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		System.exit(1);
+	}
 }

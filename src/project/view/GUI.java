@@ -23,7 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI extends JFrame {
-    private static final long serialVersionUID = 1L;
+    	private static final long serialVersionUID = 1L;
+    	private static GUI guiInstance;
 
 	private JPanel contentPane;
 
@@ -42,8 +43,8 @@ public class GUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI frame = new GUI();
-					frame.setVisible(true);
+					guiInstance = new GUI();
+					guiInstance.setVisible(true);
 				} catch (Exception e) {
 					error(e);
 				}
@@ -121,7 +122,7 @@ public class GUI extends JFrame {
 		t.printStackTrace();
 		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
 		t.printStackTrace(new PrintStream(byos));
-		JOptionPane.showMessageDialog(null, "Fehler des Typs " + t.getClass().getCanonicalName() + ":\n> " + t.getLocalizedMessage() + "\n\n" + byos.toString(), "Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(guiInstance, "Fehler des Typs " + t.getClass().getCanonicalName() + ":\n> " + t.getLocalizedMessage() + "\n\n" + byos.toString(), "Primzahlen-Berechnung: Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}
 }

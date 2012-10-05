@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI extends JFrame {
-    	private static final long serialVersionUID = 1L;
-    	private static GUI guiInstance;
+    private static final long serialVersionUID = 1L;
+    private static GUI guiInstance;
 
 	private JPanel contentPane;
 
@@ -37,7 +37,7 @@ public class GUI extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			error(e);
+			e.printStackTrace();
 		}
 
 		EventQueue.invokeLater(new Runnable() {

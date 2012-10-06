@@ -1,7 +1,13 @@
-package project.view;
+package project;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+
+import project.primeCalc.PrimeBruter;
+import project.primeCalc.PrimeCalculator;
+import project.primeCalc.SieveOfErathosthenes;
+import project.primeUsage.PrimeUsage;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,40 +28,70 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI extends JFrame {
+public class PrimesApplication extends JFrame {
     private static final long serialVersionUID = 1L;
-    private static GUI guiInstance;
+
+    private static PrimesApplication instance;
 
 	private JPanel contentPane;
-
-	public final JTextPane textPane;
+	private JTextPane textPane;
+	private JComboBox cbxMethode;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) throws Error {
+	public static void main(String[] args) {
+		long loadTimeBefore = System.currentTimeMillis();
+
 		try {
+			// Try to use the System's look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
+			// It's not that bad if it doesn't work
 			e.printStackTrace();
 		}
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					guiInstance = new GUI();
-					guiInstance.setVisible(true);
-				} catch (Exception e) {
-					error(e);
+		try {
+			EventQueue.invokeAndWait(new Runnable() {
+				public void run() {
+					try {
+						// Build the GUI
+						instance = new PrimesApplication();
+					} catch (Exception e) {
+						error(e);
+					}
 				}
-			}
-		});
+			});
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			error(e);
+		}
+
+		// Add the content
+		instance.addPrimeCalculator("Einfaches durchtesten", new PrimeBruter());
+		instance.addPrimeCalculator("Sieb des Erathosthenes", new SieveOfErathosthenes());
+
+		try {
+			EventQueue.invokeAndWait(new Runnable() {
+				public void run() {
+					// Show the GUI
+					instance.setVisible(true);
+				}
+			});
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			error(e);
+		}
+
+		System.out.println("Loading took " + (System.currentTimeMillis() - loadTimeBefore) + "ms");
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public GUI() {
+	public PrimesApplication() {
 		setResizable(false);
 		setTitle("Primzahlen-Berechnung");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,9 +117,7 @@ public class GUI extends JFrame {
 		lblMethode.setBounds(10, 22, 46, 14);
 		calcPrimesPanel.add(lblMethode);
 		
-		JComboBox cbxMethode = new JComboBox();
-		cbxMethode.addItem("Sieb des Erastosthenes");
-		cbxMethode.addItem("Einfaches Durchtesten");
+		cbxMethode = new JComboBox();
 		cbxMethode.setBounds(66, 19, 131, 20);
 		calcPrimesPanel.add(cbxMethode);
 
@@ -99,7 +133,7 @@ public class GUI extends JFrame {
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textPane.setText("");
+				clearConsole();
 			}
 		});
 		btnClear.setBounds(227, 317, 80, 23);
@@ -113,16 +147,45 @@ public class GUI extends JFrame {
 		scrollPane.setBounds(227, 12, 217, 294);
 		contentPane.add(scrollPane);
 	}
-
-	public void appendConsoleText(String text) {
-		textPane.setText(textPane.getText() + text + '\n');
+	
+	/**
+	 * Clears the "Console".
+	 */
+	public void clearConsole() {
+		textPane.setText("");
 	}
 
+	/**
+	 * Used to append a line of text to the "Console" and System.out.
+	 */
+	public void appendConsoleText(String text) {
+		textPane.setText(textPane.getText() + text + '\n');
+		System.out.println("[TEXT] " + text);
+	}
+
+	/**
+	 * Adds a Prime Calculation method.
+	 */
+	public void addPrimeCalculator(String name, PrimeCalculator primeCalc) {
+		cbxMethode.addItem(name);
+		// TODO: Store primeCalc somehow ... probably a HashMap!
+	}
+
+	/**
+	 * Adds a Prime Usage.
+	 */
+	public void addPrimeUsage(String name, PrimeUsage primeUsage) {
+		// TODO: Every Prime Usage should have It's own JPanel for options ... need to think about the structure!
+	}
+
+	/**
+	 * We failed.
+	 */
 	public static void error(Throwable t) {
 		t.printStackTrace();
 		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
 		t.printStackTrace(new PrintStream(byos));
-		JOptionPane.showMessageDialog(guiInstance, "Fehler des Typs " + t.getClass().getCanonicalName() + ":\n> " + t.getLocalizedMessage() + "\n\n" + byos.toString(), "Primzahlen-Berechnung: Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(instance, byos.toString(), "Primzahlen-Berechnung: Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}
 }

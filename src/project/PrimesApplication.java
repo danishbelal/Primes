@@ -1,16 +1,5 @@
 package project;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-
-import project.primeCalc.PrimeBruter;
-import project.primeCalc.PrimeCalculator;
-import project.primeCalc.SieveOfErathosthenes;
-import project.primeUsage.PrimeUsage;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,7 +19,18 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PrimesApplication extends JFrame {
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+import project.primeCalc.PrimeBruter;
+import project.primeCalc.PrimeCalculator;
+import project.primeCalc.SieveOfErathosthenes;
+import project.primeUsage.PrimeUsage;
+
+public class PrimesApplication extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
 	private static PrimesApplication instance;
@@ -73,8 +73,8 @@ public class PrimesApplication extends JFrame {
 		}
 
 		// Add the content
-		instance.addPrimeCalculator(new PrimeBruter());
-		instance.addPrimeCalculator(new SieveOfErathosthenes());
+		instance.addPrimeCalculator(new PrimeBruter(instance));
+		instance.addPrimeCalculator(new SieveOfErathosthenes(instance));
 
 		try {
 			EventQueue.invokeAndWait(new Runnable() {
@@ -128,7 +128,7 @@ public class PrimesApplication extends JFrame {
 		JButton btnTest = new JButton("Test");
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				appendConsoleText("Test: " + Math.random());
+				println("Test: " + Math.random());
 			}
 		});
 		btnTest.setBounds(311, 317, 80, 23);
@@ -137,7 +137,7 @@ public class PrimesApplication extends JFrame {
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clearConsole();
+				clearText();
 			}
 		});
 		btnClear.setBounds(227, 317, 80, 23);
@@ -152,32 +152,28 @@ public class PrimesApplication extends JFrame {
 		contentPane.add(scrollPane);
 	}
 
-	/**
-	 * Clears the "Console".
+	/*
+	 * UI
 	 */
-	public void clearConsole() {
+	
+	public void clearText() {
 		textPane.setText("");
 	}
 
-	/**
-	 * Used to append a line of text to the "Console" and System.out.
-	 */
-	public void appendConsoleText(String text) {
-		textPane.setText(textPane.getText() + text + '\n');
-		System.out.println("[TEXT] " + text);
+	public void print(String text) {
+		textPane.setText(textPane.getText() + text);
+		System.out.print(text);
 	}
 
-	/**
-	 * Adds a Prime Calculation method.
-	 */
+	public void println(String text) {
+		print(text + '\n');
+	}
+
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		cbxMethode.addItem(primeCalc.getName());
 		primeCalculators.put(primeCalc.getName(), primeCalc);
 	}
 
-	/**
-	 * Adds a Prime Usage.
-	 */
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		// TODO: Different PrimeUsages could need different options
 	}

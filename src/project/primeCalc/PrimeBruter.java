@@ -1,15 +1,24 @@
 package project.primeCalc;
 
-public class PrimeBruter implements PrimeCalculator {
-	int lastPrime, currentNumber, maxPrime, divisor;
-	boolean isPrime;
-	boolean thirdPrime;
+import java.util.Set;
 
-	public PrimeBruter() {
-		lastPrime = 2;
-		currentNumber = lastPrime;
-		isPrime = true;
-		thirdPrime = false;
+import project.UI;
+
+public class PrimeBruter implements PrimeCalculator {
+	private final UI ui;
+
+	private int lastPrime = 2;
+	private int currentNumber = lastPrime;
+	private int divisor;
+	private boolean isPrime = true;
+	private boolean thirdPrime = false;
+
+	public PrimeBruter(UI ui) {
+		this.ui = ui;
+	}
+
+	public String getName() {
+		return "Einfaches durchtesten";
 	}
 
 	public int[] calcPrimes(int start, int maxPrime) {
@@ -58,7 +67,11 @@ public class PrimeBruter implements PrimeCalculator {
 		}
 	}
 
-	public String getName() {
-		return "Einfaches durchtesten";
+	public boolean[] calculatePrimes(int start, int max) {
+		return null; // TODO: Implements these
+	}
+
+	public Set<Integer> calculatePrimes(int amount) {
+		return null;
 	}
 }

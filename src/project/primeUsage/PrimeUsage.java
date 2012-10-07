@@ -1,6 +1,8 @@
 package project.primeUsage;
 
-// TODO: Prime Usage interface
-public interface PrimeUsage {
 
+// TODO: Prime Usage interface
+public interface PrimeUsage
+{
+    
 }

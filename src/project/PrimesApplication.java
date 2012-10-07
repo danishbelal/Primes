@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -29,6 +30,11 @@ import project.primeCalc.PrimeBruter;
 import project.primeCalc.PrimeCalculator;
 import project.primeCalc.SieveOfErathosthenes;
 import project.primeUsage.PrimeUsage;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
+import javax.swing.SpinnerNumberModel;
 
 public class PrimesApplication extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
@@ -38,8 +44,14 @@ public class PrimesApplication extends JFrame implements UI {
 	private JPanel contentPane;
 	private JTextPane textPane;
 	private JComboBox cbxMethode;
+	private JCheckBox chckbxPrimzahlenAusgeben;
 
 	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
+
+	/**
+	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
+	 */
+	private boolean[] primes;
 
 	/**
 	 * Launch the application.
@@ -121,9 +133,69 @@ public class PrimesApplication extends JFrame implements UI {
 		lblMethode.setBounds(10, 22, 46, 14);
 		calcPrimesPanel.add(lblMethode);
 
+		JLabel lblBerechnePrimzahlenBis = new JLabel("Berechne alle Primzahlen im Bereich");
+		lblBerechnePrimzahlenBis.setBounds(10, 52, 187, 14);
+		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
+
+		chckbxPrimzahlenAusgeben = new JCheckBox("Primzahlen ausgeben");
+		chckbxPrimzahlenAusgeben.setBounds(6, 101, 131, 23);
+		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
+
+		JLabel lblVon = new JLabel("von");
+		lblVon.setBounds(10, 74, 18, 14);
+		calcPrimesPanel.add(lblVon);
+
+		JTextField textField = new JTextField();
+		textField.setHorizontalAlignment(SwingConstants.TRAILING);
+		textField.setEditable(false);
+		textField.setText("0");
+		textField.setBounds(34, 71, 35, 20);
+		calcPrimesPanel.add(textField);
+
+		final JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spinner.setBounds(101, 71, 88, 20);
+		calcPrimesPanel.add(spinner);
+		
 		cbxMethode = new JComboBox();
 		cbxMethode.setBounds(66, 19, 131, 20);
+		cbxMethode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Problem: This will be called before the PrimeCalculators are added, causing a NPE.
+				// We cannot avoid this, cause we need an initial maximum value for the spinner.
+				// Probably restructuring :/
+				((SpinnerNumberModel) spinner.getModel()).setMaximum(primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber());
+			}
+		});
 		calcPrimesPanel.add(cbxMethode);
+
+		JLabel lblBis = new JLabel("bis");
+		lblBis.setBounds(79, 74, 26, 14);
+		calcPrimesPanel.add(lblBis);
+
+		final JButton btnCalcStart = new JButton("Berechnung starten");
+		btnCalcStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Disable the start button
+				btnCalcStart.setEnabled(false);
+
+				new Thread("Prime Calculation") {
+					public void run() {
+						// Calculate the Primes
+						primes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+
+						// Re-enable the start button
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								btnCalcStart.setEnabled(true);
+							}
+						});
+					}
+				}.start();
+			}
+		});
+		btnCalcStart.setBounds(66, 125, 131, 23);
+		calcPrimesPanel.add(btnCalcStart);
 
 		JButton btnTest = new JButton("Test");
 		btnTest.addActionListener(new ActionListener() {
@@ -148,25 +220,38 @@ public class PrimesApplication extends JFrame implements UI {
 		textPane.setEditable(false);
 
 		JScrollPane scrollPane = new JScrollPane(textPane);
-		scrollPane.setBounds(227, 12, 217, 294);
+		scrollPane.setBounds(227, 12, 217, 298);
 		contentPane.add(scrollPane);
 	}
 
 	/*
 	 * UI
 	 */
-	
+
 	public void clearText() {
 		textPane.setText("");
 	}
 
-	public void print(String text) {
-		textPane.setText(textPane.getText() + text);
+	public void print(final String text) {
 		System.out.print(text);
+		if (SwingUtilities.isEventDispatchThread()) {
+			textPane.setText(textPane.getText() + text);
+		} else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					textPane.setText(textPane.getText() + text);
+				}
+			});
+		}
 	}
 
 	public void println(String text) {
 		print(text + '\n');
+	}
+
+	public void determinedPrime(int prime) {
+		if (chckbxPrimzahlenAusgeben.isSelected())
+			println("Primzahl: " + String.valueOf(prime));
 	}
 
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {

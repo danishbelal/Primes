@@ -15,6 +15,11 @@ public interface UI {
 	public void println(String text);
 
 	/**
+	 * Used to inform the UI about the successful determination of a prime.
+	 */
+	public void determinedPrime(int prime);
+
+	/**
 	 * Removes all text from the text output.
 	 */
 	public void clearText();

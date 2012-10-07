@@ -1,7 +1,5 @@
 package project.primeCalc;
 
-import java.util.Set;
-
 import project.UI;
 
 public class PrimeBruter implements PrimeCalculator {
@@ -19,6 +17,10 @@ public class PrimeBruter implements PrimeCalculator {
 
 	public String getName() {
 		return "Einfaches durchtesten";
+	}
+
+	public int getHighestDeterminableNumber() {
+		return Integer.MAX_VALUE;
 	}
 
 	public int[] calcPrimes(int start, int maxPrime) {
@@ -67,11 +69,7 @@ public class PrimeBruter implements PrimeCalculator {
 		}
 	}
 
-	public boolean[] calculatePrimes(int start, int max) {
-		return null; // TODO: Implements these
-	}
-
-	public Set<Integer> calculatePrimes(int amount) {
-		return null;
+	public boolean[] determinePrimes(int max) {
+		return null; // TODO: Implement
 	}
 }

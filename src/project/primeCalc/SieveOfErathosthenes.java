@@ -1,7 +1,5 @@
 package project.primeCalc;
 
-import java.util.Set;
-
 import project.UI;
 
 public class SieveOfErathosthenes implements PrimeCalculator {
@@ -13,6 +11,10 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 
 	public String getName() {
 		return "Sieb des Erathosthenes";
+	}
+
+	public int getHighestDeterminableNumber() {
+		return (int) Math.sqrt(Integer.MAX_VALUE) - 1;
 	}
 
 	public boolean[] calcPrimes(int maxPrime) {
@@ -28,11 +30,10 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 		return primes;
 	}
 
-	public boolean[] calculatePrimes(int start, int max) {
-		return null;  // TODO: Implements these
-	}
-
-	public Set<Integer> calculatePrimes(int amount) {
-		return null;
+	public boolean[] determinePrimes(int max) {
+		ui.determinedPrime(3); // Just for testing.
+		ui.determinedPrime(5);
+		
+		return new boolean[] {false, false, false, true, false, true};  // TODO: Implement
 	}
 }

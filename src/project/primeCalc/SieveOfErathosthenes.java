@@ -13,4 +13,8 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 		}
 		return primes;
 	}
+
+	public String getName() {
+		return "Sieb des Erathosthenes";
+	}
 }

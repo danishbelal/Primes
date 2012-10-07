@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import project.primeCalc.PrimeBruter;
 import project.primeCalc.PrimeCalculator;
@@ -38,6 +39,8 @@ public class PrimesApplication extends JFrame {
 	private JTextPane textPane;
 	private JComboBox cbxMethode;
 
+	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
+
 	/**
 	 * Launch the application.
 	 */
@@ -70,8 +73,8 @@ public class PrimesApplication extends JFrame {
 		}
 
 		// Add the content
-		instance.addPrimeCalculator("Einfaches durchtesten", new PrimeBruter());
-		instance.addPrimeCalculator("Sieb des Erathosthenes", new SieveOfErathosthenes());
+		instance.addPrimeCalculator(new PrimeBruter());
+		instance.addPrimeCalculator(new SieveOfErathosthenes());
 
 		try {
 			EventQueue.invokeAndWait(new Runnable() {
@@ -167,18 +170,16 @@ public class PrimesApplication extends JFrame {
 	/**
 	 * Adds a Prime Calculation method.
 	 */
-	public void addPrimeCalculator(String name, PrimeCalculator primeCalc) {
-		cbxMethode.addItem(name);
-		HashMap<String , PrimeCalculator> store = new HashMap<>();
-		store.put( name, primeCalc );
-//		Doing sth. very important with store ...
+	public void addPrimeCalculator(PrimeCalculator primeCalc) {
+		cbxMethode.addItem(primeCalc.getName());
+		primeCalculators.put(primeCalc.getName(), primeCalc);
 	}
 
 	/**
 	 * Adds a Prime Usage.
 	 */
-	public void addPrimeUsage(String name, PrimeUsage primeUsage) {
-		// TODO: Every Prime Usage should have It's own JPanel for options ... need to think about the structure!
+	public void addPrimeUsage(PrimeUsage primeUsage) {
+		// TODO: Different PrimeUsages could need different options
 	}
 
 	/**

@@ -3,6 +3,7 @@ package project;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 import project.primeCalc.PrimeBruter;
 import project.primeCalc.PrimeCalculator;
@@ -168,7 +169,9 @@ public class PrimesApplication extends JFrame {
 	 */
 	public void addPrimeCalculator(String name, PrimeCalculator primeCalc) {
 		cbxMethode.addItem(name);
-		// TODO: Store primeCalc somehow ... probably a HashMap!
+		HashMap<String , PrimeCalculator> store = new HashMap<>();
+		store.put( name, primeCalc );
+//		Doing sth. very important with store ...
 	}
 
 	/**

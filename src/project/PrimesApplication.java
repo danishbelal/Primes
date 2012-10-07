@@ -29,9 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PrimesApplication extends JFrame {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static PrimesApplication instance;
+	private static PrimesApplication instance;
 
 	private JPanel contentPane;
 	private JTextPane textPane;

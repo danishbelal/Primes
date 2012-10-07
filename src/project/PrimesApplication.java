@@ -102,13 +102,13 @@ public class PrimesApplication extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel usePrimesPanel = new JPanel();
-		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		usePrimesPanel.setBounds(10, 181, 207, 159);
 		contentPane.add(usePrimesPanel);
 		usePrimesPanel.setLayout(null);
 
 		JPanel calcPrimesPanel = new JPanel();
-		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		calcPrimesPanel.setBounds(10, 11, 207, 159);
 		contentPane.add(calcPrimesPanel);
 		calcPrimesPanel.setLayout(null);

@@ -1,44 +1,55 @@
 package project.primeUsage;
 
+
 // TODO!
-public class PrimeMath {
-	public final static int EUKLID = 0x1;
-	public final static int PRIME_FACTORIZATION = 0x2;
+public class PrimeMath
+{
 
-	public static long kgV(int method, long first, long second) {
-		switch (method) {
+    public final static int EUKLID = 0x1;
+    public final static int PRIME_FACTORIZATION = 0x2;
 
-		case PRIME_FACTORIZATION:
+    public static long kgV(int method, long first, long second)
+    {
 
-			break;
+        switch ( method )
+        {
 
-		default:
-			throw new IllegalArgumentException(" the method is not defined ! ");
-		}
+        case PRIME_FACTORIZATION:
 
-		return 0L;
-	}
+            break;
 
-	public static long ggT(int method, long first, long second) {
-		switch (method) {
-		case EUKLID:
-			return ggT_Euklid(first, second);
+        default:
+            throw new UnsupportedOperationException( " the method is not defined ! " );
+        }
 
-		default:
-			throw new IllegalArgumentException("method not defined !");
-		}
-	}
+        return 0L;
+    }
 
-	private static long ggT_Euklid(long first, long second) {
-		if (first == 0)
-			return second;
+    public static long ggT(int method, long first, long second)
+    {
 
-		for (; second != 0;)
-			if (first > second)
-				first -= second;
-			else
-				second -= first;
+        switch ( method )
+        {
+        case EUKLID:
+            return ggT_Euklid( first, second );
 
-		return first;
-	}
+        default:
+            throw new IllegalArgumentException( "method not defined !" );
+        }
+    }
+
+    private static long ggT_Euklid(long first, long second)
+    {
+
+        if ( first == 0 )
+            return second;
+
+        for ( ; second != 0; )
+            if ( first > second )
+                first -= second;
+            else
+                second -= first;
+
+        return first;
+    }
 }

@@ -42,10 +42,14 @@ public class PrimesGUI extends JFrame implements UI {
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
+
 	private JTextPane textPane;
 	private JComboBox cbxMethode;
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
+	private JSpinner spinner;
+	private JButton btnCalcStart;
+	private JButton btnExport;
 
 	/**
 	 * Stores the available PrimeCalculators.
@@ -64,11 +68,21 @@ public class PrimesGUI extends JFrame implements UI {
 		setResizable(false);
 		setTitle(GUI_WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 462, 376);
+		setBounds(100, 100, 466, 376);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		btnExport = new JButton("Primzahlen exportieren");
+		btnExport.setEnabled(false);
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportPrimes();
+			}
+		});
+		btnExport.setBounds(311, 317, 142, 23);
+		contentPane.add(btnExport);
 
 		JPanel usePrimesPanel = new JPanel();
 		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -94,7 +108,7 @@ public class PrimesGUI extends JFrame implements UI {
 		chckbxPrimzahlenAusgeben.setBounds(6, 73, 131, 23);
 		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
-		final JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(1), null, new Integer(100)));
 		spinner.setBounds(111, 49, 86, 20);
 		calcPrimesPanel.add(spinner);
@@ -108,58 +122,10 @@ public class PrimesGUI extends JFrame implements UI {
 		});
 		calcPrimesPanel.add(cbxMethode);
 
-		final JButton btnCalcStart = new JButton("Berechnung starten");
+		btnCalcStart = new JButton("Berechnung starten");
 		btnCalcStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Disable the start button
-				btnCalcStart.setEnabled(false);
-				cbxMethode.setEnabled(false);
-				spinner.setEnabled(false);
-				chckbxPrimzahlenAusgeben.setEnabled(false);
-
-				Thread t = new Thread("Prime Calculation") {
-					public void run() {
-						// Prepare the calculation
-						PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
-						int determineMax = (Integer) spinner.getValue();
-
-						// Get the time before the calculation
-						long timeBefore = System.currentTimeMillis();
-
-						// Determine the Primes
-						final boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
-
-						// Format the used time for better legibility
-						final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
-
-						// Only set the primes if the determined primes got improved
-						if (primes == null || lastPrimes.length > primes.length)
-							primes = lastPrimes;
-
-						// Format the prime for better legibility
-						final String numberAmountString = NUMBER_FORMAT.format(lastPrimes.length - 1);
-
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
-
-								textFieldBerechnetBis.setText(numberAmountString);
-
-								// Re-enable the gui components
-								btnCalcStart.setEnabled(true);
-								cbxMethode.setEnabled(true);
-								spinner.setEnabled(true);
-								chckbxPrimzahlenAusgeben.setEnabled(true);
-							}
-						});
-					}
-				};
-				t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-					public void uncaughtException(Thread t, Throwable e) {
-						PrimesApplication.error(e, t, false);
-					}
-				});
-				t.start();
+				startPrimeCalculation();
 			}
 		});
 		btnCalcStart.setBounds(66, 100, 131, 23);
@@ -180,15 +146,6 @@ public class PrimesGUI extends JFrame implements UI {
 		separator.setBounds(10, 128, 187, 2);
 		calcPrimesPanel.add(separator);
 
-		JButton btnTest = new JButton("Test");
-		btnTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				println("Test: " + Math.random());
-			}
-		});
-		btnTest.setBounds(311, 317, 80, 23);
-		contentPane.add(btnTest);
-
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -203,11 +160,11 @@ public class PrimesGUI extends JFrame implements UI {
 		textPane.setEditable(false);
 
 		JScrollPane scrollPane = new JScrollPane(textPane);
-		scrollPane.setBounds(227, 12, 217, 298);
+		scrollPane.setBounds(227, 12, 226, 298);
 		contentPane.add(scrollPane);
 	}
 
-	/*
+	/* *************************************************************************
 	 * UI
 	 */
 
@@ -244,5 +201,68 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		// TODO: Different PrimeUsages could need different options
+	}
+
+	/* *************************************************************************
+	 * Actions
+	 */
+
+	private void startPrimeCalculation() {
+		// Disable the start button
+		btnCalcStart.setEnabled(false);
+		cbxMethode.setEnabled(false);
+		spinner.setEnabled(false);
+		chckbxPrimzahlenAusgeben.setEnabled(false);
+
+		Thread t = new Thread("Prime Calculation") {
+			public void run() {
+				// Prepare the calculation
+				PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
+				int determineMax = (Integer) spinner.getValue();
+
+				// Get the time before the calculation
+				long timeBefore = System.currentTimeMillis();
+
+				// Determine the Primes
+				final boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
+
+				// Format the used time for better legibility
+				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
+
+				// Only set the primes if the determined primes got improved
+				if (primes == null || lastPrimes.length > primes.length)
+					primes = lastPrimes;
+
+				// Format the prime for better legibility
+				final String numberAmountString = NUMBER_FORMAT.format(lastPrimes.length - 1);
+
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
+
+						textFieldBerechnetBis.setText(numberAmountString);
+
+						// Re-enable the gui components
+						btnCalcStart.setEnabled(true);
+						cbxMethode.setEnabled(true);
+						spinner.setEnabled(true);
+						chckbxPrimzahlenAusgeben.setEnabled(true);
+
+						// Export is now possible
+						btnExport.setEnabled(true);
+					}
+				});
+			}
+		};
+		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void uncaughtException(Thread t, Throwable e) {
+				PrimesApplication.error(e, t, false);
+			}
+		});
+		t.start();
+	}
+
+	private void exportPrimes() {
+		println("Pleaseeee ... Implement me!"); // TODO: Export
 	}
 }

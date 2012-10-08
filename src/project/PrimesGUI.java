@@ -3,6 +3,7 @@ package project;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -216,14 +218,8 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Actions
 	 */
 
-	private void startPrimeCalculation() {
-		// Disable the start button
-		btnCalcStart.setEnabled(false);
-		cbxMethode.setEnabled(false);
-		spinner.setEnabled(false);
-		chckbxPrimzahlenAusgeben.setEnabled(false);
-
-		Thread t = new Thread("Prime Calculation") {
+	protected void startPrimeCalculation() {
+		runAction("Berechnung", new Runnable() {
 			public void run() {
 				// Prepare the calculation
 				PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
@@ -251,27 +247,82 @@ public class PrimesGUI extends JFrame implements UI {
 
 						textFieldBerechnetBis.setText(numberAmountString);
 
-						// Re-enable the gui components
-						btnCalcStart.setEnabled(true);
-						cbxMethode.setEnabled(true);
-						spinner.setEnabled(true);
-						chckbxPrimzahlenAusgeben.setEnabled(true);
-
-						// Export is now possible
-						btnExport.setEnabled(true);
+						setActionComponentsEnabled(true);
 					}
 				});
 			}
-		};
+		});
+	}
+
+	protected void exportPrimes() {
+		runAction("Export", new Runnable() {
+			public void run() {
+				JFileChooser fc = new JFileChooser();
+				int fcOption = fc.showSaveDialog(PrimesGUI.this);
+
+				if (fcOption == JFileChooser.ERROR_OPTION)
+					println("Export gescheitert: Unbekannter Fehler");
+				else if (fcOption == JFileChooser.CANCEL_OPTION)
+					println("Export abgebrochen.");
+				else if (fcOption == JFileChooser.APPROVE_OPTION) {
+					println("Pleaseeee ... Implement me!"); // TODO: Export
+				} else {
+					println("Export gescheitert: Unbekannte Option");
+				}
+			}
+		});
+	}
+
+	/**
+	 * Disables the action components, prints <tt>name + " gestartet."</tt>
+	 * Then, it starts a new Thread and executes the given Runnable.
+	 * After the execution it re-enables the action components.
+	 */
+	protected void runAction(final String name, final Runnable r) {
+		setActionComponentsEnabled(false);
+		println(name + " gestartet.");
+
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				r.run();
+
+				setActionComponentsEnabled(true);
+			}
+		}, "PrimesGUI Action: " + name);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
+				println(name + " fehlgeschalgen.");
 				PrimesApplication.error(e, t, false);
 			}
 		});
 		t.start();
 	}
 
-	private void exportPrimes() {
-		println("Pleaseeee ... Implement me!"); // TODO: Export
+	/**
+	 * Disables all buttons a.s.o. that could start a new action.
+	 */
+	protected void setActionComponentsEnabled(final boolean enabled) {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			// invokeAndWait because the method calling this method likely expects the components to be disabled instantly after returning from this method
+			try {
+				EventQueue.invokeAndWait(new Runnable() {
+					public void run() {
+						setActionComponentsEnabled(enabled);
+					}
+				});
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				PrimesApplication.error(e, false);
+			}
+			return;
+		}
+
+		btnCalcStart.setEnabled(enabled);
+		cbxMethode.setEnabled(enabled);
+		spinner.setEnabled(enabled);
+		chckbxPrimzahlenAusgeben.setEnabled(enabled);
+		btnExport.setEnabled(enabled);
+		btnClear.setEnabled(enabled);
 	}
 }

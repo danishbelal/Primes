@@ -5,12 +5,6 @@ import project.UI;
 public class PrimeBruter implements PrimeCalculator {
 	private final UI ui;
 
-	private int lastPrime = 2;
-	private int currentNumber = lastPrime;
-	private int divisor;
-	private boolean isPrime = true;
-	private boolean thirdPrime = false;
-
 	public PrimeBruter(UI ui) {
 		this.ui = ui;
 	}
@@ -20,10 +14,27 @@ public class PrimeBruter implements PrimeCalculator {
 	}
 
 	public int getHighestDeterminableNumber() {
-		return Integer.MAX_VALUE;
+		return Integer.MAX_VALUE - 1;
 	}
 
 	public boolean[] determinePrimes(int max) {
-		return null; // TODO: Implement
+		boolean[] primes = new boolean[max + 1];
+
+		for (int p = 2; p < primes.length; p++) {
+			boolean couldBeDivided = false;
+			
+			for (int i = p - 1; !couldBeDivided && i >= 2; i--) {
+				if (p % i == 0) {
+					couldBeDivided = true;
+				}
+			}
+
+			if (!couldBeDivided)
+				ui.determinedPrime(p);
+
+			primes[p] = true;
+		}
+
+		return primes;
 	}
 }

@@ -112,8 +112,10 @@ public class PrimesGUI extends JFrame implements UI {
 
 				Thread t = new Thread("Prime Calculation") {
 					public void run() {
-						// Calculate the Primes
-						primes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+						// Calculate the Primes							
+						boolean[] lastPrimes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+						if (primes == null || lastPrimes.length > primes.length)
+							primes = lastPrimes;
 						textFieldBerechnetBis.setText(String.valueOf(primes.length - 1));
 
 						// Re-enable the start button

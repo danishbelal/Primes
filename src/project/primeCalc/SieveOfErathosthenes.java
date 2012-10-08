@@ -18,7 +18,7 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 	}
 
 	public boolean[] determinePrimes(int max) {
-		boolean primes[] = new boolean[max + 1];
+		boolean[] primes = new boolean[max + 1];
 
 		for (int i = 2; i < primes.length; i++)
 			primes[i] = true;

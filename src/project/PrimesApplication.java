@@ -50,22 +50,12 @@ public final class PrimesApplication implements Runnable {
 				public void run() {
 					// Build the GUI
 					gui = new PrimesGUI();
-				}
-			});
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			error(e, true);
-		}
 
-		// Add the content
-		gui.addPrimeCalculator(new PrimeBruter(gui));
-		gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
+					// Add the content
+					gui.addPrimeCalculator(new PrimeBruter(gui));
+					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
 
-		try {
-			EventQueue.invokeAndWait(new Runnable() {
-				public void run() {
-					// Show the GUI
+					// Display the GUI
 					gui.setVisible(true);
 				}
 			});

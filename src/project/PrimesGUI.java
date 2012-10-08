@@ -112,11 +112,17 @@ public class PrimesGUI extends JFrame implements UI {
 
 				Thread t = new Thread("Prime Calculation") {
 					public void run() {
+						// Prepare the calculation
+						PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
+						int determineMax = (Integer) spinner.getValue();
+
+						long timeBefore = System.currentTimeMillis();
+
 						// Calculate the Primes
-						final long timeBefore = System.currentTimeMillis();
-						final boolean[] lastPrimes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+						final boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
+
 						final long tookTime = System.currentTimeMillis() - timeBefore;
-						
+
 						if (primes == null || lastPrimes.length > primes.length)
 							primes = lastPrimes;
 

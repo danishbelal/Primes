@@ -28,6 +28,7 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 				primes[j * i] = false;
 			}
 		}
+		// FIXME: "Primzahl: 10000"
 
 		for (int p = 0; p < primes.length; p++)
 			if (primes[p])

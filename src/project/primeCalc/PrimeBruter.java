@@ -10,7 +10,7 @@ public class PrimeBruter implements PrimeCalculator {
 	}
 
 	public String getName() {
-		return "Einfaches durchtesten";
+		return "Einfaches Durchtesten";
 	}
 
 	public int getHighestDeterminableNumber() {

@@ -25,6 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +38,8 @@ public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
 	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung";
+
+	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
 	private JTextPane textPane;
@@ -109,6 +113,9 @@ public class PrimesGUI extends JFrame implements UI {
 			public void actionPerformed(ActionEvent e) {
 				// Disable the start button
 				btnCalcStart.setEnabled(false);
+				cbxMethode.setEnabled(false);
+				spinner.setEnabled(false);
+				chckbxPrimzahlenAusgeben.setEnabled(false);
 
 				Thread t = new Thread("Prime Calculation") {
 					public void run() {
@@ -116,24 +123,33 @@ public class PrimesGUI extends JFrame implements UI {
 						PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
 						int determineMax = (Integer) spinner.getValue();
 
+						// Get the time before the calculation
 						long timeBefore = System.currentTimeMillis();
 
-						// Calculate the Primes
+						// Determine the Primes
 						final boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
 
-						final long tookTime = System.currentTimeMillis() - timeBefore;
+						// Format the used time for better legibility
+						final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
 
+						// Only set the primes if the determined primes got improved
 						if (primes == null || lastPrimes.length > primes.length)
 							primes = lastPrimes;
 
-						// Re-enable the start button
+						// Format the prime for better legibility
+						final String numberAmountString = NUMBER_FORMAT.format(lastPrimes.length - 1);
+
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
-								println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + (lastPrimes.length - 1) + " Zahlen dauerte " + tookTime + " ms");
+								println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
 
-								textFieldBerechnetBis.setText(String.valueOf(primes.length - 1));
+								textFieldBerechnetBis.setText(numberAmountString);
 
+								// Re-enable the gui components
 								btnCalcStart.setEnabled(true);
+								cbxMethode.setEnabled(true);
+								spinner.setEnabled(true);
+								chckbxPrimzahlenAusgeben.setEnabled(true);
 							}
 						});
 					}

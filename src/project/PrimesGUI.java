@@ -50,6 +50,7 @@ public class PrimesGUI extends JFrame implements UI {
 	private JSpinner spinner;
 	private JButton btnCalcStart;
 	private JButton btnExport;
+	private JButton btnClear;
 
 	/**
 	 * Stores the available PrimeCalculators.
@@ -75,6 +76,7 @@ public class PrimesGUI extends JFrame implements UI {
 		contentPane.setLayout(null);
 
 		btnExport = new JButton("Primzahlen exportieren");
+		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
 		btnExport.setEnabled(false);
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -105,15 +107,18 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
 
 		chckbxPrimzahlenAusgeben = new JCheckBox("Primzahlen ausgeben");
+		chckbxPrimzahlenAusgeben.setToolTipText("Achtung: Nur für kleine Berechnungen benutzen, da die grafische Ausgabe viel Zeit in Anspruch nimmt.");
 		chckbxPrimzahlenAusgeben.setBounds(6, 73, 131, 23);
 		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
 		spinner = new JSpinner();
+		spinner.setToolTipText("Gibt an, bis zu welcher Zahl berechnet werden soll. Umso höher, umso zeitaufwändiger die Berechnung.");
 		spinner.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(1), null, new Integer(100)));
 		spinner.setBounds(111, 49, 86, 20);
 		calcPrimesPanel.add(spinner);
 
 		cbxMethode = new JComboBox();
+		cbxMethode.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -123,6 +128,7 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(cbxMethode);
 
 		btnCalcStart = new JButton("Berechnung starten");
+		btnCalcStart.setToolTipText("Startet die Berechnung.");
 		btnCalcStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				startPrimeCalculation();
@@ -136,6 +142,7 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(lblVerfgbarePrimzahlen);
 
 		textFieldBerechnetBis = new JTextField();
+		textFieldBerechnetBis.setToolTipText("Zeigt die Anzahl der berechneten Primzahlen.");
 		textFieldBerechnetBis.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldBerechnetBis.setText("0");
 		textFieldBerechnetBis.setEditable(false);
@@ -146,7 +153,8 @@ public class PrimesGUI extends JFrame implements UI {
 		separator.setBounds(10, 128, 187, 2);
 		calcPrimesPanel.add(separator);
 
-		JButton btnClear = new JButton("Clear");
+		btnClear = new JButton("Clear");
+		btnClear.setToolTipText("Leert den Inhalt der Ereignisanzeige.");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearText();
@@ -156,6 +164,7 @@ public class PrimesGUI extends JFrame implements UI {
 		contentPane.add(btnClear);
 
 		textPane = new JTextPane();
+		textPane.setToolTipText("Zeigt die Ereignisse und Berechnungen an.");
 		textPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		textPane.setEditable(false);
 

@@ -212,6 +212,31 @@ public class PrimesGUI extends JFrame implements UI {
 			println("Primzahl: " + String.valueOf(prime));
 	}
 
+	public void setActionComponentsEnabled(final boolean enabled) {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			// invokeAndWait because the method calling this method likely expects the components to be disabled instantly after returning from this method
+			try {
+				EventQueue.invokeAndWait(new Runnable() {
+					public void run() {
+						setActionComponentsEnabled(enabled);
+					}
+				});
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				PrimesApplication.error(e, false);
+			}
+			return;
+		}
+
+		btnCalcStart.setEnabled(enabled);
+		cbxMethode.setEnabled(enabled);
+		spinner.setEnabled(enabled);
+		chckbxPrimzahlenAusgeben.setEnabled(enabled);
+		btnExport.setEnabled(enabled && primes != null);
+		btnClear.setEnabled(enabled);
+	}
+
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		primeCalculators.put(primeCalc.getName(), primeCalc);
 		cbxMethode.addItem(primeCalc.getName());
@@ -325,30 +350,5 @@ public class PrimesGUI extends JFrame implements UI {
 			}
 		});
 		t.start();
-	}
-
-	public void setActionComponentsEnabled(final boolean enabled) {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			// invokeAndWait because the method calling this method likely expects the components to be disabled instantly after returning from this method
-			try {
-				EventQueue.invokeAndWait(new Runnable() {
-					public void run() {
-						setActionComponentsEnabled(enabled);
-					}
-				});
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				PrimesApplication.error(e, false);
-			}
-			return;
-		}
-
-		btnCalcStart.setEnabled(enabled);
-		cbxMethode.setEnabled(enabled);
-		spinner.setEnabled(enabled);
-		chckbxPrimzahlenAusgeben.setEnabled(enabled);
-		btnExport.setEnabled(enabled && primes != null);
-		btnClear.setEnabled(enabled);
 	}
 }

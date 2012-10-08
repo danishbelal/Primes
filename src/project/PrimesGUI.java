@@ -220,7 +220,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 	protected void startPrimeCalculation() {
 		runAction("Berechnung", new Runnable() {
-			public void run() {
+			public void run() {				
 				// Prepare the calculation
 				PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
 				int determineMax = (Integer) spinner.getValue();
@@ -246,8 +246,6 @@ public class PrimesGUI extends JFrame implements UI {
 						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
 
 						textFieldBerechnetBis.setText(numberAmountString);
-
-						setActionComponentsEnabled(true);
 					}
 				});
 			}

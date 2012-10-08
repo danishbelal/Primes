@@ -112,15 +112,21 @@ public class PrimesGUI extends JFrame implements UI {
 
 				Thread t = new Thread("Prime Calculation") {
 					public void run() {
-						// Calculate the Primes							
-						boolean[] lastPrimes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+						// Calculate the Primes
+						final long timeBefore = System.currentTimeMillis();
+						final boolean[] lastPrimes = primeCalculators.get(cbxMethode.getSelectedItem()).determinePrimes((Integer) spinner.getValue());
+						final long tookTime = System.currentTimeMillis() - timeBefore;
+						
 						if (primes == null || lastPrimes.length > primes.length)
 							primes = lastPrimes;
-						textFieldBerechnetBis.setText(String.valueOf(primes.length - 1));
 
 						// Re-enable the start button
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
+								println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + (lastPrimes.length - 1) + " Zahlen dauerte " + tookTime + " ms");
+
+								textFieldBerechnetBis.setText(String.valueOf(primes.length - 1));
+
 								btnCalcStart.setEnabled(true);
 							}
 						});

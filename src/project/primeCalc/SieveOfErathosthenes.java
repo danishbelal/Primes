@@ -17,23 +17,22 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 		return (int) Math.sqrt(Integer.MAX_VALUE) - 1;
 	}
 
-	public boolean[] calcPrimes(int maxPrime) {
-		boolean primes[] = new boolean[maxPrime + 1];
+	public boolean[] determinePrimes(int max) {
+		boolean primes[] = new boolean[max + 1];
+
 		for (int i = 2; i < primes.length; i++)
 			primes[i] = true;
 
-		for (int i = 2; i < maxPrime; i++) {
-			for (int j = i; j * i < maxPrime; j++) {
+		for (int i = 2; i < max; i++) {
+			for (int j = i; j * i < max; j++) {
 				primes[j * i] = false;
 			}
 		}
-		return primes;
-	}
 
-	public boolean[] determinePrimes(int max) {
-		ui.determinedPrime(3); // Just for testing.
-		ui.determinedPrime(5);
-		
-		return new boolean[] {false, false, false, true, false, true};  // TODO: Implement
+		for (int p = 0; p < primes.length; p++)
+			if (primes[p])
+				ui.determinedPrime(p);
+
+		return primes;
 	}
 }

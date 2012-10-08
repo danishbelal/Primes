@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,7 +124,11 @@ public class PrimesGUI extends JFrame implements UI {
 						});
 					}
 				};
-				t.setUncaughtExceptionHandler(PrimesApplication.primesExceptionHandler);
+				t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+					public void uncaughtException(Thread t, Throwable e) {
+						PrimesApplication.error(e, t, false);
+					}
+				});
 				t.start();
 			}
 		});

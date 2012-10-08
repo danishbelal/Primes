@@ -23,7 +23,11 @@ public final class PrimesApplication implements Runnable {
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication main");
 		t.setDaemon(false);
 		t.setPriority(Thread.MAX_PRIORITY);
-		t.setUncaughtExceptionHandler(primesExceptionHandler);
+		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void uncaughtException(Thread t, Throwable e) {
+				error(e, t, true);
+			}
+		});
 		t.start();
 	}
 
@@ -37,8 +41,8 @@ public final class PrimesApplication implements Runnable {
 			// Try to use the System's look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			// It's not that bad if it doesn't work
-			e.printStackTrace();
+			// It's not that bad if it doesn't work, so don't exit
+			error(e, false);
 		}
 
 		try {
@@ -51,7 +55,7 @@ public final class PrimesApplication implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			error(e);
+			error(e, true);
 		}
 
 		// Add the content
@@ -68,7 +72,7 @@ public final class PrimesApplication implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			error(e);
+			error(e, true);
 		}
 
 		System.out.println("Loading took " + (System.currentTimeMillis() - loadTimeBefore) + "ms");
@@ -77,23 +81,18 @@ public final class PrimesApplication implements Runnable {
 	/**
 	 * We failed.
 	 */
-	public static void error(Throwable e, Thread t) {
+	public static void error(Throwable e, Thread t, boolean shouldExit) {
 		String threadError = "Error in Thread #" + t.getId() + " '" + t.getName() + "':";
 		System.err.println(threadError);
 		e.printStackTrace();
 		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
 		e.printStackTrace(new PrintStream(byos));
 		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
-		System.exit(1);
+		if (shouldExit)
+			System.exit(1);
 	}
 
-	public static void error(Throwable e) {
-		error(e, Thread.currentThread());
+	public static void error(Throwable e, boolean shouldExit) {
+		error(e, Thread.currentThread(), shouldExit);
 	}
-
-	protected static final UncaughtExceptionHandler primesExceptionHandler = new UncaughtExceptionHandler() {
-		public void uncaughtException(Thread t, Throwable e) {
-			error(e, t);
-		}
-	};
 }

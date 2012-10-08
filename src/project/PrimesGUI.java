@@ -201,7 +201,10 @@ public class PrimesGUI extends JFrame implements UI {
 	}
 
 	public void println(String text) {
-		print(text + '\n');
+		if (textPane.getText().charAt(textPane.getText().length() - 1) != '\n')
+			print("\n> " + text + '\n');
+		else
+			print("> " + text + '\n');
 	}
 
 	public void determinedPrime(int prime) {
@@ -324,10 +327,7 @@ public class PrimesGUI extends JFrame implements UI {
 		t.start();
 	}
 
-	/**
-	 * Disables all buttons a.s.o. that could start a new action.
-	 */
-	protected void setActionComponentsEnabled(final boolean enabled) {
+	public void setActionComponentsEnabled(final boolean enabled) {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			// invokeAndWait because the method calling this method likely expects the components to be disabled instantly after returning from this method
 			try {
@@ -348,7 +348,7 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.setEnabled(enabled);
 		spinner.setEnabled(enabled);
 		chckbxPrimzahlenAusgeben.setEnabled(enabled);
-		btnExport.setEnabled(enabled);
+		btnExport.setEnabled(enabled && primes != null);
 		btnClear.setEnabled(enabled);
 	}
 }

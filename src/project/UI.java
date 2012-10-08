@@ -24,6 +24,11 @@ public interface UI {
 	 */
 	public void clearText();
 
+	/**
+	 * Disables all buttons a.s.o. that could start a new action.
+	 */
+	public void setActionComponentsEnabled(boolean enabled);
+
 	public void addPrimeCalculator(PrimeCalculator primeCalc);
 	public void addPrimeUsage(PrimeUsage primeUsage);
 }

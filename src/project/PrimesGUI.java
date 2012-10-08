@@ -6,6 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -25,6 +26,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
@@ -220,7 +224,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 	protected void startPrimeCalculation() {
 		runAction("Berechnung", new Runnable() {
-			public void run() {				
+			public void run() {
 				// Prepare the calculation
 				PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
 				int determineMax = (Integer) spinner.getValue();
@@ -256,6 +260,8 @@ public class PrimesGUI extends JFrame implements UI {
 		runAction("Export", new Runnable() {
 			public void run() {
 				JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fc.setMultiSelectionEnabled(false);
 				int fcOption = fc.showSaveDialog(PrimesGUI.this);
 
 				if (fcOption == JFileChooser.ERROR_OPTION)
@@ -263,18 +269,40 @@ public class PrimesGUI extends JFrame implements UI {
 				else if (fcOption == JFileChooser.CANCEL_OPTION)
 					println("Export abgebrochen.");
 				else if (fcOption == JFileChooser.APPROVE_OPTION) {
-					println("Pleaseeee ... Implement me!"); // TODO: Export
-				} else {
+					File f = fc.getSelectedFile();
+					if (f.exists()) {
+						if (JOptionPane.showConfirmDialog(PrimesGUI.this, "Die Datei existiert bereits. Möchten Sie sie überschreiben?", "Datei existiert bereits", JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION) {
+							println("Export abgebrochen.");
+							return;
+						}
+					}
+
+					try {
+						FileWriter fw = new FileWriter(f, false);
+
+						for (int p = 0; p < primes.length; p++) {
+							if (primes[p]) {
+								fw.write(String.valueOf(p));
+								fw.write("\r\n");
+							}
+						}
+
+						fw.close();
+
+						println("Export erfolgreich.");
+					} catch (IOException e) {
+						println("Export fehlgeschalgen.");
+						PrimesApplication.error(e, false);
+					}
+				} else
 					println("Export gescheitert: Unbekannte Option");
-				}
 			}
 		});
 	}
 
 	/**
-	 * Disables the action components, prints <tt>name + " gestartet."</tt>
-	 * Then, it starts a new Thread and executes the given Runnable.
-	 * After the execution it re-enables the action components.
+	 * Disables the action components, prints <tt>name + " gestartet."</tt> Then, it starts a new Thread and executes the given Runnable. After the execution it re-enables the action components.
 	 */
 	protected void runAction(final String name, final Runnable r) {
 		setActionComponentsEnabled(false);

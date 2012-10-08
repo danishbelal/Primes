@@ -29,10 +29,11 @@ public class PrimeBruter implements PrimeCalculator {
 				}
 			}
 
-			if (!couldBeDivided)
+			if (!couldBeDivided) {
 				ui.determinedPrime(p);
 
-			primes[p] = true;
+				primes[p] = true;
+			}
 		}
 
 		return primes;

@@ -28,7 +28,7 @@ public final class PrimesApplication implements Runnable {
 	}
 
 	/**
-	 * 
+	 * Prepare and display the UI.
 	 */
 	public void run() {
 		long loadTimeBefore = System.currentTimeMillis();

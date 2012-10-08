@@ -40,6 +40,9 @@ public class PrimesGUI extends JFrame implements UI {
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
 
+	/**
+	 * Stores the available PrimeCalculators.
+	 */
 	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
 
 	/**
@@ -85,7 +88,7 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
 		final JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		spinner.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(1), null, new Integer(100)));
 		spinner.setBounds(111, 49, 86, 20);
 		calcPrimesPanel.add(spinner);
 

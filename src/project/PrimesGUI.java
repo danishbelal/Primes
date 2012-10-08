@@ -34,6 +34,8 @@ import project.primeUsage.PrimeUsage;
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
+	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung";
+
 	private JPanel contentPane;
 	private JTextPane textPane;
 	private JComboBox cbxMethode;
@@ -55,7 +57,7 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 	public PrimesGUI() {
 		setResizable(false);
-		setTitle(R.GUI_WINDOW_TITLE);
+		setTitle(GUI_WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 462, 376);
 		contentPane = new JPanel();

@@ -44,12 +44,8 @@ public final class PrimesApplication implements Runnable {
 		try {
 			EventQueue.invokeAndWait(new Runnable() {
 				public void run() {
-					try {
-						// Build the GUI
-						gui = new PrimesGUI();
-					} catch (Exception e) {
-						error(e);
-					}
+					// Build the GUI
+					gui = new PrimesGUI();
 				}
 			});
 		} catch (InterruptedException e) {
@@ -87,7 +83,7 @@ public final class PrimesApplication implements Runnable {
 		e.printStackTrace();
 		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
 		e.printStackTrace(new PrintStream(byos));
-		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), R.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}
 
@@ -95,7 +91,7 @@ public final class PrimesApplication implements Runnable {
 		error(e, Thread.currentThread());
 	}
 
-	static final UncaughtExceptionHandler primesExceptionHandler = new UncaughtExceptionHandler() {
+	protected static final UncaughtExceptionHandler primesExceptionHandler = new UncaughtExceptionHandler() {
 		public void uncaughtException(Thread t, Throwable e) {
 			error(e, t);
 		}

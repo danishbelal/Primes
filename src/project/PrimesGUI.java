@@ -50,7 +50,7 @@ public class PrimesGUI extends JFrame implements UI {
 	private JPanel contentPane;
 
 	private JTextPane textPane;
-	private JComboBox cbxMethode;
+	private JComboBox<String> cbxMethode;
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
 	private JSpinner spinner;
@@ -123,7 +123,7 @@ public class PrimesGUI extends JFrame implements UI {
 		spinner.setBounds(111, 49, 86, 20);
 		calcPrimesPanel.add(spinner);
 
-		cbxMethode = new JComboBox();
+		cbxMethode = new JComboBox<String>();
 		cbxMethode.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {

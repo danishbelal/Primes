@@ -128,7 +128,12 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((SpinnerNumberModel) spinner.getModel()).setMaximum(primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber());
+				int highestDeteminableNumber = primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
+				
+				spinnerModel.setMaximum(highestDeteminableNumber);
+				if ((Integer) spinnerModel.getNumber() > highestDeteminableNumber)
+					spinnerModel.setValue(highestDeteminableNumber - (highestDeteminableNumber % (Integer) spinnerModel.getStepSize()));
 			}
 		});
 		calcPrimesPanel.add(cbxMethode);

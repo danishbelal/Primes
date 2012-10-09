@@ -130,7 +130,7 @@ public class PrimesGUI extends JFrame implements UI {
 			public void actionPerformed(ActionEvent e) {
 				int highestDeteminableNumber = primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
 				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
-				
+
 				spinnerModel.setMaximum(highestDeteminableNumber);
 				if ((Integer) spinnerModel.getNumber() > highestDeteminableNumber)
 					spinnerModel.setValue(highestDeteminableNumber - (highestDeteminableNumber % (Integer) spinnerModel.getStepSize()));
@@ -206,7 +206,7 @@ public class PrimesGUI extends JFrame implements UI {
 	}
 
 	public void println(String text) {
-		if (textPane.getText().charAt(textPane.getText().length() - 1) != '\n')
+		if (textPane.getText().length() > 0 && textPane.getText().charAt(textPane.getText().length() - 1) != '\n')
 			print("\n> " + text + '\n');
 		else
 			print("> " + text + '\n');

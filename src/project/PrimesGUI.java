@@ -64,9 +64,9 @@ public class PrimesGUI extends JFrame implements UI {
 	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
 
 	/**
-	 * Stores the primeUsages
+	 * Stores the available PrimeUsages.
 	 */
-	private Map<String, PrimeUsage > primeUsages = new HashMap<String , PrimeUsage>();
+	private Map<String, PrimeUsage> primeUsages = new HashMap<String, PrimeUsage>();
 
 	/**
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
@@ -103,9 +103,9 @@ public class PrimesGUI extends JFrame implements UI {
 		usePrimesPanel.setBounds(10, 181, 207, 159);
 		contentPane.add(usePrimesPanel);
 		usePrimesPanel.setLayout(null);
-		
+
 		cbxUsage = new JComboBox();
-		cbxUsage.setBounds(10, 23, 187, 20);
+		cbxUsage.setBounds(10, 19, 187, 20);
 		usePrimesPanel.add(cbxUsage);
 
 		JPanel calcPrimesPanel = new JPanel();
@@ -199,7 +199,15 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 
 	public void clearText() {
-		textPane.setText("");
+		if (SwingUtilities.isEventDispatchThread()) {
+			textPane.setText("");
+		} else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					textPane.setText("");
+				}
+			});
+		}
 	}
 
 	public void print(final String text) {
@@ -242,23 +250,23 @@ public class PrimesGUI extends JFrame implements UI {
 		}
 
 		btnCalcStart.setEnabled(enabled);
-		cbxMethode.setEnabled(enabled);
-		spinner.setEnabled(enabled);
-		chckbxPrimzahlenAusgeben.setEnabled(enabled);
 		btnExport.setEnabled(enabled && primes != null);
-		btnClear.setEnabled(enabled);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
+		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
+			throw new IllegalStateException("Cannot add a PrimeCalculator if the GUI is visible");
 		primeCalculators.put(primeCalc.getName(), primeCalc);
 		cbxMethode.addItem(primeCalc.getName());
 	}
 
 	@SuppressWarnings("unchecked")
 	public void addPrimeUsage(PrimeUsage primeUsage) {
+		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
+			throw new IllegalStateException("Cannot add a PrimeUsage if the GUI is visible");
 		primeUsages.put(primeUsage.getName(), primeUsage);
-		cbxUsage.addItem(primeUsage.getName()); 
+		cbxUsage.addItem(primeUsage.getName());
 	}
 
 	/* *************************************************************************
@@ -266,17 +274,23 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 
 	protected void startPrimeCalculation() {
+		// Not inside the Runnable, because the EDT should grab this values.
+		final String primeCalcName = (String) cbxMethode.getSelectedItem();
+		final int determineMax = (Integer) spinner.getValue();
+
 		runAction("Berechnung", new Runnable() {
 			public void run() {
-				// Prepare the calculation
-				PrimeCalculator primeCalc = primeCalculators.get(cbxMethode.getSelectedItem());
-				int determineMax = (Integer) spinner.getValue();
+				PrimeCalculator primeCalc = primeCalculators.get(primeCalcName);
+
+				// Format the number for better legibility
+				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
+				println("Berechnung mit '" + primeCalcName + "' für " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
 
 				// Determine the Primes
-				final boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
+				boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
 
 				// Format the used time for better legibility
 				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
@@ -285,12 +299,9 @@ public class PrimesGUI extends JFrame implements UI {
 				if (primes == null || lastPrimes.length > primes.length)
 					primes = lastPrimes;
 
-				// Format the prime for better legibility
-				final String numberAmountString = NUMBER_FORMAT.format(lastPrimes.length - 1);
-
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
+						println("Berechnung dauerte " + tookTimeString + " ms");
 
 						textFieldBerechnetBis.setText(numberAmountString);
 					}
@@ -305,7 +316,7 @@ public class PrimesGUI extends JFrame implements UI {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
-				int fcOption = fc.showSaveDialog(PrimesGUI.this);
+				int fcOption = fc.showSaveDialog(PrimesGUI.this); // Special syntax to access the instance of the outer-class
 
 				if (fcOption == JFileChooser.ERROR_OPTION)
 					println("Export gescheitert: Unbekannter Fehler");
@@ -321,6 +332,8 @@ public class PrimesGUI extends JFrame implements UI {
 						}
 					}
 
+					println("Export gestartet");
+
 					try {
 						FileWriter fw = new FileWriter(f, false);
 
@@ -335,7 +348,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 						println("Export erfolgreich.");
 					} catch (IOException e) {
-						println("Export fehlgeschalgen.");
+						println("Export fehlgeschalgen: Datei-Fehler.");
 						PrimesApplication.error(e, false);
 					}
 				} else
@@ -345,11 +358,11 @@ public class PrimesGUI extends JFrame implements UI {
 	}
 
 	/**
-	 * Disables the action components, prints <tt>name + " gestartet."</tt> Then, it starts a new Thread and executes the given Runnable. After the execution it re-enables the action components.
+	 * For Swing-Thread-Safety this method should always be called within the EDT. Disables the action components, prints <tt>name + " gestartet."</tt> Then, it starts a new Thread and executes the
+	 * given Runnable. After the execution it re-enables the action components.
 	 */
 	protected void runAction(final String name, final Runnable r) {
 		setActionComponentsEnabled(false);
-		println(name + " gestartet.");
 
 		Thread t = new Thread(new Runnable() {
 			public void run() {

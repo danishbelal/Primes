@@ -55,8 +55,8 @@ public final class PrimesApplication implements Runnable {
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
-					gui.addPrimeUsage( new GGT() );
-					gui.addPrimeUsage( new KGV() );
+					gui.addPrimeUsage(new GGT());
+					gui.addPrimeUsage(new KGV());
 
 					// Display the GUI
 					gui.setVisible(true);

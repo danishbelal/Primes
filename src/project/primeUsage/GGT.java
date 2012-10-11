@@ -1,15 +1,10 @@
 package project.primeUsage;
 
+public class GGT implements PrimeUsage {
 
-public class GGT implements PrimeUsage
-{
-
-    @Override
-    public String getName()
-    {
-        return "ggT";
-    }
-    
-    
+	@Override
+	public String getName() {
+		return "ggT";
+	}
 
 }

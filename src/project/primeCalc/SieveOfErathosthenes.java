@@ -24,12 +24,11 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 			primes[i] = true;
 
 		for (int i = 2; i < max; i++) {
-			for (int j = i; j * i < max; j++) {
+			for (int j = i; ((j * i)-1) < max; j++) {
 				primes[j * i] = false;
 			}
 		}
-		// bug: "Primzahl: 10000"
-		// Its fixed
+		
 
 		for (int p = 0; p < primes.length; p++)
 			if (primes[p])

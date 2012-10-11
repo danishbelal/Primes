@@ -34,6 +34,8 @@ public class PrimeBruter implements PrimeCalculator {
 
 			if (isPrime) {
 				ui.determinedPrime(currentNumber);
+
+				primes[currentNumber] = true;
 			}
 		}
 

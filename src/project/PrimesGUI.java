@@ -271,7 +271,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		primeUsages.put(primeUsage.getName(), primeUsage);
-		usages.addItem( primeUsage); // FIXME Add to the "List" ??
+		usages.addItem( primeUsage.getName()); 
 		
 		
 		

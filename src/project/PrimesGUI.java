@@ -49,15 +49,14 @@ public class PrimesGUI extends JFrame implements UI {
 
 	private JPanel contentPane;
 	private JTextPane textPane;
-	// @SuppressWarnings("rawtypes")
-	private JComboBox cbxMethode;
+	@SuppressWarnings("rawtypes")
+	private JComboBox cbxMethode, cbxUsage;
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
 	private JSpinner spinner;
 	private JButton btnCalcStart;
 	private JButton btnExport;
 	private JButton btnClear;
-	private JComboBox usages;
 
 	/**
 	 * Stores the available PrimeCalculators.
@@ -77,6 +76,7 @@ public class PrimesGUI extends JFrame implements UI {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("rawtypes")
 	public PrimesGUI() {
 		setResizable(false);
 		setTitle(GUI_WINDOW_TITLE);
@@ -103,6 +103,10 @@ public class PrimesGUI extends JFrame implements UI {
 		usePrimesPanel.setBounds(10, 181, 207, 159);
 		contentPane.add(usePrimesPanel);
 		usePrimesPanel.setLayout(null);
+		
+		cbxUsage = new JComboBox();
+		cbxUsage.setBounds(10, 23, 187, 20);
+		usePrimesPanel.add(cbxUsage);
 
 		JPanel calcPrimesPanel = new JPanel();
 		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -188,14 +192,6 @@ public class PrimesGUI extends JFrame implements UI {
 		JScrollPane scrollPane = new JScrollPane(textPane);
 		scrollPane.setBounds(227, 12, 226, 298);
 		contentPane.add(scrollPane);
-
-		JLabel lblForPrimeusages = new JLabel("Aufgabe:");
-		lblForPrimeusages.setBounds(10, 10, 100, 50);
-		usePrimesPanel.add(lblForPrimeusages);
-
-		usages = new JComboBox();
-		usages.setBounds(90, 20,100, 25);
-		usePrimesPanel.add(usages);
 	}
 
 	/* *************************************************************************
@@ -253,14 +249,16 @@ public class PrimesGUI extends JFrame implements UI {
 		btnClear.setEnabled(enabled);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		primeCalculators.put(primeCalc.getName(), primeCalc);
 		cbxMethode.addItem(primeCalc.getName());
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		primeUsages.put(primeUsage.getName(), primeUsage);
-		usages.addItem(primeUsage.getName()); 
+		cbxUsage.addItem(primeUsage.getName()); 
 	}
 
 	/* *************************************************************************

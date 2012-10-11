@@ -4,7 +4,7 @@ public class GGT implements PrimeUsage {
 
 	@Override
 	public String getName() {
-		return "ggT";
+		return "Größter gemeinsamer Teiler";
 	}
 
 }

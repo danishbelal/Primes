@@ -4,7 +4,7 @@ public class KGV implements PrimeUsage {
 
 	@Override
 	public String getName() {
-		return "kgV";
+		return "Kleinstes gemeinsames Vielfache";
 	}
 
 }

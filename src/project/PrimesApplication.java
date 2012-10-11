@@ -14,6 +14,7 @@ import project.primeCalc.PrimeBruter;
 import project.primeCalc.SieveOfErathosthenes;
 import project.primeUsage.GGT;
 import project.primeUsage.KGV;
+import project.primeUsage.PrimeFactorization;
 
 public final class PrimesApplication implements Runnable {
 	private static PrimesGUI gui;
@@ -57,6 +58,7 @@ public final class PrimesApplication implements Runnable {
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
 					gui.addPrimeUsage(new GGT());
 					gui.addPrimeUsage(new KGV());
+					gui.addPrimeUsage(new PrimeFactorization());
 
 					// Display the GUI
 					gui.setVisible(true);

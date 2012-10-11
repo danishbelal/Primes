@@ -1,7 +1,7 @@
 package project.primeUsage;
 
 // TODO!
-public class PrimeMath {
+public class PrimeMaths {
 	public final static int EUKLID = 0x1;
 	public final static int PRIME_FACTORIZATION = 0x2;
 

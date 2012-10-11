@@ -17,6 +17,8 @@ import project.primeUsage.KGV;
 import project.primeUsage.PrimeFactorization;
 
 public final class PrimesApplication implements Runnable {
+	public static final String VERSION = "Alpha 0.3";
+
 	private static PrimesGUI gui;
 
 	/**

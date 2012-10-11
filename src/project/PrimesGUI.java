@@ -43,7 +43,7 @@ import project.primeUsage.PrimeUsage;
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
-	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung";
+	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung " + PrimesApplication.VERSION;
 
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 

@@ -18,24 +18,22 @@ public class PrimeBruter implements PrimeCalculator {
 	}
 
 	public boolean[] determinePrimes(int max) {
-		boolean[] primes = new boolean[max + 1];
+//		boolean[] primes = new boolean[max + 1];
+		boolean isPrime = true;
+		int currentNumber;
 
-		for (int p = 2; p < primes.length; p++) {
-			boolean couldBeDivided = false;
-			
-			for (int i = p - 1; !couldBeDivided && i >= 2; i--) {
-				if (p % i == 0) {
-					couldBeDivided = true;
+		for (currentNumber = 2; currentNumber <= max; currentNumber++) {
+			isPrime = true;
+			for (int divisor = 2; isPrime && (divisor < currentNumber); divisor++) {
+				if (currentNumber % divisor == 0) {
+					isPrime = false;
 				}
-			}
-
-			if (!couldBeDivided) {
-				ui.determinedPrime(p);
-
-				primes[p] = true;
+			} // for
+			if (isPrime) {
+				ui.determinedPrime(currentNumber);
 			}
 		}
-
-		return primes;
+//		return primes;
+		return null;
 	}
 }

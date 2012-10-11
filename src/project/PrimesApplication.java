@@ -21,7 +21,6 @@ public final class PrimesApplication implements Runnable {
 	 */
 	public static void main(String[] args) {
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
-		t.setDaemon(false);
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {

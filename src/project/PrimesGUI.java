@@ -292,7 +292,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' fuer " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
+						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' für " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
 
 						textFieldBerechnetBis.setText(numberAmountString);
 					}

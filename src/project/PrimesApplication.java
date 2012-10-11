@@ -19,9 +19,13 @@ public final class PrimesApplication implements Runnable {
 	/**
 	 * Launch the application.
 	 */
+	protected PrimesApplication() {
+		System.out.println("[DEBUG]\t :\t in PrimesApplication() ");
+	}
+
 	public static void main(String[] args) {
-		Thread t = new Thread(new PrimesApplication(), "PrimesApplication main");
-		t.setDaemon(false);
+		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
+		t.setDaemon(false); // Why  ? ? ? its the default value
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {

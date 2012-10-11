@@ -41,6 +41,12 @@ import project.primeUsage.PrimeUsage;
 
 // We don't call this PrimesFrame, cause it does much more than just being a frame.
 public class PrimesGUI extends JFrame implements UI {
+	
+	// You should use ue instead of ü : the console isn't able to display it!!!
+	{
+		System.out.println("[DEBUG]\t :\t in PrimesGUI() " );
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung";
@@ -50,6 +56,8 @@ public class PrimesGUI extends JFrame implements UI {
 	private JPanel contentPane;
 
 	private JTextPane textPane;
+	
+	// @SuppressWarnings("rawtypes")
 	private JComboBox cbxMethode;
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
@@ -62,6 +70,11 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Stores the available PrimeCalculators.
 	 */
 	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
+	
+	/*
+	 * Stores the primeUsages
+	 * */
+	private Map<String, PrimeUsage > primeUsages = new HashMap<String , PrimeUsage>();
 
 	/**
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
@@ -182,6 +195,16 @@ public class PrimesGUI extends JFrame implements UI {
 		JScrollPane scrollPane = new JScrollPane(textPane);
 		scrollPane.setBounds(227, 12, 226, 298);
 		contentPane.add(scrollPane);
+		
+		JLabel LabelForPrimeusages = new JLabel("Was soll Passieren ???"); // TODO Rename!!
+		LabelForPrimeusages.setBounds(10, 10, 100, 50);
+		usePrimesPanel.add(LabelForPrimeusages );
+		
+		JComboBox usages = new JComboBox();
+		usages.setBounds(90, 20,100, 25);
+		usePrimesPanel.add(usages);
+		
+		
 	}
 
 	/* *************************************************************************
@@ -245,7 +268,10 @@ public class PrimesGUI extends JFrame implements UI {
 	}
 
 	public void addPrimeUsage(PrimeUsage primeUsage) {
-		// TODO: Different PrimeUsages could need different options
+		primeUsages.put(primeUsage.getName(), primeUsage);
+		
+		
+		
 	}
 
 	/* *************************************************************************
@@ -277,7 +303,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' fÃ¼r " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
+						println("Berechnung mit '" + cbxMethode.getSelectedItem() + "' fuer " + numberAmountString + " Zahlen dauerte " + tookTimeString + " ms");
 
 						textFieldBerechnetBis.setText(numberAmountString);
 					}

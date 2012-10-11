@@ -5,6 +5,10 @@ import project.UI;
 public class PrimeBruter implements PrimeCalculator {
 	private final UI ui;
 
+	
+	{
+		System.out.println("[DEBUG]\t :\t in PrimeBruter(UI ui) " );
+	}
 	public PrimeBruter(UI ui) {
 		this.ui = ui;
 	}

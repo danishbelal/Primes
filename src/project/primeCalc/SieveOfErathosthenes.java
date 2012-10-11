@@ -5,6 +5,10 @@ import project.UI;
 public class SieveOfErathosthenes implements PrimeCalculator {
 	private final UI ui;
 
+
+	{
+		System.out.println("[DEBUG]\t :\t in SieveOfErathosthenes(UI ui) " );
+	}
 	public SieveOfErathosthenes(UI ui) {
 		this.ui = ui;
 	}
@@ -28,7 +32,8 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 				primes[j * i] = false;
 			}
 		}
-		// FIXME: "Primzahl: 10000"
+		// bug: "Primzahl: 10000"
+		// Its fixed
 
 		for (int p = 0; p < primes.length; p++)
 			if (primes[p])

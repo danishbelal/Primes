@@ -189,9 +189,9 @@ public class PrimesGUI extends JFrame implements UI {
 		scrollPane.setBounds(227, 12, 226, 298);
 		contentPane.add(scrollPane);
 
-		JLabel lbForPrimeusages = new JLabel("Was soll Passieren ???"); // TODO Rename!!
-		lbForPrimeusages.setBounds(10, 10, 100, 50);
-		usePrimesPanel.add(lbForPrimeusages);
+		JLabel lblForPrimeusages = new JLabel("Aufgabe:");
+		lblForPrimeusages.setBounds(10, 10, 100, 50);
+		usePrimesPanel.add(lblForPrimeusages);
 
 		usages = new JComboBox();
 		usages.setBounds(90, 20,100, 25);

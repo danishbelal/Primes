@@ -21,7 +21,7 @@ public final class PrimesApplication implements Runnable {
 	 */
 	public static void main(String[] args) {
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
-		t.setDaemon(false); // Why  ? ? ? its the default value
+		t.setDaemon(false);
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
@@ -75,7 +75,7 @@ public final class PrimesApplication implements Runnable {
 		String threadError = "Error in Thread #" + t.getId() + " '" + t.getName() + "':";
 		System.err.println(threadError);
 		e.printStackTrace();
-		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024 * 8);
+		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024);
 		e.printStackTrace(new PrintStream(byos));
 		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
 		if (shouldExit)

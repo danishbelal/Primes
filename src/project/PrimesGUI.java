@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -65,6 +66,7 @@ public class PrimesGUI extends JFrame implements UI {
 	private JButton btnCalcStart;
 	private JButton btnExport;
 	private JButton btnClear;
+	private JComboBox usages;
 
 	/**
 	 * Stores the available PrimeCalculators.
@@ -200,7 +202,7 @@ public class PrimesGUI extends JFrame implements UI {
 		LabelForPrimeusages.setBounds(10, 10, 100, 50);
 		usePrimesPanel.add(LabelForPrimeusages );
 		
-		JComboBox usages = new JComboBox();
+		usages = new JComboBox();
 		usages.setBounds(90, 20,100, 25);
 		usePrimesPanel.add(usages);
 		
@@ -269,6 +271,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		primeUsages.put(primeUsage.getName(), primeUsage);
+		usages.addItem( primeUsage); // FIXME Add to the "List" ??
 		
 		
 		

@@ -21,7 +21,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -42,12 +41,6 @@ import project.primeUsage.PrimeUsage;
 
 // We don't call this PrimesFrame, cause it does much more than just being a frame.
 public class PrimesGUI extends JFrame implements UI {
-	
-	// You should use ue instead of ü : the console isn't able to display it!!!
-	{
-		System.out.println("[DEBUG]\t :\t in PrimesGUI() " );
-	}
-	
 	private static final long serialVersionUID = 1L;
 
 	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung";
@@ -55,9 +48,7 @@ public class PrimesGUI extends JFrame implements UI {
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
-
 	private JTextPane textPane;
-	
 	// @SuppressWarnings("rawtypes")
 	private JComboBox cbxMethode;
 	private JCheckBox chckbxPrimzahlenAusgeben;
@@ -72,10 +63,10 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Stores the available PrimeCalculators.
 	 */
 	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
-	
-	/*
+
+	/**
 	 * Stores the primeUsages
-	 * */
+	 */
 	private Map<String, PrimeUsage > primeUsages = new HashMap<String , PrimeUsage>();
 
 	/**
@@ -197,16 +188,14 @@ public class PrimesGUI extends JFrame implements UI {
 		JScrollPane scrollPane = new JScrollPane(textPane);
 		scrollPane.setBounds(227, 12, 226, 298);
 		contentPane.add(scrollPane);
-		
-		JLabel LabelForPrimeusages = new JLabel("Was soll Passieren ???"); // TODO Rename!!
-		LabelForPrimeusages.setBounds(10, 10, 100, 50);
-		usePrimesPanel.add(LabelForPrimeusages );
-		
+
+		JLabel lbForPrimeusages = new JLabel("Was soll Passieren ???"); // TODO Rename!!
+		lbForPrimeusages.setBounds(10, 10, 100, 50);
+		usePrimesPanel.add(lbForPrimeusages);
+
 		usages = new JComboBox();
 		usages.setBounds(90, 20,100, 25);
 		usePrimesPanel.add(usages);
-		
-		
 	}
 
 	/* *************************************************************************
@@ -271,10 +260,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		primeUsages.put(primeUsage.getName(), primeUsage);
-		usages.addItem( primeUsage.getName()); 
-		
-		
-		
+		usages.addItem(primeUsage.getName()); 
 	}
 
 	/* *************************************************************************

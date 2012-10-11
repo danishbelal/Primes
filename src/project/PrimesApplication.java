@@ -19,10 +19,6 @@ public final class PrimesApplication implements Runnable {
 	/**
 	 * Launch the application.
 	 */
-	protected PrimesApplication() {
-		System.out.println("[DEBUG]\t :\t in PrimesApplication() ");
-	}
-
 	public static void main(String[] args) {
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
 		t.setDaemon(false); // Why  ? ? ? its the default value

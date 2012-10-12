@@ -358,8 +358,11 @@ public class PrimesGUI extends JFrame implements UI {
 	}
 
 	/**
-	 * For Swing-Thread-Safety this method should always be called within the EDT. Disables the action components, prints <tt>name + " gestartet."</tt> Then, it starts a new Thread and executes the
-	 * given Runnable. After the execution it re-enables the action components.
+	 * Disables the action components, starts a new Thread and executes the given {@link Runnable}.
+	 * <p>
+	 * After the Runnable finished it re-enables the action components.
+	 * <p>
+	 * An {@link UncaughtExceptionHandler} will print <tt>name + " fehlgeschlagen."<tt> and delegate the exception to {@link PrimesApplication#error(Throwable, Thread, boolean)}.
 	 */
 	protected void runAction(final String name, final Runnable r) {
 		setActionComponentsEnabled(false);

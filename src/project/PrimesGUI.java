@@ -362,7 +362,7 @@ public class PrimesGUI extends JFrame implements UI {
 	 * <p>
 	 * After the Runnable finished it re-enables the action components.
 	 * <p>
-	 * An {@link UncaughtExceptionHandler} will print <tt>name + " fehlgeschlagen."<tt> and delegate the exception to {@link PrimesApplication#error(Throwable, Thread, boolean)}.
+	 * An {@link UncaughtExceptionHandler} will print <tt>name + " fehlgeschlagen."</tt> and delegate the exception to {@link PrimesApplication#error(Throwable, Thread, boolean)}.
 	 */
 	protected void runAction(final String name, final Runnable r) {
 		setActionComponentsEnabled(false);

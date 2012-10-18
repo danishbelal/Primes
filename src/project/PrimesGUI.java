@@ -270,6 +270,7 @@ public class PrimesGUI extends JFrame implements UI
 					buffer_len += text.length();
 					if (buffer.length() >= max_buffer_len -1)
 						textPane.setText(textPane.getText() + text);
+					//FIXME: The "older" output will be removed ???
 				}
 			});
 		}

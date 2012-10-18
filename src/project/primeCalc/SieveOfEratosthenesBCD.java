@@ -1,8 +1,6 @@
 package project.primeCalc;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import project.PrimesApplication;
 import project.UI;

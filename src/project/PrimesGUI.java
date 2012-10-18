@@ -43,11 +43,9 @@ import project.primeUsage.PrimeUsage;
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
-	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung "
-			+ PrimesApplication.VERSION;
+	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung " + PrimesApplication.VERSION;
 
-	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat(
-			"#,###,###,##0");
+	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
 	private JTextPane textPane;
@@ -59,15 +57,6 @@ public class PrimesGUI extends JFrame implements UI {
 	private JButton btnCalcStart;
 	private JButton btnExport;
 	private JButton btnClear;
-
-	/* @see PrimesGUI#print() */
-	int buffer_len = 0;
-	/* @see PrimesGUI#print() */
-	final int max_buffer_len = 8000;
-	/* @see PrimesGUI#print() */
-	private StringBuffer buffer = new StringBuffer(max_buffer_len);
-	/* @see PrimesGUI#print() */
-	private StringBuffer stringBefore = new StringBuffer();
 
 	/**
 	 * Stores the available PrimeCalculators.
@@ -99,8 +88,7 @@ public class PrimesGUI extends JFrame implements UI {
 		contentPane.setLayout(null);
 
 		btnExport = new JButton("Primzahlen exportieren");
-		btnExport
-				.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
+		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
 		btnExport.setEnabled(false);
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,9 +99,7 @@ public class PrimesGUI extends JFrame implements UI {
 		contentPane.add(btnExport);
 
 		JPanel usePrimesPanel = new JPanel();
-		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK,
-				1, true), "Primzahlen benutzen", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		usePrimesPanel.setBounds(10, 181, 207, 159);
 		contentPane.add(usePrimesPanel);
 		usePrimesPanel.setLayout(null);
@@ -123,9 +109,7 @@ public class PrimesGUI extends JFrame implements UI {
 		usePrimesPanel.add(cbxUsage);
 
 		JPanel calcPrimesPanel = new JPanel();
-		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK,
-				1, true), "Primzahlen berechnen", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		calcPrimesPanel.setBounds(10, 11, 207, 165);
 		contentPane.add(calcPrimesPanel);
 		calcPrimesPanel.setLayout(null);
@@ -139,36 +123,27 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
 
 		chckbxPrimzahlenAusgeben = new JCheckBox("Primzahlen ausgeben");
-		chckbxPrimzahlenAusgeben
-				.setToolTipText("Achtung: Nur für kleine Berechnungen benutzen, da die grafische Ausgabe viel Zeit in Anspruch nimmt.");
+		chckbxPrimzahlenAusgeben.setToolTipText("Achtung: Nur für kleine Berechnungen benutzen, da die grafische Ausgabe viel Zeit in Anspruch nimmt.");
 		chckbxPrimzahlenAusgeben.setBounds(6, 73, 131, 23);
 		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
 		spinner = new JSpinner();
 		spinner.setToolTipText("Gibt an, bis zu welcher Zahl berechnet werden soll. Umso höher, umso zeitaufwändiger die Berechnung.");
-		spinner.setModel(new SpinnerNumberModel(new Integer(10000),
-				new Integer(1), null, new Integer(100)));
+		spinner.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(1), null, new Integer(100)));
 		spinner.setBounds(111, 49, 86, 20);
 		calcPrimesPanel.add(spinner);
 
 		cbxMethode = new JComboBox();
-		cbxMethode
-				.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
+		cbxMethode.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int highestDeteminableNumber = primeCalculators.get(
-						cbxMethode.getSelectedItem())
-						.getHighestDeterminableNumber();
-				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner
-						.getModel();
+				int highestDeteminableNumber = primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
 
 				spinnerModel.setMaximum(highestDeteminableNumber);
 				if ((Integer) spinnerModel.getNumber() > highestDeteminableNumber)
-					spinnerModel
-							.setValue(highestDeteminableNumber
-									- (highestDeteminableNumber % (Integer) spinnerModel
-											.getStepSize()));
+					spinnerModel.setValue(highestDeteminableNumber - (highestDeteminableNumber % (Integer) spinnerModel.getStepSize()));
 			}
 		});
 		calcPrimesPanel.add(cbxMethode);
@@ -188,8 +163,7 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(lblVerfgbarePrimzahlen);
 
 		textFieldBerechnetBis = new JTextField();
-		textFieldBerechnetBis
-				.setToolTipText("Zeigt die Anzahl der berechneten Primzahlen.");
+		textFieldBerechnetBis.setToolTipText("Zeigt die Anzahl der berechneten Primzahlen.");
 		textFieldBerechnetBis.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldBerechnetBis.setText("0");
 		textFieldBerechnetBis.setEditable(false);
@@ -236,34 +210,17 @@ public class PrimesGUI extends JFrame implements UI {
 		}
 	}
 
+	// TODO: This method is pretty inefficient. Probably a custom {@link Document} will perform best.
 	public void print(final String text) {
 		System.out.print(text);
 		if (SwingUtilities.isEventDispatchThread()) {
-			buffer.append(text);
-			buffer_len += text.length();
-			// System.out.println("\tbuffer.length = " + buffer.length() + "\n\tstringBefore.length = " + stringBefore.length());
-			print_(text);
+			textPane.setText(textPane.getText() + text);
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					print_(text);
-
+					textPane.setText(textPane.getText() + text);
 				}
 			});
-		}
-	}
-
-	public void flush() {
-		//TODO Implement!!!
-	}
-
-	private void print_(final String text) {
-		buffer.append(text);
-		buffer_len += text.length();
-		if (buffer.length() >= max_buffer_len - 100) {
-			textPane.setText(stringBefore + text);
-			stringBefore.append(buffer);
-			buffer.delete(0, buffer.length() - 1);
 		}
 	}
 
@@ -278,9 +235,8 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void setActionComponentsEnabled(final boolean enabled) {
 		if (!SwingUtilities.isEventDispatchThread()) {
-			// invokeAndWait because the method calling this method likely
-			// expects the components to be disabled instantly after returning
-			// from this method
+			// invokeAndWait because the method calling this method likely expects
+			// the components to be disabled instantly after returning from this method
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
 					public void run() {
@@ -301,20 +257,16 @@ public class PrimesGUI extends JFrame implements UI {
 
 	@SuppressWarnings("unchecked")
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
-		if (this.isVisible()) // Adding these while the user is able to access
-			// the GUI could cause threading problems.
-			throw new IllegalStateException(
-					"Cannot add a PrimeCalculator if the GUI is visible");
+		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
+			throw new IllegalStateException("Cannot add a PrimeCalculator if the GUI is visible");
 		primeCalculators.put(primeCalc.getName(), primeCalc);
 		cbxMethode.addItem(primeCalc.getName());
 	}
 
 	@SuppressWarnings("unchecked")
 	public void addPrimeUsage(PrimeUsage primeUsage) {
-		if (this.isVisible()) // Adding these while the user is able to access
-			// the GUI could cause threading problems.
-			throw new IllegalStateException(
-					"Cannot add a PrimeUsage if the GUI is visible");
+		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
+			throw new IllegalStateException("Cannot add a PrimeUsage if the GUI is visible");
 		primeUsages.put(primeUsage.getName(), primeUsage);
 		cbxUsage.addItem(primeUsage.getName());
 	}
@@ -333,10 +285,8 @@ public class PrimesGUI extends JFrame implements UI {
 				PrimeCalculator primeCalc = primeCalculators.get(primeCalcName);
 
 				// Format the number for better legibility
-				final String numberAmountString = NUMBER_FORMAT
-						.format(determineMax);
-				println("Berechnung mit '" + primeCalcName + "' für "
-						+ numberAmountString + " Zahlen gestartet");
+				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
+				println("Berechnung mit '" + primeCalcName + "' für " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
@@ -345,8 +295,7 @@ public class PrimesGUI extends JFrame implements UI {
 				boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
 
 				// Format the used time for better legibility
-				final String tookTimeString = NUMBER_FORMAT.format(System
-						.currentTimeMillis() - timeBefore);
+				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
 
 				// Only set the primes if the determined primes got improved
 				if (primes == null || lastPrimes.length > primes.length)
@@ -369,13 +318,7 @@ public class PrimesGUI extends JFrame implements UI {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
-				int fcOption = fc.showSaveDialog(PrimesGUI.this); // Special
-				// syntax to
-				// access
-				// the
-				// instance
-				// of the
-				// outer-class
+				int fcOption = fc.showSaveDialog(PrimesGUI.this); // Special syntax to access the instance of the outer-class
 
 				if (fcOption == JFileChooser.ERROR_OPTION)
 					println("Export gescheitert: Unbekannter Fehler");
@@ -384,13 +327,8 @@ public class PrimesGUI extends JFrame implements UI {
 				else if (fcOption == JFileChooser.APPROVE_OPTION) {
 					File f = fc.getSelectedFile();
 					if (f.exists()) {
-						if (JOptionPane
-								.showConfirmDialog(
-										PrimesGUI.this,
-										"Die Datei existiert bereits. Möchten Sie sie überschreiben?",
-										"Datei existiert bereits",
-										JOptionPane.YES_NO_OPTION,
-										JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION) {
+						if (JOptionPane.showConfirmDialog(PrimesGUI.this, "Die Datei existiert bereits. Möchten Sie sie überschreiben?", "Datei existiert bereits", JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION) {
 							println("Export abgebrochen.");
 							return;
 						}

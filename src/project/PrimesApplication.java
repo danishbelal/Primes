@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import project.primeCalc.PrimeBruter;
 import project.primeCalc.SieveOfErathosthenes;
+import project.primeCalc.SieveOfEratosthenesBCD;
 import project.primeUsage.GGT;
 import project.primeUsage.KGV;
 import project.primeUsage.PrimeFactorization;
@@ -20,11 +21,14 @@ public final class PrimesApplication implements Runnable {
 	public static final String VERSION = "Alpha 0.3";
 
 	private static PrimesGUI gui;
+	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+//		new SieveOfEratosthenesBCD(null).determinePrimes(Integer.MAX_VALUE*2); //debug 
+		
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {

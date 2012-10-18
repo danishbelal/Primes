@@ -66,6 +66,8 @@ public class PrimesGUI extends JFrame implements UI {
     final int max_buffer_len = 8000;
     /* @see PrimesGUI#print() */
     private StringBuffer buffer = new StringBuffer(max_buffer_len);
+    /* @see PrimesGUI#print() */
+    private StringBuffer stringBefore = new StringBuffer();
 
     /**
      * Stores the available PrimeCalculators.
@@ -236,19 +238,29 @@ public class PrimesGUI extends JFrame implements UI {
     }
 
     public void print(final String text) {
-	System.out.print(text);
+//	System.out.print(text);
 	if (SwingUtilities.isEventDispatchThread()) {
 	    buffer.append(text);
 	    buffer_len += text.length();
-	    if (buffer.length() > max_buffer_len - 1)
-		textPane.setText(textPane.getText() + text);
+	    System.out.println("\tbuffer.length = " + buffer.length() + "\n\tstringBefore.length = " + stringBefore.length());
+	    stringBefore.append(textPane.getText());
+	    if (buffer.length() > max_buffer_len - 100)
+		{
+			textPane.setText(stringBefore + text);
+			stringBefore.append(buffer);
+			buffer.delete(0, buffer.length()-1);
+		}
 	} else {
 	    EventQueue.invokeLater(new Runnable() {
 		public void run() {
 		    buffer.append(text);
 		    buffer_len += text.length();
-		    if (buffer.length() >= max_buffer_len - 1)
-			textPane.setText(textPane.getText() + text);
+		    if (buffer.length() >= max_buffer_len - 100)
+			{
+				textPane.setText(stringBefore + text);
+				stringBefore.append(buffer);
+				buffer.delete(0, buffer.length()-1);
+			}
 		    // FIXME: The "older" output will be removed ???
 		}
 	    });

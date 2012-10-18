@@ -261,7 +261,7 @@ public class PrimesGUI extends JFrame implements UI {
 				stringBefore.append(buffer);
 				buffer.delete(0, buffer.length()-1);
 			}
-		    // FIXME: The "older" output will be removed ???
+		    
 		}
 	    });
 	}

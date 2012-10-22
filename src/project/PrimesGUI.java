@@ -1,5 +1,20 @@
 package project;
 
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -19,22 +34,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import project.primeCalc.PrimeCalculator;
 import project.primeUsage.PrimeUsage;
@@ -72,6 +71,13 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
 	 */
 	private boolean[] primes;
+	/* The following Declarattion are used in print() */
+	private int maxBufferLength =8000 ;
+	private StringBuffer buffer = new StringBuffer(maxBufferLength);
+	private StringBuffer stringBefore= new StringBuffer(maxBufferLength*5); // just a very large value ;-)
+
+
+
 
 	/**
 	 * Create the frame.
@@ -212,17 +218,42 @@ public class PrimesGUI extends JFrame implements UI {
 
 	// TODO: This method is pretty inefficient. Probably a custom {@link Document} will perform best.
 	public void print(final String text) {
-		System.out.print(text);
+//		System.out.print(text);
 		if (SwingUtilities.isEventDispatchThread()) {
-			textPane.setText(textPane.getText() + text);
+			buffer.append(text);
+			text.length();
+			// System.out.println("\tbuffer.length = " + buffer.length() + "\n\tstringBefore.length = " + stringBefore.length());
+			print_(text);
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					textPane.setText(textPane.getText() + text);
+					print_(text);
+
 				}
 			});
 		}
 	}
+
+	public void flush() {
+//		bufferLength = maxBufferLength;
+//		print_(""); // not "good" yet!!!
+		
+		stringBefore.append(buffer);
+		buffer.delete(0,buffer.length());
+		textPane.setText(stringBefore.toString());
+		System.out.println("\t in flush()");
+	}
+
+	private void print_(final String text) {
+		buffer.append(text);
+		text.length();
+		if (buffer.length() >= maxBufferLength - 100) {
+			textPane.setText(stringBefore + text);
+			stringBefore.append(buffer);
+			buffer.delete(0, buffer.length() - 1);
+		}
+	}
+
 
 	public void println(final String text) {
 		print("> " + text + '\n');
@@ -230,7 +261,8 @@ public class PrimesGUI extends JFrame implements UI {
 
 	public void determinedPrime(int prime) {
 		if (chckbxPrimzahlenAusgeben.isSelected())
-			println("Primzahl: " + String.valueOf(prime));
+			this.println("Primzahl: " + String.valueOf(prime));
+			
 	}
 
 	public void setActionComponentsEnabled(final boolean enabled) {
@@ -286,7 +318,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalcName + "' fÃ¼r " + numberAmountString + " Zahlen gestartet");
+				println("Berechnung mit '" + primeCalcName + "' für " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();

@@ -1,20 +1,5 @@
 package project;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -35,9 +20,27 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 import project.primeCalc.PrimeCalculator;
 import project.primeUsage.PrimeUsage;
 
+// TODO: Recreate GUI with LayoutManager => resizable
+// TODO: Some useful graphical statistics
 // We don't call this PrimesFrame, cause it does much more than just being a frame.
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
@@ -47,7 +50,7 @@ public class PrimesGUI extends JFrame implements UI {
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
-	private JTextPane textPane;
+	private JTextArea textPane;
 	@SuppressWarnings("rawtypes")
 	private JComboBox cbxMethode, cbxUsage;
 	private JCheckBox chckbxPrimzahlenAusgeben;
@@ -71,13 +74,11 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
 	 */
 	private boolean[] primes;
-	/* The following Declarattion are used in print() */
-	private int maxBufferLength =8000 ;
-	private StringBuffer buffer = new StringBuffer(maxBufferLength);
-	private StringBuffer stringBefore= new StringBuffer(maxBufferLength*5); // just a very large value ;-)
 
-
-
+	/**
+	 * Buffers the GUI Console text output.
+	 */
+	private StringBuilder textBuffer = new StringBuilder(1024 * 4); // 4kb should be enough
 
 	/**
 	 * Create the frame.
@@ -129,7 +130,7 @@ public class PrimesGUI extends JFrame implements UI {
 		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
 
 		chckbxPrimzahlenAusgeben = new JCheckBox("Primzahlen ausgeben");
-		chckbxPrimzahlenAusgeben.setToolTipText("Achtung: Nur für kleine Berechnungen benutzen, da die grafische Ausgabe viel Zeit in Anspruch nimmt.");
+		chckbxPrimzahlenAusgeben.setToolTipText("Gibt die berechneten Primzahlen in der Konsole aus.");
 		chckbxPrimzahlenAusgeben.setBounds(6, 73, 131, 23);
 		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
@@ -190,7 +191,7 @@ public class PrimesGUI extends JFrame implements UI {
 		btnClear.setBounds(227, 317, 80, 23);
 		contentPane.add(btnClear);
 
-		textPane = new JTextPane();
+		textPane = new JTextArea();
 		textPane.setToolTipText("Zeigt die Ereignisse und Berechnungen an.");
 		textPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		textPane.setEditable(false);
@@ -207,62 +208,62 @@ public class PrimesGUI extends JFrame implements UI {
 	public void clearText() {
 		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText("");
+			synchronized (textBuffer) {
+				textBuffer.delete(0, textBuffer.capacity());
+			}
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					textPane.setText("");
+					clearText();
 				}
 			});
 		}
 	}
 
-	// TODO: This method is pretty inefficient. Probably a custom {@link Document} will perform best.
+	/*
+	 * Direct text output - directly prints text to the textPane.
+	 */
 	public void print(final String text) {
-//		System.out.print(text);
 		if (SwingUtilities.isEventDispatchThread()) {
-			buffer.append(text);
-			text.length();
-			// System.out.println("\tbuffer.length = " + buffer.length() + "\n\tstringBefore.length = " + stringBefore.length());
-			print_(text);
+			textPane.setText(textPane.getText() + text);
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					print_(text);
-
+					textPane.setText(textPane.getText() + text);
 				}
 			});
 		}
 	}
 
-	public void flush() {
-//		bufferLength = maxBufferLength;
-//		print_(""); // not "good" yet!!!
-		
-		stringBefore.append(buffer);
-		buffer.delete(0,buffer.length());
-		textPane.setText(stringBefore.toString());
-		System.out.println("\t in flush()");
+	public void println(String text) {
+		print(text + '\n');
 	}
 
-	private void print_(final String text) {
-		buffer.append(text);
-		text.length();
-		if (buffer.length() >= maxBufferLength - 100) {
-			textPane.setText(stringBefore + text);
-			stringBefore.append(buffer);
-			buffer.delete(0, buffer.length() - 1);
+	/*
+	 * Buffered text output - writes to the buffer. If it's full, it will be flushed by printing the buffer contents to the direct text output.
+	 */
+	public void printBuffered(final String text) {
+		synchronized (textBuffer) {
+			if (textBuffer.length() + text.length() > textBuffer.capacity())
+				flushBuffer();
+			textBuffer.append(text);
 		}
 	}
 
+	public void printlnBuffered(final String text) {
+		printBuffered(text + '\n');
+	}
 
-	public void println(final String text) {
-		print("> " + text + '\n');
+	public void flushBuffer() {
+		synchronized (textBuffer) {
+			print(textBuffer.toString());
+			textBuffer.delete(0, textBuffer.capacity());
+		}
 	}
 
 	public void determinedPrime(int prime) {
 		if (chckbxPrimzahlenAusgeben.isSelected())
-			this.println("Primzahl: " + String.valueOf(prime));
-			
+			this.printlnBuffered("Primzahl: " + String.valueOf(prime));
 	}
 
 	public void setActionComponentsEnabled(final boolean enabled) {
@@ -318,7 +319,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalcName + "' f�r " + numberAmountString + " Zahlen gestartet");
+				println("Berechnung mit '" + primeCalcName + "' für " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
@@ -328,6 +329,9 @@ public class PrimesGUI extends JFrame implements UI {
 
 				// Format the used time for better legibility
 				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
+
+				// Flush the console buffer after calculation finished
+				PrimesGUI.this.flushBuffer(); // Special syntax to access the instance of the outer-class
 
 				// Only set the primes if the determined primes got improved
 				if (primes == null || lastPrimes.length > primes.length)
@@ -350,7 +354,7 @@ public class PrimesGUI extends JFrame implements UI {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
-				int fcOption = fc.showSaveDialog(PrimesGUI.this); // Special syntax to access the instance of the outer-class
+				int fcOption = fc.showSaveDialog(PrimesGUI.this);
 
 				if (fcOption == JFileChooser.ERROR_OPTION)
 					println("Export gescheitert: Unbekannter Fehler");

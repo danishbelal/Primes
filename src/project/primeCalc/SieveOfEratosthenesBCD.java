@@ -1,68 +1,63 @@
 package project.primeCalc;
 
-import java.util.HashMap;
-
-import project.PrimesApplication;
 import project.UI;
+import project.primeCalc.bcd.PrimeEntry;
+import project.primeCalc.bcd.PrimePool;
 
 public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 
-    private UI ui;
-    private int arrayCount;
-    boolean[][] primes;
+	private UI ui;
+	// private int arrayCount;
+	boolean[][] primes;
+	private PrimePool primePool = new PrimePool();
 
-    public SieveOfEratosthenesBCD(UI ui) {
-	super(ui);
-	this.ui = ui;
+	public SieveOfEratosthenesBCD(UI ui) {
+		super(ui); // useless but required 
+		this.ui = ui;
+		
 
-    }
-
-    public String getName() {
-	return "Sieb des Erathosthenes_BCD";
-    }
-
-    public int getHighestDeterminableNumber() {
-	return (int) Double.POSITIVE_INFINITY;
-    }
-
-    /* Very Early Buggy Version I suggest NOT to use it... */
-    public boolean[] determinePrimes(long max) {
-
-	arrayCount = (int) max / (Integer.MAX_VALUE - 1);
-	try {
-	    primes = new boolean[Math.abs(arrayCount)][Integer.MAX_VALUE];
-	} catch (OutOfMemoryError e) {
-	    e.fillInStackTrace();
-
-	    PrimesApplication.error(e, false);
 	}
 
-	System.out.println("\t arrayCount = " + (long) arrayCount
-		+ "\n\t max = " + max);
-	// Storing Primes ...
-	HashMap<Integer, Boolean> primes = new HashMap<Integer, Boolean>();
-	for (int i = 2; i < max + 1; i++)
-	    primes.put(Integer.valueOf(i), true);
+	public String getName() {
+		return "Sieb des Erathosthenes_BCD";
+	}
 
-	// Calculating Primes ...
-	for (int i = 2; i <= max; i++)
-	    for (int o = i; o * i < max; o++)
+	public int getHighestDeterminableNumber() {
+		return (int) Double.POSITIVE_INFINITY;
+	}
 
-		primes.put(Integer.valueOf(i * o), false);
+	/* Very Early Buggy Version I suggest NOT to use it... */
+	public boolean[] determinePrimes(long max) {
 
-	for (int i = 0; i < primes.values().size(); i++)
-	    for (Boolean b : primes.values())
-		if (b.booleanValue())
-		    ui.determinedPrime(i);// Do some stuff here...
+		// ---------------------BEGIN-----------------------
 
-	return null;
-    }
+		for (int i = 0; i < max; i++) // change condition to the Square Root of max...
+		{
+			for (int o = i; o * i < max; o++)
+			{
+				PrimeEntry e =primePool.newInstance();
+				e.index= i*o;
+				e.isPrime = true;
+			}
 
-    public boolean[] determinePrimes(int max) {
+		}
+		// ----------------------END -----------------------
 
-	determinePrimes((long) max);
-	return new boolean[] { true };
-	// return super.determinePrimes(max);
-    }
+		// Begin Output
+		
+		for(PrimeEntry e : primePool.getPrimes())
+			if(e.isPrime)
+				ui.determinedPrime(e.index);
+		// ENd Output
+
+		return null;
+	}
+
+	public boolean[] determinePrimes(int max) {
+
+		determinePrimes((long) max);
+		return new boolean[] { true };
+		// return super.determinePrimes(max);
+	}
 
 }

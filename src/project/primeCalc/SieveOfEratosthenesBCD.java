@@ -35,6 +35,7 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 		{
 			for (int o = i; o * i < max; o++)
 			{
+				// FIXME : NullPointer ???
 				PrimeEntry e =primePool.newInstance();
 				e.index= i*o;
 				e.isPrime = true;

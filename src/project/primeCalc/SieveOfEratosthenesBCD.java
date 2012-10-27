@@ -41,7 +41,7 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 			}
 
 		}
-		// ----------------------END -----------------------
+		// ----------------------END ----------------------- 
 
 		// Begin Output
 

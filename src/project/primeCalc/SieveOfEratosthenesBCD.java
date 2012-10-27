@@ -9,12 +9,11 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	private UI ui;
 	// private int arrayCount;
 	boolean[][] primes;
-	private PrimePool primePool = new PrimePool();
+	private PrimePool primePool;
 
 	public SieveOfEratosthenesBCD(UI ui) {
-		super(ui); // useless but required 
+		super(ui); // useless but required
 		this.ui = ui;
-		
 
 	}
 
@@ -30,14 +29,15 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	public boolean[] determinePrimes(long max) {
 
 		// ---------------------BEGIN-----------------------
-
+		
+		System.out.println("Entered calculating phase (" + getClass().getName()+")");
+		primePool = new PrimePool(new PrimeEntry[(int)max]);
 		for (int i = 0; i < max; i++) // change condition to the Square Root of max...
 		{
-			for (int o = i; o * i < max; o++)
-			{
-				// FIXME : NullPointer ???
-				PrimeEntry e =primePool.newInstance();
-				e.index= i*o;
+			for (int o = i; o * i < max; o++) {
+				
+				PrimeEntry e = primePool.newInstance();
+				e.index = i * o;
 				e.isPrime = true;
 			}
 
@@ -45,9 +45,10 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 		// ----------------------END -----------------------
 
 		// Begin Output
-		
-		for(PrimeEntry e : primePool.getPrimes())
-			if(e.isPrime)
+
+		System.out.println("Beginning Output (" + getClass().getName() + "");
+		for (PrimeEntry e : primePool.getPrimes())
+			if (e.isPrime)
 				ui.determinedPrime(e.index);
 		// ENd Output
 

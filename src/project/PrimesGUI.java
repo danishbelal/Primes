@@ -415,6 +415,7 @@ public class PrimesGUI extends JFrame implements UI {
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
 				println(name + " fehlgeschalgen.");
+				setActionComponentsEnabled(true);
 				PrimesApplication.error(e, t, false);
 			}
 		});

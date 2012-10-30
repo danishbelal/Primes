@@ -29,9 +29,11 @@ public class PrimePool {
 
 	public PrimeEntry newInstance() {
 		int i = 0;
-		while (primes[i].isPrime && i < primes.length)
+		for (;i < primes.length && primes[i].isPrime ; i++)
 			;
-		return primes[i];
+		if(i < primes.length)
+			return primes[i];
+		return null; 
 	}
 
 

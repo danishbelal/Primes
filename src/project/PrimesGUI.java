@@ -357,7 +357,7 @@ public class PrimesGUI extends JFrame implements UI {
 						}
 					}
 
-					println("Export gestartet");
+					println("Export gestartet.");
 
 					try {
 						FileWriter fw = new FileWriter(f, false);
@@ -373,7 +373,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 						println("Export erfolgreich.");
 					} catch (IOException e) {
-						println("Export fehlgeschalgen: Datei-Fehler.");
+						println("Export gescheitert: Datei-Fehler.");
 						PrimesApplication.error(e, false);
 					}
 				} else
@@ -401,7 +401,7 @@ public class PrimesGUI extends JFrame implements UI {
 		}, "PrimesGUI Action: " + name);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				println(name + " fehlgeschalgen.");
+				println(name + " fehlgeschlagen.");
 				setActionComponentsEnabled(true);
 				PrimesApplication.error(e, t, false);
 			}

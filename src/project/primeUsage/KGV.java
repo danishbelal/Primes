@@ -1,10 +1,10 @@
 package project.primeUsage;
 
-public class KGV implements PrimeUsage {
+import project.UI;
 
-	@Override
-	public String getName() {
-		return "Kleinstes gemeinsames Vielfache";
+public class KGV extends PrimeUsage {
+	public KGV(UI ui) {
+		super(ui, "Kleinstes gemeinsames Vielfache");
 	}
 
 }

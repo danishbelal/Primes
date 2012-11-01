@@ -31,6 +31,4 @@ public interface UI {
 
 	public void addPrimeCalculator(PrimeCalculator primeCalc);
 	public void addPrimeUsage(PrimeUsage primeUsage);
-	
-//	public void flush();
 }

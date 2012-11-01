@@ -4,25 +4,17 @@ import project.UI;
 import project.primeCalc.bcd.PrimeEntry;
 import project.primeCalc.bcd.PrimePool;
 
-public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
-
-	private UI ui;
+public final class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	// private int arrayCount;
 	boolean[][] primes;
 	private PrimePool primePool;
 
 	public SieveOfEratosthenesBCD(UI ui) {
-		super(ui); // useless but required
-		this.ui = ui;
-
-	}
-
-	public String getName() {
-		return "Sieb des Erathosthenes_BCD";
+		super(ui, "Sieb des Erathosthenes (BCD)");
 	}
 
 	public int getHighestDeterminableNumber() {
-		return (int) Double.POSITIVE_INFINITY;
+		return (int) Double.MAX_VALUE;
 	}
 
 	/* Very Early Buggy Version I suggest NOT to use it... */
@@ -60,5 +52,4 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 		return new boolean[] { true };
 		// return super.determinePrimes(max);
 	}
-
 }

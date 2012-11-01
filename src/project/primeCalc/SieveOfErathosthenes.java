@@ -2,18 +2,17 @@ package project.primeCalc;
 
 import project.UI;
 
-public class SieveOfErathosthenes implements PrimeCalculator {
-	private final UI ui;
+public class SieveOfErathosthenes extends PrimeCalculator {
 	boolean[] primes=null;
 	int last = 0;
 	
 
 	public SieveOfErathosthenes(UI ui) {
-		this.ui = ui;
+		this(ui, "Sieb des Erathosthenes");
 	}
 
-	public String getName() {
-		return "Sieb des Erathosthenes";
+	protected SieveOfErathosthenes(UI ui, String name) {
+		super(ui, name);
 	}
 
 	public int getHighestDeterminableNumber() {

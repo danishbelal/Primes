@@ -319,7 +319,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalcName + "' für " + numberAmountString + " Zahlen gestartet");
+				println("Berechnung mit '" + primeCalcName + "' fuer " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();

@@ -29,9 +29,9 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	public boolean[] determinePrimes(long max) {
 
 		// ---------------------BEGIN-----------------------
-		
-		System.out.println("Entered calculating phase (" + getClass().getName()+")");
-		primePool = new PrimePool(new PrimeEntry[(int)max]);
+
+		System.out.println("Entered calculating phase (" + getClass().getName() + ")");
+		primePool = new PrimePool(max);
 		for (int i = 0; i < max; i++) // change condition to the Square Root of max...
 		{
 			for (int o = i; o * i < max; o++) {
@@ -41,7 +41,7 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 			}
 
 		}
-		// ----------------------END ----------------------- 
+		// ----------------------END -----------------------
 
 		// Begin Output
 

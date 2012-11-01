@@ -4,6 +4,9 @@ import project.UI;
 
 public class SieveOfErathosthenes implements PrimeCalculator {
 	private final UI ui;
+	boolean[] primes=null;
+	int last = 0;
+	
 
 	public SieveOfErathosthenes(UI ui) {
 		this.ui = ui;
@@ -18,10 +21,11 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 	}
 
 	public boolean[] determinePrimes(int max) {
-		boolean[] primes = new boolean[max + 1];
+		primes = new boolean[max + 1];
 
 		for (int i = 2; i < primes.length; i++)
 			primes[i] = true;
+		// START CALULATION
 
 		for (int i = 2; i < max; i++) {
 			for (int j = i; ((j * i) - 1) < max; j++) {
@@ -34,5 +38,22 @@ public class SieveOfErathosthenes implements PrimeCalculator {
 				ui.determinedPrime(p);
 
 		return primes;
+	}
+	//EXPERIMENTAL
+	@SuppressWarnings("all")
+	private int getNextPrime()
+	{
+		
+		if(primes == null)
+			throw new IllegalStateException("cannot get next prime");
+		for(int i=last; i < primes.length ;i++)
+		{
+			if(primes[i])
+			{
+				last = i;
+				return i;
+			}
+		}
+			return 0;
 	}
 }

@@ -7,7 +7,7 @@ public class PrimeEntry {
 
 	public PrimeEntry() {
 		index = 0;
-		isPrime = false;
+		isPrime = true;
 	}
 
 	public PrimeEntry(int index, boolean isPrime) {

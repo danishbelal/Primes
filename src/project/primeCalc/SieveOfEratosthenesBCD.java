@@ -1,5 +1,6 @@
 package project.primeCalc;
 
+import project.PrimesApplication;
 import project.UI;
 import project.primeCalc.bcd.PrimeEntry;
 import project.primeCalc.bcd.PrimePool;
@@ -9,7 +10,7 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	private UI ui;
 	// private int arrayCount;
 	boolean[][] primes;
-	private PrimePool primePool;
+
 
 	public SieveOfEratosthenesBCD(UI ui) {
 		super(ui); // useless but required
@@ -22,34 +23,38 @@ public class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	}
 
 	public int getHighestDeterminableNumber() {
-		return (int) Double.POSITIVE_INFINITY;
+		return (int) Integer.MAX_VALUE;
 	}
 
 	/* Very Early Buggy Version I suggest NOT to use it... */
 	public boolean[] determinePrimes(long max) {
 
 		// ---------------------BEGIN-----------------------
-
-		System.out.println("Entered calculating phase (" + getClass().getName() + ")");
-		primePool = new PrimePool(max);
-		for (int i = 0; i < max; i++) // change condition to the Square Root of max...
-		{
-			for (int o = i; o * i < max; o++) {
-				PrimeEntry e = primePool.newInstance();
-				e.index = i * o;
-				e.isPrime = true;
-			}
-
-		}
+		PrimeEntry entry =null;
+		int result =0; //change to long
+		System.out.println("Beginning Calculation \t(" + getClass().getName() + ")\n");
+		
+		PrimePool prime = new PrimePool(max);
+		
+		for(int i = 1; i< max; i++)
+			for(int o=i; (result = o * i) < max ;o++)
+				{
+					entry = prime.newInstance();
+					if (entry ==null)
+						PrimesApplication.error(new InternalError(" \"prime.newInstance returned null ! \"\n" ), true);
+					entry.isPrime = false;
+					entry.index   = result;
+				}
+		
+		
 		// ----------------------END -----------------------
 
 		// Begin Output
-
-		System.out.println("Beginning Output (" + getClass().getName() + "");
-		for (PrimeEntry e : primePool.getPrimes())
-			if (e.isPrime)
-				ui.determinedPrime(e.index);
-		// ENd Output
+		System.out.println("Beginning Output \t(" + getClass().getName() + ")\n");
+		
+		prime.show(ui);
+		
+		// End Output
 
 		return null;
 	}

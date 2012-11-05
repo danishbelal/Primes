@@ -146,6 +146,8 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int highestDeteminableNumber = primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+				if(highestDeteminableNumber == -1)
+					;//Setting maximimum to pos. infinity
 				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
 
 				spinnerModel.setMaximum(highestDeteminableNumber);

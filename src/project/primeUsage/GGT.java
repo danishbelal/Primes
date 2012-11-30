@@ -1,10 +1,10 @@
 package project.primeUsage;
 
-public class GGT implements PrimeUsage {
+import project.UI;
 
-	@Override
-	public String getName() {
-		return "Größter gemeinsamer Teiler";
+public class GGT extends PrimeUsage {
+	public GGT(UI ui) {
+		super(ui, "Größter gemeinsamer Teiler");
 	}
 
 }

@@ -1,10 +1,10 @@
 package project.primeUsage;
 
-public class PrimeFactorization implements PrimeUsage {
+import project.UI;
 
-	@Override
-	public String getName() {
-		return "Primfaktor-Zerlegung";
+public class PrimeFactorization extends PrimeUsage {
+	public PrimeFactorization(UI ui) {
+		super(ui, "Primfaktor-Zerlegung");
 	}
 
 }

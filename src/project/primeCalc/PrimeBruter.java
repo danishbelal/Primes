@@ -2,19 +2,9 @@ package project.primeCalc;
 
 import project.UI;
 
-public class PrimeBruter implements PrimeCalculator {
-	private final UI ui;
-
+public final class PrimeBruter extends PrimeCalculator {
 	public PrimeBruter(UI ui) {
-		this.ui = ui;
-	}
-
-	public String getName() {
-		return "Einfaches Durchtesten";
-	}
-
-	public int getHighestDeterminableNumber() {
-		return Integer.MAX_VALUE - 1;
+		super(ui, "Einfaches Durchtesten");
 	}
 
 	public boolean[] determinePrimes(int max) {

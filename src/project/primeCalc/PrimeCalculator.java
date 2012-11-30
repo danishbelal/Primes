@@ -1,9 +1,16 @@
 package project.primeCalc;
 
-public interface PrimeCalculator {
-	public String getName();
+import project.PrimesModel;
+import project.UI;
 
-	public int getHighestDeterminableNumber();
+public abstract class PrimeCalculator extends PrimesModel {
+	protected PrimeCalculator(UI ui, String name) {
+		super(ui, name);
+	}
 
-	public boolean[] determinePrimes(int max);
+	public int getHighestDeterminableNumber() {
+		return Integer.MAX_VALUE - 1;
+	}
+
+	public abstract boolean[] determinePrimes(int max);
 }

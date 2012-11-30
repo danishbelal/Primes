@@ -33,8 +33,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import project.primeCalc.PrimeCalculator;
 import project.primeUsage.PrimeUsage;
@@ -59,16 +57,6 @@ public class PrimesGUI extends JFrame implements UI {
 	private JButton btnCalcStart;
 	private JButton btnExport;
 	private JButton btnClear;
-
-	/**
-	 * Stores the available PrimeCalculators.
-	 */
-	private Map<String, PrimeCalculator> primeCalculators = new HashMap<String, PrimeCalculator>();
-
-	/**
-	 * Stores the available PrimeUsages.
-	 */
-	private Map<String, PrimeUsage> primeUsages = new HashMap<String, PrimeUsage>();
 
 	/**
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
@@ -145,9 +133,9 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int highestDeteminableNumber = primeCalculators.get(cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
-				if(highestDeteminableNumber == -1)
-					;//Setting maximimum to pos. infinity
+
+				int highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+
 				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
 
 				spinnerModel.setMaximum(highestDeteminableNumber);
@@ -210,15 +198,16 @@ public class PrimesGUI extends JFrame implements UI {
 	public void clearText() {
 		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText("");
-			synchronized (textBuffer) {
-				textBuffer.delete(0, textBuffer.capacity());
-			}
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					clearText();
+					textPane.setText("");
 				}
 			});
+		}
+
+		synchronized (textBuffer) {
+			textBuffer.delete(0, textBuffer.capacity());
 		}
 	}
 
@@ -226,6 +215,8 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Direct text output - directly prints text to the textPane.
 	 */
 	public void print(final String text) {
+		System.out.print(text);
+
 		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText(textPane.getText() + text);
 		} else {
@@ -294,16 +285,14 @@ public class PrimesGUI extends JFrame implements UI {
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
 			throw new IllegalStateException("Cannot add a PrimeCalculator if the GUI is visible");
-		primeCalculators.put(primeCalc.getName(), primeCalc);
-		cbxMethode.addItem(primeCalc.getName());
+		cbxMethode.addItem(primeCalc);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
 			throw new IllegalStateException("Cannot add a PrimeUsage if the GUI is visible");
-		primeUsages.put(primeUsage.getName(), primeUsage);
-		cbxUsage.addItem(primeUsage.getName());
+		cbxUsage.addItem(primeUsage);
 	}
 
 	/* *************************************************************************
@@ -312,16 +301,14 @@ public class PrimesGUI extends JFrame implements UI {
 
 	protected void startPrimeCalculation() {
 		// Not inside the Runnable, because the EDT should grab this values.
-		final String primeCalcName = (String) cbxMethode.getSelectedItem();
+		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
 		final int determineMax = (Integer) spinner.getValue();
 
 		runAction("Berechnung", new Runnable() {
 			public void run() {
-				PrimeCalculator primeCalc = primeCalculators.get(primeCalcName);
-
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalcName + "' fuer " + numberAmountString + " Zahlen gestartet");
+				println("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
@@ -372,7 +359,7 @@ public class PrimesGUI extends JFrame implements UI {
 						}
 					}
 
-					println("Export gestartet");
+					println("Export gestartet.");
 
 					try {
 						FileWriter fw = new FileWriter(f, false);
@@ -388,7 +375,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 						println("Export erfolgreich.");
 					} catch (IOException e) {
-						println("Export fehlgeschalgen: Datei-Fehler.");
+						println("Export gescheitert: Datei-Fehler.");
 						PrimesApplication.error(e, false);
 					}
 				} else
@@ -416,7 +403,7 @@ public class PrimesGUI extends JFrame implements UI {
 		}, "PrimesGUI Action: " + name);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				println(name + " fehlgeschalgen.");
+				println(name + " fehlgeschlagen.");
 				setActionComponentsEnabled(true);
 				PrimesApplication.error(e, t, false);
 			}

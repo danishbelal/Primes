@@ -25,9 +25,10 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 		for (int i = 2; i < primes.length; i++)
 			primes[i] = true;
 		// START CALULATION
+		
 
 		for (int i = 2; i < max; i++) {
-			for (int j = i; ((j * i) - 1) < max; j++) {
+			for (int j = i; ((j * i) -1) < max; j++) {
 				primes[j * i] = false;
 			}
 		}
@@ -35,6 +36,7 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 		for (int p = 0; p < primes.length; p++)
 			if (primes[p])
 				ui.determinedPrime(p);
+		System.out.println("IN determinePrimes of SOE.class...");
 
 		return primes;
 	}

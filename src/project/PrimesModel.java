@@ -2,7 +2,7 @@ package project;
 
 public abstract class PrimesModel {
 	protected final UI ui;
-	private final String name;
+	protected final String name;
 
 	protected PrimesModel(UI ui, String name) {
 		this.ui = ui;

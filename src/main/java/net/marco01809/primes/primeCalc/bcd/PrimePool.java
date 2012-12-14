@@ -1,6 +1,6 @@
-package project.primeCalc.bcd;
+package net.marco01809.primes.primeCalc.bcd;
 
-import project.UI;
+import net.marco01809.primes.UI;
 
 
 public class PrimePool {

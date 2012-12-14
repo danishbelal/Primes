@@ -1,22 +1,21 @@
-package project;
+package net.marco01809.primes;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 
-import project.primeCalc.PrimeBruter;
-import project.primeCalc.SieveOfErathosthenes;
-import project.primeCalc.SieveOfEratosthenesBCD;
-import project.primeUsage.GGT;
-import project.primeUsage.KGV;
-import project.primeUsage.PrimeFactorization;
+import net.marco01809.primes.primeCalc.PrimeBruter;
+import net.marco01809.primes.primeCalc.SieveOfErathosthenes;
+import net.marco01809.primes.primeCalc.SieveOfEratosthenesBCD;
+import net.marco01809.primes.primeUsage.GGT;
+import net.marco01809.primes.primeUsage.KGV;
+import net.marco01809.primes.primeUsage.PrimeFactorization;
 
 public final class PrimesApplication implements Runnable {
 	public static final String VERSION = "Alpha 0.3.1";
@@ -71,8 +70,6 @@ public final class PrimesApplication implements Runnable {
 
 					// Display the GUI
 					gui.setVisible(true);
-					
-					gui.println("GUI Test");
 				}
 			});
 		} catch (InterruptedException e) {
@@ -91,11 +88,9 @@ public final class PrimesApplication implements Runnable {
 		String threadError = "Error in Thread #" + t.getId() + " '" + t.getName() + "':";
 		System.err.println(threadError);
 		e.printStackTrace();
-		if (!GraphicsEnvironment.isHeadless()) {
-			ByteArrayOutputStream byos = new ByteArrayOutputStream(1024);
-			e.printStackTrace(new PrintStream(byos));
-			JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
-		}
+		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024);
+		e.printStackTrace(new PrintStream(byos));
+		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
 		if (shouldExit)
 			System.exit(1);
 	}

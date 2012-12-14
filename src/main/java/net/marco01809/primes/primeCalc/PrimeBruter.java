@@ -1,6 +1,6 @@
-package project.primeCalc;
+package net.marco01809.primes.primeCalc;
 
-import project.UI;
+import net.marco01809.primes.UI;
 
 public final class PrimeBruter extends PrimeCalculator {
 	public PrimeBruter(UI ui) {

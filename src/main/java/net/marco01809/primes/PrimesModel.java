@@ -1,8 +1,8 @@
-package project;
+package net.marco01809.primes;
 
 public abstract class PrimesModel {
 	protected final UI ui;
-	protected final String name;
+	private final String name;
 
 	protected PrimesModel(UI ui, String name) {
 		this.ui = ui;

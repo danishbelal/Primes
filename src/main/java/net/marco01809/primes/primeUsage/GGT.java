@@ -1,6 +1,6 @@
-package project.primeUsage;
+package net.marco01809.primes.primeUsage;
 
-import project.UI;
+import net.marco01809.primes.UI;
 
 public class GGT extends PrimeUsage {
 	public GGT(UI ui) {

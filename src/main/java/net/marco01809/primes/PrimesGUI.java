@@ -1,6 +1,5 @@
-package project;
+package net.marco01809.primes;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -17,12 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -36,9 +34,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import project.primeCalc.PrimeCalculator;
-import project.primeUsage.PrimeUsage;
+import net.marco01809.primes.primeCalc.PrimeCalculator;
+import net.marco01809.primes.primeUsage.PrimeUsage;
 
+// TODO: Recreate GUI with LayoutManager => resizable
 // TODO: Some useful graphical statistics
 // We don't call this PrimesFrame, cause it does much more than just being a frame.
 public class PrimesGUI extends JFrame implements UI {
@@ -74,34 +73,40 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 	@SuppressWarnings("rawtypes")
 	public PrimesGUI() {
-		setResizable(true);
+		setResizable(false);
 		setTitle(GUI_WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setMinimumSize(new Dimension(466, 376));
-		setLocationByPlatform(true); // this.setLocationRelativeTo(null);
-
-		/*
-		 * ContentPane
-		 */
+		setBounds(100, 100, 466, 376);
 		contentPane = new JPanel();
-//		 contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout());
-
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
 
-		/*
-		 * PanelPanel
-		 */
-		JPanel panelPanel = new JPanel();
-		panelPanel.setLayout(new BoxLayout(panelPanel, BoxLayout.PAGE_AXIS));
-		panelPanel.setMinimumSize(new Dimension(200, 200));
+		btnExport = new JButton("Primzahlen exportieren");
+		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
+		btnExport.setEnabled(false);
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportPrimes();
+			}
+		});
+		btnExport.setBounds(311, 317, 142, 23);
+		contentPane.add(btnExport);
 
-		/*
-		 * CalcPrimesPanel
-		 */
+		JPanel usePrimesPanel = new JPanel();
+		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		usePrimesPanel.setBounds(10, 181, 207, 159);
+		contentPane.add(usePrimesPanel);
+		usePrimesPanel.setLayout(null);
+
+		cbxUsage = new JComboBox();
+		cbxUsage.setBounds(10, 19, 187, 20);
+		usePrimesPanel.add(cbxUsage);
+
 		JPanel calcPrimesPanel = new JPanel();
 		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		calcPrimesPanel.setBounds(10, 11, 207, 165);
+		contentPane.add(calcPrimesPanel);
 		calcPrimesPanel.setLayout(null);
 
 		JLabel lblMethode = new JLabel("Methode:");
@@ -144,7 +149,7 @@ public class PrimesGUI extends JFrame implements UI {
 		btnCalcStart.setToolTipText("Startet die Berechnung.");
 		btnCalcStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				calculatePrimes();
+				startPrimeCalculation();
 			}
 		});
 		btnCalcStart.setBounds(66, 100, 131, 23);
@@ -166,40 +171,6 @@ public class PrimesGUI extends JFrame implements UI {
 		separator.setBounds(10, 128, 187, 2);
 		calcPrimesPanel.add(separator);
 
-		// Add calcPrimesPanel
-		panelPanel.add(calcPrimesPanel);
-
-		/*
-		 * UsePrimesPanel
-		 */
-		JPanel usePrimesPanel = new JPanel();
-		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		usePrimesPanel.setBounds(10, 181, 207, 159);
-		usePrimesPanel.setLayout(null);
-
-		cbxUsage = new JComboBox();
-		cbxUsage.setBounds(10, 19, 187, 20);
-		usePrimesPanel.add(cbxUsage);
-
-		// Add usePrimesPanel
-		panelPanel.add(usePrimesPanel);
-
-		contentPane.add(panelPanel, BorderLayout.LINE_START);
-
-		/*
-		 * Misc
-		 */
-		btnExport = new JButton("Primzahlen exportieren");
-		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
-		btnExport.setEnabled(false);
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportPrimes();
-			}
-		});
-		btnExport.setBounds(311, 317, 142, 23);
-		// contentPane.add(btnExport);
-
 		btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Leert den Inhalt der Ereignisanzeige.");
 		btnClear.addActionListener(new ActionListener() {
@@ -208,18 +179,16 @@ public class PrimesGUI extends JFrame implements UI {
 			}
 		});
 		btnClear.setBounds(227, 317, 80, 23);
-		// contentPane.add(btnClear);
+		contentPane.add(btnClear);
 
 		textPane = new JTextArea();
 		textPane.setToolTipText("Zeigt die Ereignisse und Berechnungen an.");
 		textPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		textPane.setEditable(false);
 
-		// Add scrollPane(textPane)
-		contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
-
-		// We're done
-		pack();
+		JScrollPane scrollPane = new JScrollPane(textPane);
+		scrollPane.setBounds(227, 12, 226, 298);
+		contentPane.add(scrollPane);
 	}
 
 	/* *************************************************************************
@@ -330,7 +299,7 @@ public class PrimesGUI extends JFrame implements UI {
 	 * Actions
 	 */
 
-	protected void calculatePrimes() {
+	protected void startPrimeCalculation() {
 		// Not inside the Runnable, because the EDT should grab this values.
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
 		final int determineMax = (Integer) spinner.getValue();
@@ -339,7 +308,7 @@ public class PrimesGUI extends JFrame implements UI {
 			public void run() {
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet");
+				println("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
@@ -354,16 +323,17 @@ public class PrimesGUI extends JFrame implements UI {
 				PrimesGUI.this.flushBuffer(); // Special syntax to access the instance of the outer-class
 
 				// Only set the primes if the determined primes got improved
-				if (primes == null || lastPrimes.length > primes.length)
+				if (primes == null || lastPrimes.length > primes.length) {
 					primes = lastPrimes;
+					
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							textFieldBerechnetBis.setText(numberAmountString);
+						}
+					});
+				}
 
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						println("Berechnung dauerte " + tookTimeString + " ms");
-
-						textFieldBerechnetBis.setText(numberAmountString);
-					}
-				});
+				println("Berechnung dauerte " + tookTimeString + " ms.");
 			}
 		});
 	}

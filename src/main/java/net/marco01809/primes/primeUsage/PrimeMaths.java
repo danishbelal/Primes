@@ -1,4 +1,4 @@
-package project.primeUsage;
+package net.marco01809.primes.primeUsage;
 
 // TODO!
 public class PrimeMaths {

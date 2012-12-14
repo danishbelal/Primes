@@ -1,4 +1,4 @@
-package project.primeCalc.bcd;
+package net.marco01809.primes.primeCalc.bcd;
 
 public class PrimeEntry {
 

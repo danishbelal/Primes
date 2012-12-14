@@ -1,7 +1,7 @@
-package project.primeUsage;
+package net.marco01809.primes.primeUsage;
 
-import project.PrimesModel;
-import project.UI;
+import net.marco01809.primes.PrimesModel;
+import net.marco01809.primes.UI;
 
 // TODO: Prime Usage interface
 public abstract class PrimeUsage extends PrimesModel {

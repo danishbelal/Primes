@@ -70,6 +70,8 @@ public final class PrimesApplication implements Runnable {
 
 					// Display the GUI
 					gui.setVisible(true);
+					
+					gui.println("GUI Test");
 				}
 			});
 		} catch (InterruptedException e) {
@@ -88,9 +90,11 @@ public final class PrimesApplication implements Runnable {
 		String threadError = "Error in Thread #" + t.getId() + " '" + t.getName() + "':";
 		System.err.println(threadError);
 		e.printStackTrace();
-		ByteArrayOutputStream byos = new ByteArrayOutputStream(1024);
-		e.printStackTrace(new PrintStream(byos));
-		JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		if (!GraphicsEnvironment.isHeadless()) {
+			ByteArrayOutputStream byos = new ByteArrayOutputStream(1024);
+			e.printStackTrace(new PrintStream(byos));
+			JOptionPane.showMessageDialog(gui, threadError + "\n\n" + byos.toString(), PrimesGUI.GUI_WINDOW_TITLE + ": Anwendungsfehler", JOptionPane.ERROR_MESSAGE);
+		}
 		if (shouldExit)
 			System.exit(1);
 	}

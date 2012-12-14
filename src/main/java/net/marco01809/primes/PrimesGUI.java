@@ -37,7 +37,6 @@ import java.text.NumberFormat;
 import net.marco01809.primes.primeCalc.PrimeCalculator;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
-// TODO: Recreate GUI with LayoutManager => resizable
 // TODO: Some useful graphical statistics
 // We don't call this PrimesFrame, cause it does much more than just being a frame.
 public class PrimesGUI extends JFrame implements UI {

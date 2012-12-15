@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

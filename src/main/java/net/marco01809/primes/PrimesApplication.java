@@ -19,7 +19,7 @@ import net.marco01809.primes.primeUsage.KGV;
 import net.marco01809.primes.primeUsage.PrimeFactorization;
 
 public final class PrimesApplication implements Runnable {
-	public static final String VERSION = "Alpha 0.3.1";
+	public static final String VERSION = "0.4-SNAPSHOT";
 
 	private static PrimesGUI gui;
 

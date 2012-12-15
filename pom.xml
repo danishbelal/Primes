@@ -21,7 +21,7 @@
 	<!-- Continuous Integration -->
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://ci.marco01809.net/</url>
+		<url>http://ci.marco01809.net/job/Primes</url>
 	</ciManagement>
 
 	<!-- Licenses -->
@@ -54,6 +54,13 @@
 			<resource>
 				<targetPath>.</targetPath>
 				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources</directory>
+				<includes>
+				</includes>
+			</resource>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>false</filtering>
 				<directory>${basedir}</directory>
 				<includes>
 					<include>LICENSE.txt</include>
@@ -69,12 +76,21 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Main-Class>net.marco01809.primes.PrimesApplication</Main-Class>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -7,7 +7,7 @@
 	<artifactId>primes</artifactId>
 	<version>0.4-SNAPSHOT</version>
 	<name>Primes</name>
-	<description>Primes--> Projektarbeit 2012/2013 Primzahlberechnung mit Java</description>
+	<description>Projektarbeit 2012/2013 Primzahlenberechnung mit Java</description>
 	<url>https://github.com/danishbelal/Primes</url>
 	<inceptionYear>2012</inceptionYear>
 

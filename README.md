@@ -1,5 +1,5 @@
 # Primes
-## Primes--> Projektarbeit 2012/2013 Primzahlberechnung mit Java
+## Projektarbeit 2012/2013 Primzahlenberechnung mit Java
 [![Build Status](http://ci.marco01809.net/job/Primes/badge/icon)](http://ci.marco01809.net/job/Primes/)
 
 ### License

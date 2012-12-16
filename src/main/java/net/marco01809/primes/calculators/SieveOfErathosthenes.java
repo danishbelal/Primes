@@ -1,4 +1,4 @@
-package net.marco01809.primes.primeCalc;
+package net.marco01809.primes.calculators;
 
 import net.marco01809.primes.UI;
 

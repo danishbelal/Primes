@@ -11,9 +11,9 @@ import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 
-import net.marco01809.primes.primeCalc.PrimeBruter;
-import net.marco01809.primes.primeCalc.SieveOfErathosthenes;
-import net.marco01809.primes.primeCalc.SieveOfEratosthenesBCD;
+import net.marco01809.primes.calculators.PrimeBruter;
+import net.marco01809.primes.calculators.SieveOfErathosthenes;
+import net.marco01809.primes.calculators.SieveOfEratosthenesBCD;
 import net.marco01809.primes.primeUsage.GGT;
 import net.marco01809.primes.primeUsage.KGV;
 import net.marco01809.primes.primeUsage.PrimeFactorization;

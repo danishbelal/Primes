@@ -1,6 +1,6 @@
 package net.marco01809.primes;
 
-import net.marco01809.primes.primeCalc.PrimeCalculator;
+import net.marco01809.primes.calculators.PrimeCalculator;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
 public interface UI {

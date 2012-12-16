@@ -34,13 +34,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import net.marco01809.primes.primeCalc.PrimeCalculator;
+import net.marco01809.primes.calculators.PrimeCalculator;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
 /**
  * Primes GUI v1, a single class containing the entire GUI.
- * 
- * @author Marco
  */
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;

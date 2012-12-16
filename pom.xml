@@ -15,7 +15,7 @@
 	<scm>
 		<url>https://github.com/danishbelal/Primes</url>
 		<connection>scm:git:git://github.com/danishbelal/Primes.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/danishbelal/Primes.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:danishbelal/Primes.git</developerConnection>
 	</scm>
 
 	<!-- Continuous Integration -->
@@ -48,7 +48,7 @@
 
 	<!-- Build -->
 	<build>
-		<defaultGoal>clean package install</defaultGoal>
+		<defaultGoal>clean install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -72,7 +72,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.0</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>

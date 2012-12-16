@@ -37,8 +37,11 @@ import java.text.NumberFormat;
 import net.marco01809.primes.primeCalc.PrimeCalculator;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
-// TODO: Some useful graphical statistics
-// We don't call this PrimesFrame, cause it does much more than just being a frame.
+/**
+ * Primes GUI v1, a single class containing the entire GUI.
+ * 
+ * @author Marco
+ */
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
@@ -194,6 +197,7 @@ public class PrimesGUI extends JFrame implements UI {
 	 * UI
 	 */
 
+	@Override
 	public void clearText() {
 		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText("");
@@ -213,6 +217,7 @@ public class PrimesGUI extends JFrame implements UI {
 	/*
 	 * Direct text output - directly prints text to the textPane.
 	 */
+	@Override
 	public void print(final String text) {
 		System.out.print(text);
 
@@ -227,6 +232,7 @@ public class PrimesGUI extends JFrame implements UI {
 		}
 	}
 
+	@Override
 	public void println(String text) {
 		print(text + '\n');
 	}
@@ -253,11 +259,13 @@ public class PrimesGUI extends JFrame implements UI {
 		}
 	}
 
+	@Override
 	public void determinedPrime(int prime) {
 		if (chckbxPrimzahlenAusgeben.isSelected())
 			this.printlnBuffered("Primzahl: " + String.valueOf(prime));
 	}
 
+	@Override
 	public void setActionComponentsEnabled(final boolean enabled) {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			// invokeAndWait because the method calling this method likely expects
@@ -280,6 +288,7 @@ public class PrimesGUI extends JFrame implements UI {
 		btnExport.setEnabled(enabled && primes != null);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
@@ -287,6 +296,7 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.addItem(primeCalc);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void addPrimeUsage(PrimeUsage primeUsage) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.

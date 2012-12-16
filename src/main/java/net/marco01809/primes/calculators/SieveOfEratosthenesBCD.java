@@ -1,9 +1,7 @@
 package net.marco01809.primes.calculators;
 
-import net.marco01809.primes.PrimesApplication;
 import net.marco01809.primes.UI;
-import net.marco01809.primes.calculators.bcd.PrimeEntry;
-import net.marco01809.primes.calculators.bcd.PrimePool;
+import net.marco01809.primes.calculators.bcd.EndlessArray;
 
 public final class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	// private int arrayCount;
@@ -23,27 +21,13 @@ public final class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	public boolean[] determinePrimes(long max) {
 
 		// ---------------------BEGIN-----------------------
-		PrimeEntry entry = null;
-		int result = 0; //change to long
-		System.out.println("Beginning Calculation \t(" + getClass().getName() + ")\n");
-
-		PrimePool prime = new PrimePool(max);
-
-		for (int i = 1; i < max; i++)
-			for (int o = i; (result = o * i) < max; o++) {
-				entry = prime.newInstance();
-				if (entry == null)
-					PrimesApplication.error(new InternalError(" \"prime.newInstance returned null ! \"\n"), true);
-				entry.isPrime = false;
-				entry.index = result;
-			}
+		
+			new EndlessArray(max);
 
 		// ----------------------END -----------------------
 
 		// Begin Output
-		System.out.println("Beginning Output \t(" + getClass().getName() + ")\n");
-
-		prime.show(ui);
+		
 
 		// End Output
 

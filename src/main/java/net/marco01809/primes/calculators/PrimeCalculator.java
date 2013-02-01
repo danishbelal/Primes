@@ -13,4 +13,9 @@ public abstract class PrimeCalculator extends PrimesModel {
 	}
 
 	public abstract boolean[] determinePrimes(int max);
+//	Has to be overwritten by SieveOfEratosthenesBCD
+	public boolean[] determinePrimes(long max)
+	{
+		return determinePrimes((int) max);
+	}
 }

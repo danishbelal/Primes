@@ -9,7 +9,7 @@ public final class PrimeBruter extends PrimeCalculator {
 
 	public boolean[] determinePrimes(int max) {
 		boolean[] primes = new boolean[max + 1];
-
+		
 		boolean isPrime = true;
 		int currentNumber;
 

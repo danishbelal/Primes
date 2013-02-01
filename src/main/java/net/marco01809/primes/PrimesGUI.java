@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import net.marco01809.primes.calculators.PrimeCalculator;
+import net.marco01809.primes.calculators.SieveOfEratosthenesBCD;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
 /**
@@ -307,9 +308,11 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 
 	protected void startPrimeCalculation() {
+		
 		// Not inside the Runnable, because the EDT should grab this values.
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
-		final int determineMax = (Integer) spinner.getValue();
+		
+		final long determineMax = (Integer) spinner.getValue();
 
 		runAction("Berechnung", new Runnable() {
 			public void run() {
@@ -321,7 +324,10 @@ public class PrimesGUI extends JFrame implements UI {
 				long timeBefore = System.currentTimeMillis();
 
 				// Determine the Primes
-				boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
+				boolean[] lastPrimes;
+				if (primeCalc instanceof SieveOfEratosthenesBCD)
+					lastPrimes = primeCalc.determinePrimes((long) determineMax );
+				lastPrimes = primeCalc.determinePrimes(determineMax);
 
 				// Format the used time for better legibility
 				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
@@ -374,7 +380,7 @@ public class PrimesGUI extends JFrame implements UI {
 
 						for (int p = 0; p < primes.length; p++) {
 							if (primes[p]) {
-								fw.write(String.valueOf(p));
+								fw.write(String.valueOf(p) + ", ");
 								fw.write("\r\n");
 							}
 						}

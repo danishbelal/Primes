@@ -1,15 +1,14 @@
 package net.marco01809.primes;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import net.marco01809.primes.calculators.PrimeBruter;
 import net.marco01809.primes.calculators.SieveOfErathosthenes;
@@ -29,7 +28,17 @@ public final class PrimesApplication implements Runnable
 	 */
 	public static void main(String[] args)
 	{
-
+//		Display Splash-Screen
+		new Thread(new MySplashScreen(),"Primes-Splash-Screen" ).start();
+		
+		try
+		{
+			Thread.sleep(2500);
+		} catch (InterruptedException e1)
+		{
+			error(e1, false);
+		}
+		
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler()

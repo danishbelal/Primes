@@ -1,7 +1,7 @@
-What is Primes?
+What is Primes Workbench?
 ---------------
-Primes is a program for determining primes with multiple different methods.  
-You can export the primes to a file or utilize them for various mathematical uses.  
+>Primes Workbench is a Application for determining primes with multiple different methods.  
+>You can export the primes to a file or utilize them for various mathematical uses.  
 
 It was made for our school project:  
 `Projektarbeit 2012/2013 Primzahlenberechnung mit Java`

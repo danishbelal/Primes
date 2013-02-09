@@ -2,37 +2,61 @@ package net.marco01809.primes;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JWindow;
+import static net.marco01809.primes.PrimesApplication.error;
 
-public class MySplashScreen extends JWindow implements Runnable
+public class MySplashScreen extends JWindow
 {
-	/**
-	 *  Source: http://www.tutorials.de/java/146899-splash-screen.html
-	 */
+
 	private static final long serialVersionUID = 1L;
+	private final int timeOut;
 
-	public void run()
+	Image splashImage = null;
+
+	public MySplashScreen(int seconds)
 	{
-		setSize(400, 231);
-//		Place Window in Center... 
-		setLocationRelativeTo(null);
-		setVisible(true);
 
+		timeOut = seconds;
+		InputStream in = getClass().getResourceAsStream("/splash.png");
+		try
+		{
+			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
+		} catch (IOException e)
+		{
+
+			error(e, false);
+		}
+
+		setSize(410, 231 );
+		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
+
+	}
+
+	public void showSplash()
+	{
+		setVisible(true);
 
 		try
 		{
-			Thread.sleep(3000);
+			Thread.sleep(timeOut * 1000);
 		} catch (InterruptedException e)
 		{
-			dispose();
+			PrimesApplication.error(e, false);
 		}
-		dispose(); 
+
+		dispose();
 	}
 
 	public void paint(Graphics g)
 	{
-		Image splashImage = getToolkit().getImage(".\\img\\splash.png");
+
 		g.drawImage(splashImage, 0, 0, this);
+		
 	}
 }

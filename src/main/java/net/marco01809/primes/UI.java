@@ -3,12 +3,13 @@ package net.marco01809.primes;
 import net.marco01809.primes.calculators.PrimeCalculator;
 import net.marco01809.primes.primeUsage.PrimeUsage;
 
-public interface UI {
+public interface UI
+{
 	/**
 	 * Used to print text. It'll not add a newline.
 	 */
 	public void print(String text);
-	
+
 	/**
 	 * Used to print a line of text.
 	 */
@@ -30,5 +31,6 @@ public interface UI {
 	public void setActionComponentsEnabled(boolean enabled);
 
 	public void addPrimeCalculator(PrimeCalculator primeCalc);
+
 	public void addPrimeUsage(PrimeUsage primeUsage);
 }

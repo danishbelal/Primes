@@ -28,17 +28,7 @@ public final class PrimesApplication implements Runnable
 	 */
 	public static void main(String[] args)
 	{
-//		Display Splash-Screen
-		new Thread(new MySplashScreen(),"Primes-Splash-Screen" ).start();
-		
-		try
-		{
-			Thread.sleep(2500);
-		} catch (InterruptedException e1)
-		{
-			error(e1, false);
-		}
-		
+
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
@@ -56,6 +46,8 @@ public final class PrimesApplication implements Runnable
 	 */
 	public void run()
 	{
+
+		new MySplashScreen(3).showSplash();
 		long loadTimeBefore = System.currentTimeMillis();
 
 		try
@@ -124,4 +116,5 @@ public final class PrimesApplication implements Runnable
 	{
 		error(e, Thread.currentThread(), shouldExit);
 	}
+
 }

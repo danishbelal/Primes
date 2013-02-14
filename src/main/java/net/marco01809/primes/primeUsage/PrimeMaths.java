@@ -1,15 +1,12 @@
 package net.marco01809.primes.primeUsage;
 
 // TODO!
-public class PrimeMaths
-{
+public class PrimeMaths {
 	public final static int EUKLID = 0x1;
 	public final static int PRIME_FACTORIZATION = 0x2;
 
-	public static long kgV(int method, long first, long second)
-	{
-		switch (method)
-		{
+	public static long kgV(int method, long first, long second) {
+		switch (method) {
 
 		case PRIME_FACTORIZATION:
 			break;
@@ -21,10 +18,8 @@ public class PrimeMaths
 		return 0L;
 	}
 
-	public static long ggT(int method, long first, long second)
-	{
-		switch (method)
-		{
+	public static long ggT(int method, long first, long second) {
+		switch (method) {
 		case EUKLID:
 			return ggTEuklid(first, second);
 
@@ -33,8 +28,7 @@ public class PrimeMaths
 		}
 	}
 
-	private static long ggTEuklid(long first, long second)
-	{
+	private static long ggTEuklid(long first, long second) {
 		if (first == 0)
 			return second;
 

@@ -41,8 +41,7 @@ import net.marco01809.primes.primeUsage.PrimeUsage;
 /**
  * Primes GUI v1, a single class containing the entire GUI.
  */
-public class PrimesGUI extends JFrame implements UI
-{
+public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
 	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung " + PrimesApplication.VERSION;
@@ -74,8 +73,7 @@ public class PrimesGUI extends JFrame implements UI
 	 * Create the frame.
 	 */
 	@SuppressWarnings("rawtypes")
-	public PrimesGUI()
-	{
+	public PrimesGUI() {
 		setResizable(false);
 		setTitle(GUI_WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,10 +86,8 @@ public class PrimesGUI extends JFrame implements UI
 		btnExport = new JButton("Primzahlen exportieren");
 		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
 		btnExport.setEnabled(false);
-		btnExport.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				exportPrimes();
 			}
 		});
@@ -136,10 +132,8 @@ public class PrimesGUI extends JFrame implements UI
 		cbxMethode = new JComboBox();
 		cbxMethode.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
 		cbxMethode.setBounds(66, 19, 131, 20);
-		cbxMethode.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		cbxMethode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
 				int highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
 
@@ -154,10 +148,8 @@ public class PrimesGUI extends JFrame implements UI
 
 		btnCalcStart = new JButton("Berechnung starten");
 		btnCalcStart.setToolTipText("Startet die Berechnung.");
-		btnCalcStart.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnCalcStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				startPrimeCalculation();
 			}
 		});
@@ -182,10 +174,8 @@ public class PrimesGUI extends JFrame implements UI
 
 		btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Leert den Inhalt der Ereignisanzeige.");
-		btnClear.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				clearText();
 			}
 		});
@@ -207,24 +197,19 @@ public class PrimesGUI extends JFrame implements UI
 	 */
 
 	@Override
-	public void clearText()
-	{
-		if (SwingUtilities.isEventDispatchThread())
-		{
+	public void clearText() {
+		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText("");
-		} else
-		{
-			EventQueue.invokeLater(new Runnable()
-			{
-				public void run()
-				{
+		}
+		else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
 					textPane.setText("");
 				}
 			});
 		}
 
-		synchronized (textBuffer)
-		{
+		synchronized (textBuffer) {
 			textBuffer.delete(0, textBuffer.capacity());
 		}
 	}
@@ -233,19 +218,15 @@ public class PrimesGUI extends JFrame implements UI
 	 * Direct text output - directly prints text to the textPane.
 	 */
 	@Override
-	public void print(final String text)
-	{
+	public void print(final String text) {
 		System.out.print(text);
 
-		if (SwingUtilities.isEventDispatchThread())
-		{
+		if (SwingUtilities.isEventDispatchThread()) {
 			textPane.setText(textPane.getText() + text);
-		} else
-		{
-			EventQueue.invokeLater(new Runnable()
-			{
-				public void run()
-				{
+		}
+		else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
 					textPane.setText(textPane.getText() + text);
 				}
 			});
@@ -253,66 +234,54 @@ public class PrimesGUI extends JFrame implements UI
 	}
 
 	@Override
-	public void println(String text)
-	{
+	public void println(String text) {
 		print(text + '\n');
 	}
 
 	/*
 	 * Buffered text output - writes to the buffer. If it's full, it will be flushed by printing the buffer contents to the direct text output.
 	 */
-	public void printBuffered(final String text)
-	{
-		synchronized (textBuffer)
-		{
+	public void printBuffered(final String text) {
+		synchronized (textBuffer) {
 			if (textBuffer.length() + text.length() > textBuffer.capacity())
 				flushBuffer();
 			textBuffer.append(text);
 		}
 	}
 
-	public void printlnBuffered(final String text)
-	{
+	public void printlnBuffered(final String text) {
 		printBuffered(text + '\n');
 	}
 
-	public void flushBuffer()
-	{
-		synchronized (textBuffer)
-		{
+	public void flushBuffer() {
+		synchronized (textBuffer) {
 			print(textBuffer.toString());
 			textBuffer.delete(0, textBuffer.capacity());
 		}
 	}
 
 	@Override
-	public void determinedPrime(int prime)
-	{
+	public void determinedPrime(int prime) {
 		if (chckbxPrimzahlenAusgeben.isSelected())
 			this.printlnBuffered("Primzahl: " + String.valueOf(prime));
 	}
 
 	@Override
-	public void setActionComponentsEnabled(final boolean enabled)
-	{
-		if (!SwingUtilities.isEventDispatchThread())
-		{
+	public void setActionComponentsEnabled(final boolean enabled) {
+		if (!SwingUtilities.isEventDispatchThread()) {
 			// invokeAndWait because the method calling this method likely expects
 			// the components to be disabled instantly after returning from this method
-			try
-			{
-				EventQueue.invokeAndWait(new Runnable()
-				{
-					public void run()
-					{
+			try {
+				EventQueue.invokeAndWait(new Runnable() {
+					public void run() {
 						setActionComponentsEnabled(enabled);
 					}
 				});
-			} catch (InterruptedException e)
-			{
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e)
-			{
+			}
+			catch (InvocationTargetException e) {
 				PrimesApplication.error(e, false);
 			}
 			return;
@@ -324,8 +293,7 @@ public class PrimesGUI extends JFrame implements UI
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void addPrimeCalculator(PrimeCalculator primeCalc)
-	{
+	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
 			throw new IllegalStateException("Cannot add a PrimeCalculator if the GUI is visible");
 		cbxMethode.addItem(primeCalc);
@@ -333,8 +301,7 @@ public class PrimesGUI extends JFrame implements UI
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void addPrimeUsage(PrimeUsage primeUsage)
-	{
+	public void addPrimeUsage(PrimeUsage primeUsage) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
 			throw new IllegalStateException("Cannot add a PrimeUsage if the GUI is visible");
 		cbxUsage.addItem(primeUsage);
@@ -344,18 +311,15 @@ public class PrimesGUI extends JFrame implements UI
 	 * Actions
 	 */
 
-	protected void startPrimeCalculation()
-	{
+	protected void startPrimeCalculation() {
 
 		// Not inside the Runnable, because the EDT should grab this values.
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
 
 		final long determineMax = (Integer) spinner.getValue();
 
-		runAction("Berechnung", new Runnable()
-		{
-			public void run()
-			{
+		runAction("Berechnung", new Runnable() {
+			public void run() {
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
 				println("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
@@ -376,14 +340,11 @@ public class PrimesGUI extends JFrame implements UI
 				PrimesGUI.this.flushBuffer(); // Special syntax to access the instance of the outer-class
 
 				// Only set the primes if the determined primes got improved
-				if (primes == null || lastPrimes.length > primes.length)
-				{
+				if (primes == null || lastPrimes.length > primes.length) {
 					primes = lastPrimes;
 
-					EventQueue.invokeLater(new Runnable()
-					{
-						public void run()
-						{
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
 							textFieldBerechnetBis.setText(numberAmountString);
 						}
 					});
@@ -394,12 +355,9 @@ public class PrimesGUI extends JFrame implements UI
 		});
 	}
 
-	protected void exportPrimes()
-	{
-		runAction("Export", new Runnable()
-		{
-			public void run()
-			{
+	protected void exportPrimes() {
+		runAction("Export", new Runnable() {
+			public void run() {
 				JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
@@ -409,14 +367,11 @@ public class PrimesGUI extends JFrame implements UI
 					println("Export gescheitert: Unbekannter Fehler");
 				else if (fcOption == JFileChooser.CANCEL_OPTION)
 					println("Export abgebrochen.");
-				else if (fcOption == JFileChooser.APPROVE_OPTION)
-				{
+				else if (fcOption == JFileChooser.APPROVE_OPTION) {
 					File f = fc.getSelectedFile();
-					if (f.exists())
-					{
+					if (f.exists()) {
 						if (JOptionPane.showConfirmDialog(PrimesGUI.this, "Die Datei existiert bereits. Möchten Sie sie überschreiben?", "Datei existiert bereits", JOptionPane.YES_NO_OPTION,
-								JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION)
-						{
+								JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION) {
 							println("Export abgebrochen.");
 							return;
 						}
@@ -424,14 +379,11 @@ public class PrimesGUI extends JFrame implements UI
 
 					println("Export gestartet.");
 
-					try
-					{
+					try {
 						FileWriter fw = new FileWriter(f, false);
 
-						for (int p = 0; p < primes.length; p++)
-						{
-							if (primes[p])
-							{
+						for (int p = 0; p < primes.length; p++) {
+							if (primes[p]) {
 								fw.write(String.valueOf(p) + ", ");
 								fw.write("\r\n");
 							}
@@ -440,12 +392,13 @@ public class PrimesGUI extends JFrame implements UI
 						fw.close();
 
 						println("Export erfolgreich.");
-					} catch (IOException e)
-					{
+					}
+					catch (IOException e) {
 						println("Export gescheitert: Datei-Fehler.");
 						PrimesApplication.error(e, false);
 					}
-				} else
+				}
+				else
 					println("Export gescheitert: Unbekannte Option");
 			}
 		});
@@ -458,23 +411,18 @@ public class PrimesGUI extends JFrame implements UI
 	 * <p>
 	 * An {@link UncaughtExceptionHandler} will print <tt>name + " fehlgeschlagen."</tt> and delegate the exception to {@link PrimesApplication#error(Throwable, Thread, boolean)}.
 	 */
-	protected void runAction(final String name, final Runnable r)
-	{
+	protected void runAction(final String name, final Runnable r) {
 		setActionComponentsEnabled(false);
 
-		Thread t = new Thread(new Runnable()
-		{
-			public void run()
-			{
+		Thread t = new Thread(new Runnable() {
+			public void run() {
 				r.run();
 
 				setActionComponentsEnabled(true);
 			}
 		}, "PrimesGUI Action: " + name);
-		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
-		{
-			public void uncaughtException(Thread t, Throwable e)
-			{
+		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			public void uncaughtException(Thread t, Throwable e) {
 				println(name + " fehlgeschlagen.");
 				setActionComponentsEnabled(true);
 				PrimesApplication.error(e, t, false);

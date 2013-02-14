@@ -2,34 +2,27 @@ package net.marco01809.primes.calculators;
 
 import net.marco01809.primes.UI;
 
-public final class PrimeBruter extends PrimeCalculator
-{
-	public PrimeBruter(UI ui)
-	{
+public final class PrimeBruter extends PrimeCalculator {
+	public PrimeBruter(UI ui) {
 		super(ui, "Einfaches Durchtesten");
 	}
 
-	public boolean[] determinePrimes(int max)
-	{
+	public boolean[] determinePrimes(int max) {
 		boolean[] primes = new boolean[max + 1];
 
 		boolean isPrime = true;
 		int currentNumber;
 
-		for (currentNumber = 2; currentNumber <= max; currentNumber++)
-		{
+		for (currentNumber = 2; currentNumber <= max; currentNumber++) {
 			isPrime = true;
 
-			for (int divisor = 2; isPrime && (divisor < currentNumber); divisor++)
-			{
-				if (currentNumber % divisor == 0)
-				{
+			for (int divisor = 2; isPrime && (divisor < currentNumber); divisor++) {
+				if (currentNumber % divisor == 0) {
 					isPrime = false;
 				}
 			}
 
-			if (isPrime)
-			{
+			if (isPrime) {
 				ui.determinedPrime(currentNumber);
 
 				primes[currentNumber] = true;

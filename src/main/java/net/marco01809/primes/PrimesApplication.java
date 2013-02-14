@@ -22,7 +22,7 @@ import net.marco01809.primes.primeUsage.KGV;
 import net.marco01809.primes.primeUsage.PrimeFactorization;
 
 public final class PrimesApplication implements Runnable {
-	public static final String VERSION = "0.4-SNAPSHOT";
+	public static final String VERSION = "0.5-SNAPSHOT";
 
 	private static PrimesGUI gui;
 	private static int SPLASH_TIME = 3;
@@ -49,11 +49,9 @@ public final class PrimesApplication implements Runnable {
 	public void run() {
 
 		/**
-		 * 
 		 * This Function Call will Block the GUI loading, for currently {@code SPLASH_TIME} Seconds.
-		 * 
 		 * */
-//		new MySplashScreen(SPLASH_TIME).showSplash();
+		new MySplashScreen(SPLASH_TIME).showSplash();
 		long loadTimeBefore = System.currentTimeMillis();
 
 		try {
@@ -71,17 +69,10 @@ public final class PrimesApplication implements Runnable {
 					// Build the GUI
 					gui = new PrimesGUI();
 					// Set the Icon
-//					if (!loadIcon())
-//						new Thread()
-//						{
-//							public void run()
-//							{
-//
-//								JOptionPane.showMessageDialog(null, "loadIcon() failed!", "ERROR", JOptionPane.DEFAULT_OPTION);
-//
-//							}
-//						}.start();
-
+					if (!loadIcon());
+//						do currently nothing if that happens...
+						;
+						
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
@@ -129,9 +120,9 @@ public final class PrimesApplication implements Runnable {
 
 	private boolean loadIcon() {
 
-		InputStream in = getClass().getResourceAsStream("/Primes/img/icon/logo_36x36.png");
+		InputStream in = getClass().getResourceAsStream("/img/logo_48x48.png");
 		if (in == null) {
-			// error(new InternalError("getClass().getResourceAsStream() returned null"), false);
+
 			return false;
 		}
 		try {
@@ -141,7 +132,7 @@ public final class PrimesApplication implements Runnable {
 			return false;
 		}
 		gui.setIconImage(icon.getImage());
-		// The Icon has been loaded succesfully...
+//		 Tell the calling func that the Icon has been loaded succesfully...
 		return true;
 	}
 

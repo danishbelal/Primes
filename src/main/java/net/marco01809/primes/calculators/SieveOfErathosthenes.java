@@ -2,7 +2,6 @@ package net.marco01809.primes.calculators;
 
 import net.marco01809.primes.UI;
 
-
 public class SieveOfErathosthenes extends PrimeCalculator {
 	boolean[] primes = null;
 
@@ -21,8 +20,9 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 
 	/**
 	 * This Function determines all Primes between 2 and {@code max}
+	 * 
 	 * @return A boolean array where the index is the number you want to check,
-	 * e.g {@code determinePrimes(100)[10]} checks if the number 10 is a Prime Number.
+	 *         e.g {@code determinePrimes(100)[10]} checks if the number 10 is a Prime Number.
 	 * */
 	public boolean[] determinePrimes(int max) {
 

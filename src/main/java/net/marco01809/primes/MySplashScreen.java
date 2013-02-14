@@ -8,7 +8,6 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JWindow;
-import static net.marco01809.primes.PrimesApplication.error;
 
 public class MySplashScreen extends JWindow {
 
@@ -16,18 +15,29 @@ public class MySplashScreen extends JWindow {
 	private final int timeOut;
 
 	Image splashImage = null;
+	private boolean error = false;
+	InputStream in;
 
 	public MySplashScreen(int seconds) {
 
 		timeOut = seconds;
-		InputStream in = getClass().getResourceAsStream("/resources/splash.png");
 		try {
+			in = getClass().getClassLoader().getResourceAsStream("resources/splash.png");
 			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
+
 		}
 		catch (IOException e) {
 
 //			I dont want to see Error Messages any more ! 
-//			error(e, false);
+//			PrimesApplication.error(e, false);
+			error = true;
+			return;
+		}
+
+		catch (Throwable t) {
+			error = true;
+			PrimesApplication.error(t, false);
+			return;
 		}
 
 		setSize(410, 231);
@@ -39,11 +49,16 @@ public class MySplashScreen extends JWindow {
 	public void showSplash() {
 		setVisible(true);
 
+//		If an Error occured the splash screen wont be displayed.
+		if (error) {
+			dispose();
+			return;
+		}
 		try {
 			Thread.sleep(timeOut * 1000);
 		}
 		catch (InterruptedException e) {
-			PrimesApplication.error(e, false);
+			dispose();
 		}
 
 		dispose();

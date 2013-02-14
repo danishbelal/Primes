@@ -41,6 +41,7 @@ public final class PrimesApplication implements Runnable {
 			}
 		});
 		t.start();
+
 	}
 
 	/**
@@ -69,10 +70,11 @@ public final class PrimesApplication implements Runnable {
 					// Build the GUI
 					gui = new PrimesGUI();
 					// Set the Icon
-					if (!loadIcon());
-//						do currently nothing if that happens...
+					if (!loadIcon())
 						;
-						
+//						do currently nothing if that happens...
+					;
+
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));

@@ -22,7 +22,7 @@ public class MySplashScreen extends JWindow {
 
 		timeOut = seconds;
 		try {
-			in = getClass().getClassLoader().getResourceAsStream("resources/splash.png");
+			in = getClass().getClassLoader().getResourceAsStream("splash.png");
 			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
 
 		}

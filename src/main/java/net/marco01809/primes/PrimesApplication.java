@@ -122,7 +122,7 @@ public final class PrimesApplication implements Runnable {
 
 	private boolean loadIcon() {
 
-		InputStream in = getClass().getResourceAsStream("/resources/logo_48x48.png");
+		InputStream in = getClass().getClassLoader().getResourceAsStream("logo_48x48.png");
 		if (in == null) {
 
 			return false;

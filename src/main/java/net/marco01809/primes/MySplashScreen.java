@@ -17,26 +17,24 @@ public class MySplashScreen extends JWindow {
 	Image splashImage = null;
 	private boolean error = false;
 	InputStream in;
+	String[] splashImagePaths = new String[] { "splash.png", "resources/splash.png" };
 
 	public MySplashScreen(int seconds) {
 
 		timeOut = seconds;
 		try {
-			in = getClass().getClassLoader().getResourceAsStream("splash.png");
+			
+			in = PrimesApplication.getFunctionalResourceStream(splashImagePaths);
 			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
-
 		}
-		catch (IOException e) {
 
-//			I dont want to see Error Messages any more ! 
-//			PrimesApplication.error(e, false);
+		catch (IOException e) {
 			error = true;
 			return;
 		}
 
-		catch (Throwable t) {
+		catch (IllegalArgumentException t) {
 			error = true;
-			PrimesApplication.error(t, false);
 			return;
 		}
 
@@ -69,4 +67,5 @@ public class MySplashScreen extends JWindow {
 		g.drawImage(splashImage, 0, 0, this);
 
 	}
+
 }

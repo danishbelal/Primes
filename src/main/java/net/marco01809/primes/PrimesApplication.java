@@ -2,6 +2,7 @@ package net.marco01809.primes;
 
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 import net.marco01809.primes.calculators.PrimeBruter;
 import net.marco01809.primes.calculators.SieveOfErathosthenes;
 import net.marco01809.primes.calculators.SieveOfEratosthenesBCD;
@@ -25,14 +28,24 @@ public final class PrimesApplication implements Runnable {
 	public static final String VERSION = "0.5-SNAPSHOT";
 
 	private static PrimesGUI gui;
+	/**
+	 * Used to store the Application Instance which is 
+	 * used e.g. in {@code PrimesApplication#getFunctionalResourceStream(String[]) }.
+	 * */
+	private static PrimesApplication instance;
 	private static int SPLASH_TIME = 3;
 	private ImageIcon icon = null;
 
 	/**
 	 * Launch the application.
 	 */
+	{
+		setInstance(this);
+	}
+	
 	public static void main(String[] args) {
 
+		
 		Thread t = new Thread(new PrimesApplication(), "PrimesApplication_main");
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
@@ -72,8 +85,7 @@ public final class PrimesApplication implements Runnable {
 					// Set the Icon
 					if (!loadIcon())
 						;
-//						do currently nothing if that happens...
-					;
+//						Do currently nothing if that happens...
 
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
@@ -121,8 +133,9 @@ public final class PrimesApplication implements Runnable {
 	}
 
 	private boolean loadIcon() {
-
-		InputStream in = getClass().getClassLoader().getResourceAsStream("logo_48x48.png");
+		
+		String[] iconPaths = new String[] {"logo_48x48.png", "resources/logo_48x48.png"};
+		InputStream in = getFunctionalResourceStream(iconPaths);
 		if (in == null) {
 
 			return false;
@@ -137,5 +150,36 @@ public final class PrimesApplication implements Runnable {
 //		 Tell the calling func that the Icon has been loaded succesfully...
 		return true;
 	}
+	
+	public  InputStream getResourceStream(String path)
+	{
+		return getClass().getClassLoader().getResourceAsStream(path);
+	}
+
+	public static PrimesApplication getInstance() {
+		return instance;
+	}
+
+	private static void setInstance(PrimesApplication instance) {
+		PrimesApplication.instance = instance;
+	}
+	/**
+	 * @return An InputStream which was created out of the first String in {@code paths}
+	 * where the call to {@code getClass().getClassLoader().getResourceAsStream(int)} 
+	 * goes smoothly ( No {@code null} ).
+	 * If none of the strings are matching a Resource [{@code null} will be returned.
+	 * 
+	 * */
+	public static InputStream getFunctionalResourceStream(String[] paths)
+	{
+		InputStream is = null;
+		for(String e : paths)
+		{
+			if( (is = instance.getResourceStream(e)) != null)
+				break;
+		}
+		return is;
+	}
+	
 
 }

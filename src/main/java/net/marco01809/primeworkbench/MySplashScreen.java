@@ -1,4 +1,4 @@
-package net.marco01809.primes;
+package net.marco01809.primeworkbench;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -17,14 +17,12 @@ public class MySplashScreen extends JWindow {
 	Image splashImage = null;
 	private boolean error = false;
 	InputStream in;
-	String[] splashImagePaths = new String[] { "splash.png", "resources/splash.png" };
 
 	public MySplashScreen(int seconds) {
 
 		timeOut = seconds;
 		try {
-			
-			in = PrimesApplication.getFunctionalResourceStream(splashImagePaths);
+			in = MySplashScreen.class.getResourceAsStream("/splash.png");
 			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
 		}
 

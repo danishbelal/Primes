@@ -1,7 +1,6 @@
-package net.marco01809.primes;
+package net.marco01809.primeworkbench;
 
-import net.marco01809.primes.calculators.PrimeCalculator;
-import net.marco01809.primes.primeUsage.PrimeUsage;
+import net.marco01809.primeworkbench.calculators.PrimeCalculator;
 
 public interface UI {
 	/**
@@ -30,6 +29,4 @@ public interface UI {
 	public void setActionComponentsEnabled(boolean enabled);
 
 	public void addPrimeCalculator(PrimeCalculator primeCalc);
-
-	public void addPrimeUsage(PrimeUsage primeUsage);
 }

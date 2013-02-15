@@ -1,4 +1,4 @@
-package net.marco01809.primes.calculators.bcd;
+package net.marco01809.primeworkbench.calculators.bcd;
 
 public final class PrimeEntry {
 	int number = -1;

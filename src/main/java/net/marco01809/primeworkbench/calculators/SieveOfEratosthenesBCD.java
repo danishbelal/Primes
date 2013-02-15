@@ -1,8 +1,8 @@
-package net.marco01809.primes.calculators;
+package net.marco01809.primeworkbench.calculators;
 
-import net.marco01809.primes.PrimesApplication;
-import net.marco01809.primes.UI;
-import net.marco01809.primes.calculators.bcd.PrimeEntry;
+import net.marco01809.primeworkbench.PrimesApplication;
+import net.marco01809.primeworkbench.UI;
+import net.marco01809.primeworkbench.calculators.bcd.PrimeEntry;
 
 public final class SieveOfEratosthenesBCD extends SieveOfErathosthenes {
 	// private int arrayCount;

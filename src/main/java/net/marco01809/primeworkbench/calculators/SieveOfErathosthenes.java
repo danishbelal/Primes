@@ -1,6 +1,6 @@
-package net.marco01809.primes.calculators;
+package net.marco01809.primeworkbench.calculators;
 
-import net.marco01809.primes.UI;
+import net.marco01809.primeworkbench.UI;
 
 public class SieveOfErathosthenes extends PrimeCalculator {
 	boolean[] primes = null;

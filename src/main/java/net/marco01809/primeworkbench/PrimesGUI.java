@@ -1,4 +1,4 @@
-package net.marco01809.primes;
+package net.marco01809.primeworkbench;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,9 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import net.marco01809.primes.calculators.PrimeCalculator;
-import net.marco01809.primes.calculators.SieveOfEratosthenesBCD;
-import net.marco01809.primes.primeUsage.PrimeUsage;
+import net.marco01809.primeworkbench.calculators.PrimeCalculator;
+import net.marco01809.primeworkbench.calculators.SieveOfEratosthenesBCD;
 
 /**
  * Primes GUI v1, a single class containing the entire GUI.
@@ -44,14 +43,14 @@ import net.marco01809.primes.primeUsage.PrimeUsage;
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
-	protected static final String GUI_WINDOW_TITLE = "Primzahlen-Berechnung " + PrimesApplication.VERSION;
+	protected static final String GUI_WINDOW_TITLE = "PrimeWorkbench " + PrimesApplication.VERSION;
 
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 
 	private JPanel contentPane;
 	private JTextArea textPane;
 	@SuppressWarnings("rawtypes")
-	private JComboBox cbxMethode, cbxUsage;
+	private JComboBox cbxMethode;
 	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
 	private JSpinner spinner;
@@ -93,16 +92,6 @@ public class PrimesGUI extends JFrame implements UI {
 		});
 		btnExport.setBounds(311, 317, 142, 23);
 		contentPane.add(btnExport);
-
-		JPanel usePrimesPanel = new JPanel();
-		usePrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen benutzen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		usePrimesPanel.setBounds(10, 181, 207, 159);
-		contentPane.add(usePrimesPanel);
-		usePrimesPanel.setLayout(null);
-
-		cbxUsage = new JComboBox();
-		cbxUsage.setBounds(10, 19, 187, 20);
-		usePrimesPanel.add(cbxUsage);
 
 		JPanel calcPrimesPanel = new JPanel();
 		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -299,23 +288,13 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.addItem(primeCalc);
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void addPrimeUsage(PrimeUsage primeUsage) {
-		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
-			throw new IllegalStateException("Cannot add a PrimeUsage if the GUI is visible");
-		cbxUsage.addItem(primeUsage);
-	}
-
 	/* *************************************************************************
 	 * Actions
 	 */
 
 	protected void startPrimeCalculation() {
-
 		// Not inside the Runnable, because the EDT should grab this values.
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
-
 		final long determineMax = (Integer) spinner.getValue();
 
 		runAction("Berechnung", new Runnable() {

@@ -1,4 +1,4 @@
-package net.marco01809.primeworkbench;
+package net.marco01809.primesworkbench;
 
 import java.awt.Graphics;
 import java.awt.Image;

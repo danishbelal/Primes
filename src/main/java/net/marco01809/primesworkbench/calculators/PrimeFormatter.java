@@ -1,4 +1,4 @@
-package net.marco01809.primeworkbench.calculators;
+package net.marco01809.primesworkbench.calculators;
 
 public class PrimeFormatter {
 	private String primeTag = "%P";

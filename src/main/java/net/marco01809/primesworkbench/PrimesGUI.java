@@ -1,4 +1,4 @@
-package net.marco01809.primeworkbench;
+package net.marco01809.primesworkbench;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,8 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import net.marco01809.primeworkbench.calculators.PrimeCalculator;
-import net.marco01809.primeworkbench.calculators.SieveOfEratosthenesBCD;
+import net.marco01809.primesworkbench.calculators.PrimeCalculator;
+import net.marco01809.primesworkbench.calculators.SieveOfEratosthenesBCD;
 
 /**
  * Primes GUI v1, a single class containing the entire GUI.
@@ -43,7 +43,7 @@ import net.marco01809.primeworkbench.calculators.SieveOfEratosthenesBCD;
 public class PrimesGUI extends JFrame implements UI {
 	private static final long serialVersionUID = 1L;
 
-	protected static final String GUI_WINDOW_TITLE = "PrimeWorkbench " + PrimesApplication.VERSION;
+	protected static final String GUI_WINDOW_TITLE = "PrimesWorkbench " + PrimesApplication.VERSION;
 
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 

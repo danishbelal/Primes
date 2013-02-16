@@ -4,9 +4,9 @@
 
 	<!-- Project information -->
 	<groupId>net.marco01809</groupId>
-	<artifactId>primeworkbench</artifactId>
+	<artifactId>primesworkbench</artifactId>
 	<version>0.5-SNAPSHOT</version>
-	<name>PrimeWorkbench</name>
+	<name>PrimesWorkbench</name>
 	<description>Projektarbeit 2012/2013 Primzahlenberechnung mit Java</description>
 	<url>https://github.com/danishbelal/Primes</url>
 	<inceptionYear>2012</inceptionYear>
@@ -21,7 +21,7 @@
 	<!-- Continuous Integration -->
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://ci.marco01809.net/job/PrimeWorkbench</url>
+		<url>http://ci.marco01809.net/job/PrimesWorkbench</url>
 	</ciManagement>
 
 	<!-- Licenses -->
@@ -85,7 +85,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Main-Class>net.marco01809.primeworkbench.PrimesApplication</Main-Class>
+							<Main-Class>net.marco01809.primesworkbench.PrimesApplication</Main-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>

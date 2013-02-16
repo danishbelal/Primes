@@ -1,6 +1,6 @@
-package net.marco01809.primeworkbench.calculators;
+package net.marco01809.primesworkbench.calculators;
 
-import net.marco01809.primeworkbench.UI;
+import net.marco01809.primesworkbench.UI;
 
 public final class PrimeBruter extends PrimeCalculator {
 	public PrimeBruter(UI ui) {

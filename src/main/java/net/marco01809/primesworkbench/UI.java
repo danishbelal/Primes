@@ -1,6 +1,6 @@
-package net.marco01809.primeworkbench;
+package net.marco01809.primesworkbench;
 
-import net.marco01809.primeworkbench.calculators.PrimeCalculator;
+import net.marco01809.primesworkbench.calculators.PrimeCalculator;
 
 public interface UI {
 	/**

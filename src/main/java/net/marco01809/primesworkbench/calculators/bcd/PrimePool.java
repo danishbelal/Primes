@@ -1,4 +1,4 @@
-package net.marco01809.primeworkbench.calculators.bcd;
+package net.marco01809.primesworkbench.calculators.bcd;
 
 public class PrimePool {
 

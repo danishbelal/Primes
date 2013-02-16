@@ -1,18 +1,19 @@
-package net.marco01809.primeworkbench;
+package net.marco01809.primesworkbench;
+
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
-import net.marco01809.primeworkbench.calculators.PrimeBruter;
-import net.marco01809.primeworkbench.calculators.SieveOfErathosthenes;
-import net.marco01809.primeworkbench.calculators.SieveOfEratosthenesBCD;
+import net.marco01809.primesworkbench.calculators.PrimeBruter;
+import net.marco01809.primesworkbench.calculators.SieveOfErathosthenes;
+import net.marco01809.primesworkbench.calculators.SieveOfEratosthenesBCD;
 
 public final class PrimesApplication implements Runnable {
 	public static final String VERSION = "0.5-SNAPSHOT";

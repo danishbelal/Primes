@@ -35,7 +35,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import net.marco01809.primesworkbench.calculators.PrimeCalculator;
-import net.marco01809.primesworkbench.calculators.SieveOfEratosthenesBCD;
+
 
 /**
  * Primes GUI v1, a single class containing the entire GUI.
@@ -301,15 +301,13 @@ public class PrimesGUI extends JFrame implements UI {
 			public void run() {
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
+				println("Berechnung mit '" + primeCalc.getName() + " für " + numberAmountString + " Zahlen gestartet.");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
 
 				// Determine the Primes
 				boolean[] lastPrimes;
-				if (primeCalc instanceof SieveOfEratosthenesBCD)
-					lastPrimes = primeCalc.determinePrimes((long) determineMax);
 				lastPrimes = primeCalc.determinePrimes(determineMax);
 
 				// Format the used time for better legibility

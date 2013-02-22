@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import net.marco01809.primesworkbench.calculators.PrimeBruter;
 import net.marco01809.primesworkbench.calculators.SieveOfErathosthenes;
-import net.marco01809.primesworkbench.calculators.SieveOfEratosthenesBCD;
 
 public final class PrimesApplication implements Runnable {
 	public static final String VERSION = "0.5-SNAPSHOT";
@@ -50,7 +49,8 @@ public final class PrimesApplication implements Runnable {
 		try {
 			// Try to use the System's look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// It's not that bad if it doesn't work, so don't exit
 			error(e, false);
 		}
@@ -64,15 +64,16 @@ public final class PrimesApplication implements Runnable {
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
-					gui.addPrimeCalculator(new SieveOfEratosthenesBCD(gui));
 
 					// Display the GUI
 					gui.setVisible(true);
 				}
 			});
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		}
+		catch (InvocationTargetException e) {
 			error(e, true);
 		}
 

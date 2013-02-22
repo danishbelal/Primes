@@ -15,7 +15,7 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 
 	public int getHighestDeterminableNumber() {
 
-		return (int) Math.sqrt(Integer.MAX_VALUE) - 1;
+		return Integer.MAX_VALUE -1;
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 //		 Nun erfolgt die eigentliche Berechnung bzw. das "Sieben"...
 
 //		 Zunächst wird die nächste zu streichende Zahl ausgewählt...
-		for (int o = 2; o < max; o++) {
+		for (int o = 2; o * o < max; o++) {
 //			 ... dann alle Vielfachen dieser Zahl gebildet...
 			for (int i = o; i * o <= max; i++) {
 //				 ... und dann das Vielfache ( o * i ) gestrichen, also auf false gesetzt.

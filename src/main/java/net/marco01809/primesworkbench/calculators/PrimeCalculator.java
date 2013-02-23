@@ -11,26 +11,43 @@ public abstract class PrimeCalculator {
 		this.name = name;
 	}
 
+	/**
+	 * @return The Name of the choosen Calculation Method.
+	 * @see PrimeCalculator#toString()
+	 * */
 	public final String getName() {
 		return name;
 	}
 
+	/**
+	 * @return The {@code UI } associated with the PrimeCalculator.
+	 * */
 	public final UI getUI() {
 		return ui;
 	}
 
+	/**
+	 * @return The name of the choosen Calulation Method.
+	 * @see PrimeCalculator#getName()
+	 * */
 	@Override
 	public final String toString() {
 		return getName();
 	}
 
+	/**
+	 * @return The highest determinable Number with the choosen Calculation Method.
+	 * */
 	public long getHighestDeterminableNumber() {
 		return Integer.MAX_VALUE - 1;
 	}
 
 	public abstract boolean[] determinePrimes(int max);
 
-	// Has to be overwritten by SieveOfEratosthenesBCD
+	/**
+	 * This function is casting the Param {@code max} to {@code int} and calls 
+	 * {@code determinePrimes(int)}.
+	 * */
 	public boolean[] determinePrimes(long max) {
 		return determinePrimes((int) max);
 	}

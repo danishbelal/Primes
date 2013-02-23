@@ -7,16 +7,15 @@ public class SieveOfEratosthenesNative extends PrimeCalculator {
 	protected SieveOfEratosthenesNative(UI ui, String name) {
 		super(ui, name);
 	}
-	public SieveOfEratosthenesNative(UI ui)
-	{
+
+	public SieveOfEratosthenesNative(UI ui) {
 		this(ui, "Native:Sieb des Eratosthenes");
 	}
-	public long getHighestDeterminableNumber()
-	{
-//		
+
+	public long getHighestDeterminableNumber() {
 		return Long.MAX_VALUE;
 	}
-	
+
 //	FIXME: 'The return type is incompatible with PrimeCalculator.determinePrimes(long)'
 //	public native int[] determinePrimes(long max);
 
@@ -25,6 +24,5 @@ public class SieveOfEratosthenesNative extends PrimeCalculator {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 }

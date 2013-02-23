@@ -13,11 +13,6 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 		super(ui, name);
 	}
 
-	public long getHighestDeterminableNumber() {
-
-		return Integer.MAX_VALUE -1;
-	}
-
 	/**
 	 * This Function determines all Primes between 2 and {@code max}
 	 * 
@@ -59,4 +54,15 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 		return primes;
 	}
 
+	/**
+	 * @return The highest determinable Number.
+	 * 
+	 * @see PrimeCalculator#getHighestDeterminableNumber()
+	 * @see PrimeBruter#getHighestDeterminableNumber()
+	 * @see SieveOfEratosthenesNative#getHighestDeterminableNumber()
+	 * */
+	public long getHighestDeterminableNumber() {
+		
+		return Integer.MAX_VALUE -1;
+	}
 }

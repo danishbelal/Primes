@@ -43,7 +43,7 @@ public final class PrimeBruter extends PrimeCalculator {
 	}
 	
 	/**
-	 * @return The highest determinable Number with the choosen Calculation Method.
+	 * @return The highest determinable Number.
 	 * 
 	 * @see PrimeCalculator#getHighestDeterminableNumber()
 	 * @see SieveOfErathosthenes#getHighestDeterminableNumber()

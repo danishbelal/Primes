@@ -47,6 +47,9 @@ public abstract class PrimeCalculator {
 	/**
 	 * This function is casting the Param {@code max} to {@code int} and calls 
 	 * {@code determinePrimes(int)}.
+	 * @see PrimeCalculator#determinePrimes(int)
+	 * @see SieveOfErathosthenes#determinePrimes(int)
+	 * @see SieveOfEratosthenesNative#determinePrimes(int)
 	 * */
 	public boolean[] determinePrimes(long max) {
 		return determinePrimes((int) max);

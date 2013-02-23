@@ -12,6 +12,13 @@ public class SieveOfEratosthenesNative extends PrimeCalculator {
 		this(ui, "Native:Sieb des Eratosthenes");
 	}
 
+	/**
+	 * @return The highest determinable Number.
+	 * 
+	 * @see PrimeCalculator#getHighestDeterminableNumber()
+	 * @see SieveOfErathosthenes#getHighestDeterminableNumber()
+	 * @see PrimeBruter#getHighestDeterminableNumber()
+	 * */
 	public long getHighestDeterminableNumber() {
 		return Long.MAX_VALUE;
 	}

@@ -13,7 +13,7 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 		super(ui, name);
 	}
 
-	public int getHighestDeterminableNumber() {
+	public long getHighestDeterminableNumber() {
 
 		return Integer.MAX_VALUE -1;
 	}

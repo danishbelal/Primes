@@ -124,7 +124,7 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				int highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+				long highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
 
 				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
 

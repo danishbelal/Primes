@@ -1,7 +1,7 @@
 package net.marco01809.primesworkbench;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -9,54 +9,63 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.imageio.ImageIO;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import net.marco01809.primesworkbench.calculators.PrimeCalculator;
 
-
 /**
- * Primes GUI v1, a single class containing the entire GUI.
+ * Primes GUI, a single class containing the entire GUI.
  */
-public class PrimesGUI extends JFrame implements UI {
+public class PrimesGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	protected static final String GUI_WINDOW_TITLE = "PrimesWorkbench " + PrimesApplication.VERSION;
 
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
+	protected static final DateFormat SDF = new SimpleDateFormat("[HH:mm:ss] ");
+	
+	private PrimesMenuBar menubar;
+	private JTabbedPane tabber;
 
-	private JPanel contentPane;
-	private JTextArea textPane;
+	private JTextArea logTextPane;
+	private JTextArea faktorisierungTextPane;
+	private JTextField faktorisierungsZahl;
+	
 	@SuppressWarnings("rawtypes")
 	private JComboBox cbxMethode;
-	private JCheckBox chckbxPrimzahlenAusgeben;
 	private JTextField textFieldBerechnetBis;
 	private JSpinner spinner;
 	private JButton btnCalcStart;
-	private JButton btnExport;
-	private JButton btnClear;
 
 	/**
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
@@ -64,39 +73,41 @@ public class PrimesGUI extends JFrame implements UI {
 	private boolean[] primes;
 
 	/**
-	 * Buffers the GUI Console text output.
-	 */
-	private StringBuilder textBuffer = new StringBuilder(1024 * 4); // 4kb should be enough
-
-	/**
 	 * Create the frame.
 	 */
 	@SuppressWarnings("rawtypes")
 	public PrimesGUI() {
-		setResizable(false);
 		setTitle(GUI_WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 466, 376);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		try {
+			setIconImage(ImageIO.read(PrimesGUI.class.getResourceAsStream("/img/logo_96x96.png")));
+		} catch (IOException e) {
+			PrimesApplication.error(e, false);
+		} catch (IllegalArgumentException e) {
+			PrimesApplication.error(e, false);
+		}
+		setMinimumSize(new Dimension(470, 340));
+		setLocationRelativeTo(null);
 
-		btnExport = new JButton("Primzahlen exportieren");
-		btnExport.setToolTipText("Exportiert die Primzahlen in eine portable Datei.");
-		btnExport.setEnabled(false);
-		btnExport.addActionListener(new ActionListener() {
+		menubar = new PrimesMenuBar(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportPrimes();
 			}
 		});
-		btnExport.setBounds(311, 317, 142, 23);
-		contentPane.add(btnExport);
-
+		setJMenuBar(menubar);
+		
+		tabber = new JTabbedPane();
+		setContentPane(tabber);
+		
+		/*
+		 * Panel "Berechnung"
+		 */
+		JPanel berechnungPanel = new JPanel();
+		berechnungPanel.setLayout(new BorderLayout());
+		
 		JPanel calcPrimesPanel = new JPanel();
 		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		calcPrimesPanel.setBounds(10, 11, 207, 165);
-		contentPane.add(calcPrimesPanel);
 		calcPrimesPanel.setLayout(null);
 
 		JLabel lblMethode = new JLabel("Methode:");
@@ -106,11 +117,6 @@ public class PrimesGUI extends JFrame implements UI {
 		JLabel lblBerechnePrimzahlenBis = new JLabel("Berechne Zahlen bis");
 		lblBerechnePrimzahlenBis.setBounds(10, 52, 97, 14);
 		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
-
-		chckbxPrimzahlenAusgeben = new JCheckBox("Primzahlen ausgeben");
-		chckbxPrimzahlenAusgeben.setToolTipText("Gibt die berechneten Primzahlen in der Konsole aus.");
-		chckbxPrimzahlenAusgeben.setBounds(6, 73, 131, 23);
-		calcPrimesPanel.add(chckbxPrimzahlenAusgeben);
 
 		spinner = new JSpinner();
 		spinner.setToolTipText("Gibt an, bis zu welcher Zahl berechnet werden soll. Umso höher, umso zeitaufwändiger die Berechnung.");
@@ -123,8 +129,7 @@ public class PrimesGUI extends JFrame implements UI {
 		cbxMethode.setBounds(66, 19, 131, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				long highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
+				int highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
 
 				SpinnerNumberModel spinnerModel = (SpinnerNumberModel) spinner.getModel();
 
@@ -156,29 +161,84 @@ public class PrimesGUI extends JFrame implements UI {
 		textFieldBerechnetBis.setEditable(false);
 		textFieldBerechnetBis.setBounds(123, 137, 74, 20);
 		calcPrimesPanel.add(textFieldBerechnetBis);
+		
+		berechnungPanel.add(calcPrimesPanel, BorderLayout.CENTER);
+		tabber.add(berechnungPanel, 0);
+		tabber.setTitleAt(0, "Berechnung");
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 128, 187, 2);
-		calcPrimesPanel.add(separator);
-
-		btnClear = new JButton("Clear");
-		btnClear.setToolTipText("Leert den Inhalt der Ereignisanzeige.");
-		btnClear.addActionListener(new ActionListener() {
+		/*
+		 * Panel "Faktorisierung"
+		 */
+		JPanel faktorisierungPanel = new JPanel();
+		faktorisierungPanel.setLayout(new BorderLayout());
+		
+		JPanel faktorisierungHeadPanel = new JPanel();
+		faktorisierungHeadPanel.setLayout(new BorderLayout());
+		
+		faktorisierungHeadPanel.add(new JLabel("Zu faktorisierende Zahl:"), BorderLayout.LINE_START);
+		
+		ActionListener faktorisiereListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clearText();
+				logPrintln("Worked");
+			}
+		};
+		
+		faktorisierungsZahl = new JTextField();
+		faktorisierungsZahl.addActionListener(faktorisiereListener);
+		faktorisierungHeadPanel.add(faktorisierungsZahl, BorderLayout.CENTER);
+		
+		JButton faktorisierenBtn = new JButton("Faktorisieren");
+		faktorisierenBtn.addActionListener(faktorisiereListener);
+		faktorisierungHeadPanel.add(faktorisierenBtn, BorderLayout.LINE_END);
+		
+		faktorisierungPanel.add(faktorisierungHeadPanel, BorderLayout.PAGE_START);
+		
+		faktorisierungTextPane = new JTextArea();
+		faktorisierungTextPane.setToolTipText("Zeigt die zuletzt faktorisierten Zahlen an.");
+		faktorisierungTextPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		faktorisierungTextPane.setEditable(false);
+		faktorisierungPanel.add(new JScrollPane(faktorisierungTextPane), BorderLayout.CENTER);
+		JButton faktorisierungBtnClear = new JButton("Faktorisierungsliste leeren");
+		faktorisierungBtnClear.setToolTipText("Leert den Inhalt der Faktorisierungsliste.");
+		faktorisierungBtnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				faktorisierungTextPane.setText("");
 			}
 		});
-		btnClear.setBounds(227, 317, 80, 23);
-		contentPane.add(btnClear);
-
-		textPane = new JTextArea();
-		textPane.setToolTipText("Zeigt die Ereignisse und Berechnungen an.");
-		textPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textPane.setEditable(false);
-
-		JScrollPane scrollPane = new JScrollPane(textPane);
-		scrollPane.setBounds(227, 12, 226, 298);
-		contentPane.add(scrollPane);
+		faktorisierungBtnClear.setBounds(227, 317, 80, 23);
+		faktorisierungPanel.add(faktorisierungBtnClear, BorderLayout.PAGE_END);
+		
+		tabber.add(faktorisierungPanel, 1);
+		tabber.setTitleAt(1, "Faktorisierung");
+		
+		/*
+		 * Panel "Ereignisanzeige"
+		 */
+		JPanel ereignisPanel = new JPanel();
+		ereignisPanel.setLayout(new BorderLayout());
+		logTextPane = new JTextArea();
+		logTextPane.setToolTipText("Zeigt Ereignisse, Fehler und den Fortschritt bestimmter Operationen an.");
+		logTextPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		logTextPane.setEditable(false);
+		ereignisPanel.add(new JScrollPane(logTextPane), BorderLayout.CENTER);
+		JButton logBtnClear = new JButton("Ereignisanzeige leeren");
+		logBtnClear.setToolTipText("Leert den Inhalt der Ereignisanzeige.");
+		logBtnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearLog();
+			}
+		});
+		logBtnClear.setBounds(227, 317, 80, 23);
+		ereignisPanel.add(logBtnClear, BorderLayout.PAGE_END);
+		tabber.add(ereignisPanel, 2);
+		tabber.setTitleAt(2, "Ereignisanzeige");
+		try {
+			tabber.setIconAt(2, new ImageIcon(ImageIO.read(PrimesGUI.class.getResourceAsStream("/img/ereignislog.png")).getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
+		} catch (IOException e) {
+			PrimesApplication.error(e, false);
+		} catch (IllegalArgumentException e) {
+			PrimesApplication.error(e, false);
+		}
 	}
 
 	/* *************************************************************************
@@ -186,73 +246,29 @@ public class PrimesGUI extends JFrame implements UI {
 	 */
 
 	@Override
-	public void clearText() {
+	public void clearLog() {
 		if (SwingUtilities.isEventDispatchThread()) {
-			textPane.setText("");
-		}
-		else {
+			logTextPane.setText("");
+		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					textPane.setText("");
-				}
-			});
-		}
-
-		synchronized (textBuffer) {
-			textBuffer.delete(0, textBuffer.capacity());
-		}
-	}
-
-	/*
-	 * Direct text output - directly prints text to the textPane.
-	 */
-	@Override
-	public void print(final String text) {
-		System.out.print(text);
-
-		if (SwingUtilities.isEventDispatchThread()) {
-			textPane.setText(textPane.getText() + text);
-		}
-		else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					textPane.setText(textPane.getText() + text);
+					logTextPane.setText("");
 				}
 			});
 		}
 	}
 
 	@Override
-	public void println(String text) {
-		print(text + '\n');
-	}
-
-	/*
-	 * Buffered text output - writes to the buffer. If it's full, it will be flushed by printing the buffer contents to the direct text output.
-	 */
-	public void printBuffered(final String text) {
-		synchronized (textBuffer) {
-			if (textBuffer.length() + text.length() > textBuffer.capacity())
-				flushBuffer();
-			textBuffer.append(text);
+	public void logPrintln(final String text) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			logTextPane.setText(logTextPane.getText() + SDF.format(new Date())+ text + '\n');
+		} else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					logTextPane.setText(logTextPane.getText() + SDF.format(new Date()) + text + '\n');
+				}
+			});
 		}
-	}
-
-	public void printlnBuffered(final String text) {
-		printBuffered(text + '\n');
-	}
-
-	public void flushBuffer() {
-		synchronized (textBuffer) {
-			print(textBuffer.toString());
-			textBuffer.delete(0, textBuffer.capacity());
-		}
-	}
-
-	@Override
-	public void determinedPrime(int prime) {
-		if (chckbxPrimzahlenAusgeben.isSelected())
-			this.printlnBuffered("Primzahl: " + String.valueOf(prime));
 	}
 
 	@Override
@@ -266,18 +282,16 @@ public class PrimesGUI extends JFrame implements UI {
 						setActionComponentsEnabled(enabled);
 					}
 				});
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
-			catch (InvocationTargetException e) {
+			} catch (InvocationTargetException e) {
 				PrimesApplication.error(e, false);
 			}
 			return;
 		}
 
 		btnCalcStart.setEnabled(enabled);
-		btnExport.setEnabled(enabled && primes != null);
+		menubar.setExportButtonEnabled(enabled && primes != null);
 	}
 
 	@Override
@@ -295,13 +309,13 @@ public class PrimesGUI extends JFrame implements UI {
 	protected void startPrimeCalculation() {
 		// Not inside the Runnable, because the EDT should grab this values.
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
-		final long determineMax = (Integer) spinner.getValue();
+		final int determineMax = (Integer) spinner.getValue();
 
 		runAction("Berechnung", new Runnable() {
 			public void run() {
 				// Format the number for better legibility
 				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				println("Berechnung mit '" + primeCalc.getName() + " für " + numberAmountString + " Zahlen gestartet.");
+				logPrintln("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
 
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
@@ -312,9 +326,6 @@ public class PrimesGUI extends JFrame implements UI {
 
 				// Format the used time for better legibility
 				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
-
-				// Flush the console buffer after calculation finished
-				PrimesGUI.this.flushBuffer(); // Special syntax to access the instance of the outer-class
 
 				// Only set the primes if the determined primes got improved
 				if (primes == null || lastPrimes.length > primes.length) {
@@ -327,7 +338,7 @@ public class PrimesGUI extends JFrame implements UI {
 					});
 				}
 
-				println("Berechnung dauerte " + tookTimeString + " ms.");
+				logPrintln("Berechnung dauerte " + tookTimeString + " ms.");
 			}
 		});
 	}
@@ -339,22 +350,24 @@ public class PrimesGUI extends JFrame implements UI {
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
 				int fcOption = fc.showSaveDialog(PrimesGUI.this);
-
+				
 				if (fcOption == JFileChooser.ERROR_OPTION)
-					println("Export gescheitert: Unbekannter Fehler");
+					logPrintln("Export gescheitert: Unbekannter Fehler");
 				else if (fcOption == JFileChooser.CANCEL_OPTION)
-					println("Export abgebrochen.");
+					logPrintln("Export abgebrochen.");
 				else if (fcOption == JFileChooser.APPROVE_OPTION) {
 					File f = fc.getSelectedFile();
 					if (f.exists()) {
 						if (JOptionPane.showConfirmDialog(PrimesGUI.this, "Die Datei existiert bereits. Möchten Sie sie überschreiben?", "Datei existiert bereits", JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE) == JOptionPane.NO_OPTION) {
-							println("Export abgebrochen.");
+							logPrintln("Export abgebrochen.");
 							return;
 						}
 					}
+					
+					tabber.setSelectedIndex(2);
 
-					println("Export gestartet.");
+					logPrintln("Export gestartet.");
 
 					try {
 						FileWriter fw = new FileWriter(f, false);
@@ -368,15 +381,13 @@ public class PrimesGUI extends JFrame implements UI {
 
 						fw.close();
 
-						println("Export erfolgreich.");
-					}
-					catch (IOException e) {
-						println("Export gescheitert: Datei-Fehler.");
+						logPrintln("Export erfolgreich.");
+					} catch (IOException e) {
+						logPrintln("Export gescheitert: Datei-Fehler.");
 						PrimesApplication.error(e, false);
 					}
-				}
-				else
-					println("Export gescheitert: Unbekannte Option");
+				} else
+					logPrintln("Export gescheitert: Unbekannte Option");
 			}
 		});
 	}
@@ -400,7 +411,7 @@ public class PrimesGUI extends JFrame implements UI {
 		}, "PrimesGUI Action: " + name);
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				println(name + " fehlgeschlagen.");
+				logPrintln(name + " fehlgeschlagen.");
 				setActionComponentsEnabled(true);
 				PrimesApplication.error(e, t, false);
 			}

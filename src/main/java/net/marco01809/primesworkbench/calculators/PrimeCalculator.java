@@ -1,12 +1,12 @@
 package net.marco01809.primesworkbench.calculators;
 
-import net.marco01809.primesworkbench.UI;
+import net.marco01809.primesworkbench.PrimesGUI;
 
 public abstract class PrimeCalculator {
-	protected final UI ui;
+	protected final PrimesGUI ui;
 	private final String name;
 
-	protected PrimeCalculator(UI ui, String name) {
+	protected PrimeCalculator(PrimesGUI ui, String name) {
 		this.ui = ui;
 		this.name = name;
 	}
@@ -14,22 +14,22 @@ public abstract class PrimeCalculator {
 	/**
 	 * @return The Name of the choosen Calculation Method.
 	 * @see PrimeCalculator#toString()
-	 * */
+	 */
 	public final String getName() {
 		return name;
 	}
 
 	/**
-	 * @return The {@code UI } associated with the PrimeCalculator.
-	 * */
-	public final UI getUI() {
+	 * @return The {@code UI} associated with the PrimeCalculator.
+	 */
+	public final PrimesGUI getUI() {
 		return ui;
 	}
 
 	/**
 	 * @return The name of the choosen Calulation Method.
 	 * @see PrimeCalculator#getName()
-	 * */
+	 */
 	@Override
 	public final String toString() {
 		return getName();
@@ -37,21 +37,10 @@ public abstract class PrimeCalculator {
 
 	/**
 	 * @return The highest determinable Number with the choosen Calculation Method.
-	 * */
-	public long getHighestDeterminableNumber() {
+	 */
+	public int getHighestDeterminableNumber() {
 		return Integer.MAX_VALUE - 1;
 	}
 
 	public abstract boolean[] determinePrimes(int max);
-
-	/**
-	 * This function is casting the Param {@code max} to {@code int} and calls 
-	 * {@code determinePrimes(int)}.
-	 * @see PrimeCalculator#determinePrimes(int)
-	 * @see SieveOfErathosthenes#determinePrimes(int)
-	 * @see SieveOfEratosthenesNative#determinePrimes(int)
-	 * */
-	public boolean[] determinePrimes(long max) {
-		return determinePrimes((int) max);
-	}
 }

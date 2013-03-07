@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,11 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -42,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.marco01809.primesworkbench.calculators.PrimeCalculator;
+import javax.swing.JSeparator;
+import javax.swing.JCheckBox;
 
 /**
  * Primes GUI, a single class containing the entire GUI.
@@ -53,19 +53,24 @@ public class PrimesGUI extends JFrame {
 
 	protected static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#,###,###,##0");
 	protected static final DateFormat SDF = new SimpleDateFormat("[HH:mm:ss] ");
-	
+
 	private PrimesMenuBar menubar;
 	private JTabbedPane tabber;
 
 	private JTextArea logTextPane;
 	private JTextArea faktorisierungTextPane;
 	private JTextField faktorisierungsZahl;
-	
+	private JTextArea primzahlenTextPane;
+	private JTextArea istPrimTextArea;
+	private JButton btnIstPrim;
+
 	@SuppressWarnings("rawtypes")
 	private JComboBox cbxMethode;
+	private JCheckBox chckbxAusgabe;
 	private JTextField textFieldBerechnetBis;
 	private JSpinner spinner;
 	private JButton btnCalcStart;
+	private JTextField textField;
 
 	/**
 	 * Stores the result of a prime calculation, for further use by a PrimeUsage.
@@ -86,7 +91,7 @@ public class PrimesGUI extends JFrame {
 		} catch (IllegalArgumentException e) {
 			PrimesApplication.error(e, false);
 		}
-		setMinimumSize(new Dimension(470, 340));
+		setMinimumSize(new Dimension(520, 340));
 		setLocationRelativeTo(null);
 
 		menubar = new PrimesMenuBar(new ActionListener() {
@@ -95,38 +100,39 @@ public class PrimesGUI extends JFrame {
 			}
 		});
 		setJMenuBar(menubar);
-		
+
 		tabber = new JTabbedPane();
 		setContentPane(tabber);
-		
+
 		/*
 		 * Panel "Berechnung"
 		 */
 		JPanel berechnungPanel = new JPanel();
 		berechnungPanel.setLayout(new BorderLayout());
-		
+
 		JPanel calcPrimesPanel = new JPanel();
-		calcPrimesPanel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 1, true), "Primzahlen berechnen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		calcPrimesPanel.setBounds(10, 11, 207, 165);
+		calcPrimesPanel.setSize(250, 160);
+		calcPrimesPanel.setMinimumSize(new Dimension(250, 160));
+		calcPrimesPanel.setPreferredSize(new Dimension(250, 160));
 		calcPrimesPanel.setLayout(null);
 
 		JLabel lblMethode = new JLabel("Methode:");
-		lblMethode.setBounds(10, 22, 46, 14);
+		lblMethode.setBounds(10, 11, 46, 14);
 		calcPrimesPanel.add(lblMethode);
 
 		JLabel lblBerechnePrimzahlenBis = new JLabel("Berechne Zahlen bis");
-		lblBerechnePrimzahlenBis.setBounds(10, 52, 97, 14);
+		lblBerechnePrimzahlenBis.setBounds(10, 36, 97, 14);
 		calcPrimesPanel.add(lblBerechnePrimzahlenBis);
 
 		spinner = new JSpinner();
 		spinner.setToolTipText("Gibt an, bis zu welcher Zahl berechnet werden soll. Umso höher, umso zeitaufwändiger die Berechnung.");
 		spinner.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(1), null, new Integer(100)));
-		spinner.setBounds(111, 49, 86, 20);
+		spinner.setBounds(121, 33, 119, 20);
 		calcPrimesPanel.add(spinner);
 
 		cbxMethode = new JComboBox();
 		cbxMethode.setToolTipText("Wählt die Methode aus, mit der Primzahlen berechnet werden sollen.");
-		cbxMethode.setBounds(66, 19, 131, 20);
+		cbxMethode.setBounds(66, 8, 174, 20);
 		cbxMethode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int highestDeteminableNumber = ((PrimeCalculator) cbxMethode.getSelectedItem()).getHighestDeterminableNumber();
@@ -147,11 +153,11 @@ public class PrimesGUI extends JFrame {
 				startPrimeCalculation();
 			}
 		});
-		btnCalcStart.setBounds(66, 100, 131, 23);
+		btnCalcStart.setBounds(107, 61, 133, 23);
 		calcPrimesPanel.add(btnCalcStart);
 
 		JLabel lblVerfgbarePrimzahlen = new JLabel("Zahlen berechnet bis:");
-		lblVerfgbarePrimzahlen.setBounds(10, 140, 109, 14);
+		lblVerfgbarePrimzahlen.setBounds(10, 98, 109, 14);
 		calcPrimesPanel.add(lblVerfgbarePrimzahlen);
 
 		textFieldBerechnetBis = new JTextField();
@@ -159,10 +165,81 @@ public class PrimesGUI extends JFrame {
 		textFieldBerechnetBis.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldBerechnetBis.setText("0");
 		textFieldBerechnetBis.setEditable(false);
-		textFieldBerechnetBis.setBounds(123, 137, 74, 20);
+		textFieldBerechnetBis.setBounds(121, 95, 119, 20);
 		calcPrimesPanel.add(textFieldBerechnetBis);
+
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 123, 230, 2);
+		calcPrimesPanel.add(separator);
+
+		chckbxAusgabe = new JCheckBox("Ausgabe");
+		chckbxAusgabe.setBounds(10, 61, 97, 23);
+		chckbxAusgabe.setSelected(true);
+		chckbxAusgabe.setToolTipText("Bei sehr großen Berechnungen sollte die Primzahl-Ausgabe ausgeschaltet werden, da sie das Programm ansonsten abstürzen lässt.");
+		calcPrimesPanel.add(chckbxAusgabe);
+
+		JLabel lblIst = new JLabel("Ist");
+		lblIst.setBounds(10, 137, 13, 14);
+		calcPrimesPanel.add(lblIst);
 		
-		berechnungPanel.add(calcPrimesPanel, BorderLayout.CENTER);
+		ActionListener istPrimActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (primes == null) return;
+				
+				int zahl = 0;
+				try {
+					zahl = Integer.parseInt(textField.getText().replace(".", ""));
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(PrimesGUI.this,
+							"Eingabe ist keine gültige Zahl.\nDie Zahl muss aus Ziffern bestehen, positiv sein und zwischen 2 und " + NUMBER_FORMAT.format(Integer.MAX_VALUE) + " liegen.",
+							"Eingabefehler", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				if (primes.length <= zahl) {
+					istPrimTextArea.setText(zahl + "\tnoch nicht berechnet" + "\n" + istPrimTextArea.getText());
+				} else {
+					if (primes[zahl]) {
+						istPrimTextArea.setText(zahl + "\tist eine Primzahl!" + "\n" + istPrimTextArea.getText());
+					} else {
+						istPrimTextArea.setText(zahl + "\tist keine Primzahl." + "\n" + istPrimTextArea.getText());
+					}
+				}
+			}
+		};
+
+		textField = new JFormattedTextField(NumberFormat.getInstance());
+		textField.setBounds(33, 134, 97, 20);
+		textField.addActionListener(istPrimActionListener);
+		calcPrimesPanel.add(textField);
+		textField.setColumns(10);
+		
+		btnIstPrim = new JButton("eine Primzahl?");
+		btnIstPrim.setEnabled(false);
+		btnIstPrim.addActionListener(istPrimActionListener);
+		btnIstPrim.setBounds(131, 133, 109, 23);
+		calcPrimesPanel.add(btnIstPrim);
+
+		istPrimTextArea = new JTextArea();
+		istPrimTextArea.setToolTipText("Zeigt die zuletzt geprüften Zahlen an.");
+		istPrimTextArea.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		istPrimTextArea.setEditable(false);
+		istPrimTextArea.setBounds(10, 162, 230, 127);
+
+		JPanel leftSidePanel = new JPanel();
+		leftSidePanel.setLayout(new BorderLayout());
+
+		leftSidePanel.add(calcPrimesPanel, BorderLayout.PAGE_START);
+		leftSidePanel.add(new JScrollPane(istPrimTextArea), BorderLayout.CENTER);
+		berechnungPanel.add(leftSidePanel, BorderLayout.LINE_START);
+
+		primzahlenTextPane = new JTextArea();
+		primzahlenTextPane.setToolTipText("Zeigt die berechneten Primzahlen an.");
+		primzahlenTextPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		primzahlenTextPane.setEditable(false);
+		primzahlenTextPane.setLineWrap(true);
+		berechnungPanel.add(new JScrollPane(primzahlenTextPane), BorderLayout.CENTER);
+
 		tabber.add(berechnungPanel, 0);
 		tabber.setTitleAt(0, "Berechnung");
 
@@ -171,28 +248,62 @@ public class PrimesGUI extends JFrame {
 		 */
 		JPanel faktorisierungPanel = new JPanel();
 		faktorisierungPanel.setLayout(new BorderLayout());
-		
+
 		JPanel faktorisierungHeadPanel = new JPanel();
 		faktorisierungHeadPanel.setLayout(new BorderLayout());
-		
+
 		faktorisierungHeadPanel.add(new JLabel("Zu faktorisierende Zahl:"), BorderLayout.LINE_START);
-		
+
 		ActionListener faktorisiereListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				logPrintln("Worked");
+			public void actionPerformed(ActionEvent event) {
+				int zahl = 0;
+				try {
+					zahl = Integer.parseInt(faktorisierungsZahl.getText().replace(".", ""));
+					if (zahl <= 1)
+						throw new NumberFormatException();
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(PrimesGUI.this,
+							"Eingabe ist keine gültige Zahl.\nDie Zahl muss aus Ziffern bestehen, positiv sein und zwischen 2 und " + NUMBER_FORMAT.format(Integer.MAX_VALUE) + " liegen.",
+							"Eingabefehler", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				int arbeitsZahl = zahl;
+				StringBuilder sb = new StringBuilder(40);
+				faktorisieren: for (int teiler = 2; teiler < primes.length; teiler++) {
+					if (primes[teiler]) {
+						while (arbeitsZahl % teiler == 0) {
+							sb.append(teiler);
+
+							arbeitsZahl = arbeitsZahl / teiler;
+
+							if (arbeitsZahl == 1) {
+								break faktorisieren;
+							} else {
+								sb.append(" * ");
+							}
+						}
+					}
+				}
+
+				if (arbeitsZahl != 1) {
+					faktorisierungTextPane.setText(zahl + "\t= Benötige mehr Primzahlen zum Faktorisieren dieser Zahl.\n" + faktorisierungTextPane.getText());
+				} else {
+					faktorisierungTextPane.setText(zahl + "\t= " + sb.toString() + "\n" + faktorisierungTextPane.getText());
+				}
 			}
 		};
-		
-		faktorisierungsZahl = new JTextField();
+
+		faktorisierungsZahl = new JFormattedTextField(NumberFormat.getInstance());
 		faktorisierungsZahl.addActionListener(faktorisiereListener);
 		faktorisierungHeadPanel.add(faktorisierungsZahl, BorderLayout.CENTER);
-		
+
 		JButton faktorisierenBtn = new JButton("Faktorisieren");
 		faktorisierenBtn.addActionListener(faktorisiereListener);
 		faktorisierungHeadPanel.add(faktorisierenBtn, BorderLayout.LINE_END);
-		
+
 		faktorisierungPanel.add(faktorisierungHeadPanel, BorderLayout.PAGE_START);
-		
+
 		faktorisierungTextPane = new JTextArea();
 		faktorisierungTextPane.setToolTipText("Zeigt die zuletzt faktorisierten Zahlen an.");
 		faktorisierungTextPane.setFont(new Font("Lucida Console", Font.PLAIN, 12));
@@ -205,12 +316,12 @@ public class PrimesGUI extends JFrame {
 				faktorisierungTextPane.setText("");
 			}
 		});
-		faktorisierungBtnClear.setBounds(227, 317, 80, 23);
 		faktorisierungPanel.add(faktorisierungBtnClear, BorderLayout.PAGE_END);
-		
+
 		tabber.add(faktorisierungPanel, 1);
 		tabber.setTitleAt(1, "Faktorisierung");
-		
+		tabber.setEnabledAt(1, false);
+
 		/*
 		 * Panel "Ereignisanzeige"
 		 */
@@ -228,7 +339,6 @@ public class PrimesGUI extends JFrame {
 				clearLog();
 			}
 		});
-		logBtnClear.setBounds(227, 317, 80, 23);
 		ereignisPanel.add(logBtnClear, BorderLayout.PAGE_END);
 		tabber.add(ereignisPanel, 2);
 		tabber.setTitleAt(2, "Ereignisanzeige");
@@ -245,7 +355,6 @@ public class PrimesGUI extends JFrame {
 	 * UI
 	 */
 
-	@Override
 	public void clearLog() {
 		if (SwingUtilities.isEventDispatchThread()) {
 			logTextPane.setText("");
@@ -258,20 +367,22 @@ public class PrimesGUI extends JFrame {
 		}
 	}
 
-	@Override
 	public void logPrintln(final String text) {
+		final String formattedText = SDF.format(new Date()) + text + '\n';
+
+		System.out.print(formattedText);
+
 		if (SwingUtilities.isEventDispatchThread()) {
-			logTextPane.setText(logTextPane.getText() + SDF.format(new Date())+ text + '\n');
+			logTextPane.setText(logTextPane.getText() + formattedText);
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					logTextPane.setText(logTextPane.getText() + SDF.format(new Date()) + text + '\n');
+					logTextPane.setText(logTextPane.getText() + formattedText);
 				}
 			});
 		}
 	}
 
-	@Override
 	public void setActionComponentsEnabled(final boolean enabled) {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			// invokeAndWait because the method calling this method likely expects
@@ -292,9 +403,10 @@ public class PrimesGUI extends JFrame {
 
 		btnCalcStart.setEnabled(enabled);
 		menubar.setExportButtonEnabled(enabled && primes != null);
+		tabber.setEnabledAt(1, enabled && primes != null);
+		btnIstPrim.setEnabled(enabled && primes != null);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public void addPrimeCalculator(PrimeCalculator primeCalc) {
 		if (this.isVisible()) // Adding these while the user is able to access the GUI could cause threading problems.
@@ -311,18 +423,18 @@ public class PrimesGUI extends JFrame {
 		final PrimeCalculator primeCalc = (PrimeCalculator) cbxMethode.getSelectedItem();
 		final int determineMax = (Integer) spinner.getValue();
 
+		// Format the number for better legibility
+		final String numberAmountString = NUMBER_FORMAT.format(determineMax);
+		logPrintln("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
+		primzahlenTextPane.setText("Benutze '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen.");
+
 		runAction("Berechnung", new Runnable() {
 			public void run() {
-				// Format the number for better legibility
-				final String numberAmountString = NUMBER_FORMAT.format(determineMax);
-				logPrintln("Berechnung mit '" + primeCalc.getName() + "' für " + numberAmountString + " Zahlen gestartet.");
-
 				// Get the time before the calculation
 				long timeBefore = System.currentTimeMillis();
 
 				// Determine the Primes
-				boolean[] lastPrimes;
-				lastPrimes = primeCalc.determinePrimes(determineMax);
+				boolean[] lastPrimes = primeCalc.determinePrimes(determineMax);
 
 				// Format the used time for better legibility
 				final String tookTimeString = NUMBER_FORMAT.format(System.currentTimeMillis() - timeBefore);
@@ -338,7 +450,29 @@ public class PrimesGUI extends JFrame {
 					});
 				}
 
-				logPrintln("Berechnung dauerte " + tookTimeString + " ms.");
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						logPrintln("Berechnung dauerte " + tookTimeString + " ms.");
+						primzahlenTextPane.setText(primzahlenTextPane.getText() + "\nBerechnung dauerte " + tookTimeString + " ms...");
+					}
+				});
+
+				if (chckbxAusgabe.isSelected()) {
+					final StringBuilder sb = new StringBuilder(2000);
+					for (int i = 0; i < lastPrimes.length; i++) {
+						if (lastPrimes[i]) {
+							sb.append(Integer.toString(i));
+							sb.append(",\t");
+						}
+					}
+					sb.setLength(sb.length() - 2);
+
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							primzahlenTextPane.setText(primzahlenTextPane.getText() + "\n" + sb.toString());
+						}
+					});
+				}
 			}
 		});
 	}
@@ -350,7 +484,7 @@ public class PrimesGUI extends JFrame {
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setMultiSelectionEnabled(false);
 				int fcOption = fc.showSaveDialog(PrimesGUI.this);
-				
+
 				if (fcOption == JFileChooser.ERROR_OPTION)
 					logPrintln("Export gescheitert: Unbekannter Fehler");
 				else if (fcOption == JFileChooser.CANCEL_OPTION)
@@ -364,7 +498,7 @@ public class PrimesGUI extends JFrame {
 							return;
 						}
 					}
-					
+
 					tabber.setSelectedIndex(2);
 
 					logPrintln("Export gestartet.");
@@ -374,7 +508,7 @@ public class PrimesGUI extends JFrame {
 
 						for (int p = 0; p < primes.length; p++) {
 							if (primes[p]) {
-								fw.write(String.valueOf(p) + ", ");
+								fw.write(String.valueOf(p));
 								fw.write("\r\n");
 							}
 						}

@@ -11,12 +11,12 @@ import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 
-import net.marco01809.primesworkbench.calculators.Native;
+//import net.marco01809.primesworkbench.calculators.Native;
 import net.marco01809.primesworkbench.calculators.PrimeBruter;
 import net.marco01809.primesworkbench.calculators.SieveOfErathosthenes;
 
 public final class PrimesApplication implements Runnable {
-	public static final String VERSION = "0.5-SNAPSHOT";
+	public static final String VERSION = "0.5";
 
 	private static int SPLASH_TIME = 3;
 
@@ -41,7 +41,7 @@ public final class PrimesApplication implements Runnable {
 	 */
 	public void run() {
 		/**
-		 * This fnction call will block the GUI loading, for {@code SPLASH_TIME} econds.
+		 * This function call will block the GUI loading, for {@code SPLASH_TIME} seconds.
 		 */
 		new MySplashScreen(SPLASH_TIME).showSplash();
 
@@ -64,7 +64,7 @@ public final class PrimesApplication implements Runnable {
 					// Add the content
 					gui.addPrimeCalculator(new PrimeBruter(gui));
 					gui.addPrimeCalculator(new SieveOfErathosthenes(gui));
-					gui.addPrimeCalculator(new Native(gui));
+//					gui.addPrimeCalculator(new Native(gui));
 
 					// Display the GUI
 					gui.setVisible(true);

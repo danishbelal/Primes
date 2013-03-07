@@ -6,7 +6,7 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 	boolean[] primes = null;
 
 	public SieveOfErathosthenes(PrimesGUI ui) {
-		this(ui, "Sieb des Erathosthenes");
+		this(ui, "Sieb des Eratosthenes");
 	}
 
 	protected SieveOfErathosthenes(PrimesGUI ui, String name) {
@@ -30,6 +30,6 @@ public class SieveOfErathosthenes extends PrimeCalculator {
 
 	@Override
 	public int getHighestDeterminableNumber() {
-		return Integer.MAX_VALUE -1;
+		return Integer.MAX_VALUE - 1;
 	}
 }

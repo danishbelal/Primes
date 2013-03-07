@@ -6,32 +6,31 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JWindow;
 
 public class MySplashScreen extends JWindow {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *	The Time (Seconds) the Splash Screen has to pop up. 
+	 *The Time (Seconds) the Splash Screen has to pop up. 
 	 */	 
 	private final int timeOut;
 
 	Image splashImage = null;
 	/**
-	 * 	If an Error occures this {@code boolean} is going to remind us.
+	 * If an Error occures this {@code boolean} is going to remind us.
 	 */
 	private boolean error = false;
 	InputStream in;
 
 	/**
-	 * 	Initializes a {@code MySplashScreen} Object which is able to display a splash image for {@code seconds} Seconds. 
+	 * Initializes a {@code MySplashScreen} Object which is able to display a splash image for {@code seconds} Seconds. 
 	 */
 	public MySplashScreen(int seconds) {
 		timeOut = seconds;
 		try {
 			in = MySplashScreen.class.getResourceAsStream("/img/splash.png");
-			splashImage = new ImageIcon(ImageIO.read(in)).getImage();
+			splashImage = ImageIO.read(in);
 		} catch (IOException e) {
 			error = true;
 			return;
@@ -46,7 +45,7 @@ public class MySplashScreen extends JWindow {
 	}
 
 	/**
-	 * 	This function sets the Window to  visible and shows the Splash Screen for {@code timeOut} seconds.
+	 * This function sets the Window to  visible and shows the Splash Screen for {@code timeOut} seconds.
 	 */
 	public void showSplash() {
 		setVisible(true);

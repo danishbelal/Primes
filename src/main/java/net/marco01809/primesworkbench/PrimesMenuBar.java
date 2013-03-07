@@ -87,6 +87,7 @@ public class PrimesMenuBar extends JMenuBar {
 				} catch (IllegalArgumentException e) {
 					PrimesApplication.error(e, false);
 				}
+				f.setLocationRelativeTo(PrimesMenuBar.this.getParent());
 				f.setResizable(false);
 				f.setVisible(true);
 			}
